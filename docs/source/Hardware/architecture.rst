@@ -1,3 +1,4 @@
+.. _architecture:
 +-------------+-------------+-------------+-------------+-------------+
 | Device      | Type        | Sp          | Label       | Comments    |
 |             |             | ecification |             |             |
