@@ -1,4 +1,7 @@
 .. _architecture:
+
+Device in use
+============
 +-------------+-------------+-------------+-------------+-------------+
 | Device      | Type        | Sp          | Label       | Comments    |
 |             |             | ecification |             |             |
