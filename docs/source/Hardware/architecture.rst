@@ -1,7 +1,7 @@
 .. _architecture:
 
-Device in use
-============
+Devices in use
+==============
 +-------------+-------------+-------------+-------------+-------------+
 | Device      | Type        | Sp          | Label       | Comments    |
 |             |             | ecification |             |             |
@@ -17,7 +17,7 @@ Device in use
 |             |             | *RAM:* 16   |             |             |
 |             |             | GB          |             |             |
 +-------------+-------------+-------------+-------------+-------------+
-| 2 x Hokuyo  | 2D Laser    | `Dat        | BRSU-Hokuyo |             |
+| 1 x Hokuyo  | 2D Laser    | `Dat        | BRSU-Hokuyo |             |
 | UST-10LX    |             | asheet <htt | -UST-10LX-1 |             |
 |             |             | ps://hokuyo | & -2        |             |
 |             |             | -usa.com/ap |             |             |
@@ -130,36 +130,6 @@ Device in use
 |             |             | -breaker-1- |             |             |
 |             |             | pcs.pdf>`__ |             |             |
 +-------------+-------------+-------------+-------------+-------------+
-| 2 x Kinova  | Emergency   |             | Kinova      | This switch |
-| E-Stop      | Stop Button |             | ESTOP 1 & 2 | cuts the    |
-|             | for the     |             |             | power       |
-|             | Arms        |             |             | supply to   |
-|             |             |             |             | and         |
-|             |             |             |             | co          |
-|             |             |             |             | mmunication |
-|             |             |             |             | with the    |
-|             |             |             |             | arm. This   |
-|             |             |             |             | means that  |
-|             |             |             |             | as soon as  |
-|             |             |             |             | the button  |
-|             |             |             |             | is pressed, |
-|             |             |             |             | the arm     |
-|             |             |             |             | will become |
-|             |             |             |             | passive and |
-|             |             |             |             | gr          |
-|             |             |             |             | avitational |
-|             |             |             |             | forces will |
-|             |             |             |             | accelerate  |
-|             |             |             |             | it if the   |
-|             |             |             |             | robot is    |
-|             |             |             |             | not held by |
-|             |             |             |             | a user or a |
-|             |             |             |             | surface.    |
-|             |             |             |             | Once the    |
-|             |             |             |             | button is   |
-|             |             |             |             | released,   |
-|             |             |             |             | the arm has |
-|             |             |             |             | to be       |
-|             |             |             |             | re-i        |
-|             |             |             |             | nitialized. |
-+-------------+-------------+-------------+-------------+-------------+
+
+Assembling a Robile robot
+=========================
