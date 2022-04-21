@@ -1,0 +1,2 @@
+.. toctree::
+    architecture
