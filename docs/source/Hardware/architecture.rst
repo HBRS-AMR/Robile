@@ -3,8 +3,8 @@
 Devices in use
 ==============
 +-------------+-------------+-------------+-------------+-------------+
-| Device      | Type        | Sp          | Label       | Comments    |
-|             |             | ecification |             |             |
+| Device      | Type        | Specificati | Label       | Comments    |
+|             |             | on          |             |             |
 +=============+=============+=============+=============+=============+
 | Intel NUC   | PC          | *CPU:*      | MAS NUC 3   |             |
 |             |             | Intel(R)    |             |             |
