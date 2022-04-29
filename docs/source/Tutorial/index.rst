@@ -5,4 +5,4 @@ Hardware
 The hardwarde components of Robile robots. This inlcude
 
 .. toctree::
-    architecture
+    Demo Mapping
