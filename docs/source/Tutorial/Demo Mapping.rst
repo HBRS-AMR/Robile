@@ -10,7 +10,7 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
   .. code-block:: bash
 
-      roslaunch mir_bringup robot.launch
+      roslaunch robile_bringup robot.launch
 
 * Run 2D SLAM
 
