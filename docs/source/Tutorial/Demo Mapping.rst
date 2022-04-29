@@ -27,7 +27,7 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
   .. note::
 
       Export ROS_MASTER_URI to wifi ip-address and export ROS_IP to your system ip-address.
-      Now run "rviz" in the terminal and add 'map' and 'laser_scan'. Change the topics accordings.
+      Now run "rviz" in the terminal and add 'map' and 'laser_scan'. Change the topics accordingly.
 
 * Run the map saver
 
