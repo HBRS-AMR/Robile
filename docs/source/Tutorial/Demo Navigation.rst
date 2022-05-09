@@ -40,6 +40,7 @@ Check which map will be loaded by the navigation stack:
     3. Select "2D Pose Estimate" and click on the map where the robot is actually located
     4. Use joystick to rotate and translate such that the PoseArray arrows align
 
+
   .. note::
       Link to the ROS wiki for gmapping  : 
       http://wiki.ros.org/amcl
