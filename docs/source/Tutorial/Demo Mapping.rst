@@ -68,8 +68,8 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
   .. note::
 
-      Usually the `.rosc` script is used to set the environment, among other variables.
+      Usually the `.rosc` script is used to set the environment, among other variables
 
   .. note::
-      Link to the ROS wiki for gmapping  
+      Link to the ROS wiki for gmapping  : 
       http://wiki.ros.org/gmapping
