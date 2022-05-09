@@ -14,11 +14,7 @@ Learning objectives
 - To build an application (eg: wall following task) by developing and integrating the perception and navigation modules. Documenting the challenges and possible solutions.
 
 .. toctree::
-  :maxdepth: 2
-  :caption: Gmapping
     Demo Mapping
 
 .. toctree::
-  :maxdepth: 2
-  :caption: Tutorial
     Demo Localization
