@@ -13,11 +13,17 @@ Learning objectives
 
 - To build an application (eg: wall following task) by developing and integrating the perception and navigation modules. Documenting the challenges and possible solutions.
 
+Mapping environment
+===================
 .. toctree::
     Demo Mapping.rst
 
+Localization
+=============
 .. toctree::
     Demo Localization.rst
 
+Navigation
+===========
 .. toctree::
     Demo Navigation.rst    
