@@ -17,4 +17,7 @@ Learning objectives
     Demo Mapping
 
 .. toctree::
-    Demo localization
+    Demo Localization
+
+.. toctree::
+    Demo Navigation    

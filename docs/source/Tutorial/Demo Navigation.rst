@@ -3,7 +3,7 @@
 Tutorial for navigating in a map 
 ================================
 
-This tutorial is a demonstration for localizing in a  map using "amcl" (adaptive Monte Carlo localization) algorithm. It uses a particle filter to track the pose of a robot in a known map.
+This tutorial is a demonstration for navigating in a map using "amcl" (adaptive Monte Carlo localization) algorithm. It uses a particle filter to track the pose of a robot in a known map.
 
 * Launch the robot
 
@@ -42,5 +42,5 @@ Check which map will be loaded by the navigation stack:
 
 
   .. note::
-      Link to the ROS wiki for gmapping  : 
-      http://wiki.ros.org/amcl
+      Link to the ROS wiki for navigation : 
+      http://wiki.ros.org/navigation

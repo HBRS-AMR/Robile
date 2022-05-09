@@ -37,5 +37,5 @@ Check which map will be loaded by the navigation stack:
     4. Use joystick to rotate and translate such that the PoseArray arrows align
 
   .. note::
-      Link to the ROS wiki for gmapping  : 
+      Link to the ROS wiki for amcl: 
       http://wiki.ros.org/amcl
