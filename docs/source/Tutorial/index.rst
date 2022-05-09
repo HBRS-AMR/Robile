@@ -2,7 +2,8 @@
 Manual for projects
 ##########
 
-<h2>Learning objectives</h2>
+Learning objectives
+--------------------
 
 - To get hands on experience in assembling the platform and setting up the communication.
 
