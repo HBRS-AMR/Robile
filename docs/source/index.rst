@@ -18,5 +18,9 @@ Robile Robot
 
   Hardware/index.rst
 
+.. toctree::
+  :maxdepth: 2
+  :caption: Tutorial
 
+  Tutorial/index.rst
 
