@@ -3,7 +3,7 @@
 
 
    <!-- Running the laser -->
-<arg name="name" default="laser"/>
+<!-- <arg name="name" default="laser"/>
 <arg name="host" default="192.168.1.35"/>
 <arg name="frame_id" default="odom"/>
 
@@ -11,20 +11,19 @@
 
 <node pkg="lms1xx" name="lms1xx_$(arg name)" type = "LMS1xx_node" output="screen">
    <param name="host" type="string" value="$(arg host)"/>
-   <!--param name="frame_id" type="string" value="$(arg frame_id)"/-->
    <param name="frame_id" type="string" value="base_laser"/>
 </node>
 
 
 <node pkg="laser_filters" type="scan_to_scan_filter_chain" name="laser_filter">
    <rosparam command="load" file="$(find robile_navigation_demo)/ros/config/laser_sick_config.yaml" />
-</node>
+</node> -->
 
 
 
-<node pkg="tf" type="static_transform_publisher" name="link_odom" args="0 0 0 0 0 0 /odom /base_link 30" />
-<node pkg="tf" type="static_transform_publisher" name="odom_map" args="0 0 0 0 0 0 /map /odom 500" />
-<node pkg="tf" type="static_transform_publisher" name="laser_link" args="0.4 0 0 0 0 0 /base_link /base_laser 30" />
+<!-- <node pkg="tf" type="static_transform_publisher" name="link_odom" args="0 0 0 0 0 0 /odom /base_link 1" /> -->
+<!-- <node pkg="tf" type="static_transform_publisher" name="odom_map" args="0 0 0 0 0 0 /map /odom 500" /> -->
+<!-- <node pkg="tf" type="static_transform_publisher" name="laser_link" args="0.45 0 0.22 0 0 0 /base_link /base_laser 30" /> -->
 
 
 

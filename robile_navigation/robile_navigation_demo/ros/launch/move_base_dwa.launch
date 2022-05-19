@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+    
+    <arg name="controller_frequency" default="5.0"/>
+    <arg name="costmap_params_dir" default="$(find robile_navigation_demo)/ros/config/move_base_config"/>
+
+    <node pkg="move_base" type="move_base" respawn="false" ns="/" name="move_base" output="screen">
+        <!-- Load common costmap params -->
+        <rosparam file="$(arg costmap_params_dir)/costmap_common_params.yaml" command="load" ns="global_costmap" />
+        <rosparam file="$(arg costmap_params_dir)/costmap_common_params.yaml" command="load" ns="local_costmap" />
+
+        <!-- Load costmap global and local params -->
+        <rosparam file="$(arg costmap_params_dir)/global_costmap_params.yaml" command="load" />
+        <rosparam file="$(arg costmap_params_dir)/local_costmap_params.yaml" command="load"/>
+
+        <!-- Load base local planner params -->
+        <rosparam file="$(find robile_navigation_demo)/ros/config/move_base_config/base_local_planner_params.yaml" command="load" />
+
+        <param name="base_local_planner" value="base_local_planner/TrajectoryPlannerROS" />
+        <param name="controller_frequency" value="$(arg controller_frequency)" />
+
+        <remap from="cmd_vel" to="/cmd_vel"/>
+        <remap from="odom" to="/odom"/>
+        <remap from="/move_base_simple/goal" to="/move_base_simple/goal"/>
+        <remap from="/move_base/cancel" to="/move_base/cancel"/>
+        <remap from="/move_base/feedback" to="/move_base/feedback"/>
+        <remap from="/move_base/goal" to="/move_base/goal"/>
+        <remap from="/move_base/result" to="/move_base/result"/>
+        <remap from="/move_base/status" to="/move_base/status"/>
+    </node>
+</launch>
