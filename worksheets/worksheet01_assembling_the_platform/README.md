@@ -1,12 +1,12 @@
 Worksheet 01: Assembling the ROBILE platform
 ====================================
 
-Objectives:
+Objectives
 ----------
 * To get hands on experience in assembling the robot in different configuration and to appreciate its modularity
 * To learn various forms of communication with the platform
 
-Introduction:
+Introduction
 ----------
 
 ### Overview of Robile platform components:
@@ -38,7 +38,7 @@ It acts as a space filler and it does not have any wheel units
 ### Overview of communication:
 The communication with the robile platform can be established using ethercat, bluetooth and wifi connection. Wifi connection will be used for communication during the project
 
-Tasks:
+Tasks
 ----
 ### Task 01:  
 * Assembling a Robile platform using four active bricks and each battery and CPU bricks  
