@@ -1,4 +1,4 @@
-Worksheet01: Assembling the platform
+Worksheet 01: Assembling the ROBILE platform
 ====================================
 
 Objectives:
@@ -29,7 +29,7 @@ It consists of Intel(R) Core(TM) i7-8559U CPU, which is used to integrate all se
 ![Battery brick](../bitmaps/cpu_brick.png)
 
 * Empty brick:  
-It acts as a space filler and it doesnot have any wheel units
+It acts as a space filler and it does not have any wheel units
 
 > Note:  
       Technical details of the platform can be found in the documentation:   
@@ -46,11 +46,11 @@ Tasks:
 ### Task 02:  
 * Assembling a Robile platform using two active bricks and each battery and CPU bricks
 
-    > The instructions for assembling the robot can be found in this video:  
+    > Instructions for assembling the platform:  
     *** link to video ***
 
 ### Task 03:  
 * Powering up and establishing communication with the platform  
 
-    > The instructions for establishing communication can be found in this video:  
+    > Instructions for establishing communication with the platform:  
     *** link to video ***
