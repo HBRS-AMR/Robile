@@ -12,12 +12,12 @@ Introduction:
 ### Overview of Robile platform components:
 Robile platform is composed of combination of cuboid structures, named as `bricks`.  From the top view, every edge of the brick is of length `233 mm`. Different forms of bricks are,
 * Active wheel brick:  
-It consists of a pair of independently powered wheel units which have same axis of rotation and a common pivot axis. It consists of input and output ports for power and ethercat cables  
+It consists of a pair of independently powered active wheel units which have same axis of rotation and a common pivot axis. It consists of input and output ports for power and ethercat cables  
 ![Active wheel brick](../bitmaps/active_brick.png)
 
 
 * Passive wheel brick:   
-It has similar wheel configuration to that of active brick. However, the wheels are not powered and are free to rotate about the axis of rotation and the pivot axis  
+It is made of a single passive castor wheel unit. However, the wheels are not powered and are free to rotate about the axis of rotation and the pivot axis  
 ![Passive wheel brick](../bitmaps/passive_brick.png)
 
 * Battery brick:  
@@ -31,6 +31,6 @@ It consists of Intel(R) Core(TM) i7-8559U CPU, which is used to integrate all se
 * Empty brick:  
 It acts as a space filler and it doesnot have any wheel units
 
-  .. note::
+> Note:  
       Technical details of the platform can be found in the documentation: 
       https://robile-amr.readthedocs.io/en/devel/Hardware/architecture.html#
