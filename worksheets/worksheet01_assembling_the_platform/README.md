@@ -41,15 +41,21 @@ The communication with the robile platform can be established using ethercat, bl
 Tasks
 ----
 ### Task 01:  
-* Assembling a Robile platform using four active bricks and each battery and CPU bricks  
+* Assembling a Robile platform using a battery, a CPU and four active bricks 
 
 ### Task 02:  
-* Assembling a Robile platform using two active bricks and each battery and CPU bricks
+* Assembling a Robile platform using a battery, a CPU, two active and two passive bricks
 
     > Instructions for assembling the platform:  
     *** link to video ***
 
 ### Task 03:  
+* Assembling a Robile platform using a battery, a CPU, two active and two passive bricks
+
+    > Instructions for assembling the platform:  
+    *** link to video ***
+
+### Task 04:  
 * Powering up and establishing communication with the platform  
 
     > Instructions for establishing communication with the platform:  
