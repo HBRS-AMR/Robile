@@ -61,12 +61,12 @@ Assemble the Robile platforms in three different configurations as described bel
 * Assembling a Robile platform using one battery, one CPU, two active and two passive bricks
 
 > Robile2 platform: 
-<img src="../bitmaps/robile1.png" width="350" height="250">  
+<img src="../bitmaps/robile2.png" width="350" height="250">  
 <!-- ![Robile-2](../bitmaps/robile2.png) -->
 
 ### Configuration 03:  
 * Assembling a Robile platform using one battery, one CPU, four active bricks
 
 > Robile3 platform:  
-<img src="../bitmaps/robile1.png" width="350" height="250"> 
+<img src="../bitmaps/robile3.png" width="350" height="250"> 
 <!-- ![Robile-3](../bitmaps/robile3.png) -->
