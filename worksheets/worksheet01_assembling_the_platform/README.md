@@ -49,7 +49,7 @@ Task
 ----
 
 ### Description
-Assemble the Robile platforms in three different configurations as described below. A tutorial video for assembling the "Robile2" platform can be found in this link:  
+Assemble the Robile platforms in three different configurations as described below. A tutorial video for assembling the "Robile2" platform can be found in this link:  https://youtu.be/HgzLIzhv5LE
 
 ### Summary of items:
 | Item                     | No per robot |           |           |
@@ -64,7 +64,6 @@ Assemble the Robile platforms in three different configurations as described bel
 | Plastic covers           | 20           | 24        | 24        |
 | Square connection plates | 0            | 4         | 2         |
 | Security head screws     | 0            | 16        | 8         |
-
 ### Configuration 01:  
 * Assembling a Robile platform using one battery, one CPU, one active and two passive bricks
 > Robile1 platform:  
