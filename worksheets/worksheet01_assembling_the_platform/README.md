@@ -51,6 +51,20 @@ Task
 ### Description
 Assemble the Robile platforms in three different configurations as described below. A tutorial video for assembling the "Robile2" platform can be found in this link:  
 
+### Summary of items:
+| Item                     | No per robot |           |           |
+|--------------------------|--------------|-----------|-----------|
+|                          | ROBILE-01    | ROBILE-02 | ROBILE-03 |
+| Square brackets          | 3            | 10        | 6         |
+| Slot nuts                | 20           | 40        | 24        |
+| L-brackets               | 2            | 0         | 0         |
+| Ethernet cables          | 2            | 5         | 3         |
+| Ethernet end cable       | 1            | 1         | 1         |
+| Power cables             | 2            | 5         | 3         |
+| Plastic covers           | 20           | 24        | 24        |
+| Square connection plates | 0            | 4         | 2         |
+| Security head screws     | 0            | 16        | 8         |
+
 ### Configuration 01:  
 * Assembling a Robile platform using one battery, one CPU, one active and two passive bricks
 > Robile1 platform:  
