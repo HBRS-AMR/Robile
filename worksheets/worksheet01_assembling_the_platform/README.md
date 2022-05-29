@@ -49,7 +49,7 @@ Task
 ----
 
 ### Description
-Assemble the Robile platforms in three different configurations as described below. A tutorial video for assembling the "Robile2" platform can be found in this link:  https://youtu.be/HgzLIzhv5LE
+Assemble the Robile platforms in three different configurations as described below. Please keep the orientation of individual bricks consistent with the images given below. A tutorial video for assembling the "Robile2" platform can be found in this link:  https://youtu.be/4R4dMP8Q0MI
 
 ### Summary of items:
 | Item                     | No per robot |           |           |
