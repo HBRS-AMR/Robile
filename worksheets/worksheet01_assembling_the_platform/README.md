@@ -52,7 +52,80 @@ Task
 Assemble the Robile platforms in three different configurations as described below. Please keep the orientation of individual bricks consistent with the images given below. A tutorial video for assembling the "Robile2" platform can be found in this link:  https://youtu.be/4R4dMP8Q0MI
 
 ### Summary of items:
-| Item                     | No per robot |           |           |
+
+<table class="table table-bordered table-hover table-condensed">
+<thead><tr><th rowspan=2 title="Field #1">Item</th>
+<th colspan=3 title="Field #2">Count</th>
+<tr>
+<th>ROBILE-01</th>
+<th>ROBILE-02</th>
+<th>ROBILE-03</th>
+<!-- <th title="Field #3">FIELD3</th>
+<th title="Field #4">FIELD4</th> -->
+</tr></thead>
+<!-- <tbody><tr>
+<td> </td>
+<td>ROBILE-01</td>
+<td>ROBILE-02</td>
+<td>ROBILE-03</td>
+</tr> -->
+<tr>
+<td>Square brackets</td>
+<td>3</td>
+<td>10</td>
+<td>6</td>
+</tr>
+<tr>
+<td>Slot nuts</td>
+<td>20</td>
+<td>40</td>
+<td>24</td>
+</tr>
+<tr>
+<td>L-brackets</td>
+<td>2</td>
+<td>0</td>
+<td>0</td>
+</tr>
+<tr>
+<td>Ethernet cables</td>
+<td>2</td>
+<td>5</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Ethernet end cable</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+</tr>
+<tr>
+<td>Power cables</td>
+<td>2</td>
+<td>5</td>
+<td>3</td>
+</tr>
+<tr>
+<td>Plastic covers</td>
+<td>20</td>
+<td>24</td>
+<td>24</td>
+</tr>
+<tr>
+<td>Square connection plates</td>
+<td>0</td>
+<td>4</td>
+<td>2</td>
+</tr>
+<tr>
+<td>Security head screws</td>
+<td>0</td>
+<td>16</td>
+<td>8</td>
+</tr>
+</tbody></table>
+
+<!-- | Item                     | No per robot |           |           |
 |--------------------------|--------------|-----------|-----------|
 |                          | ROBILE-01    | ROBILE-02 | ROBILE-03 |
 | Square brackets          | 3            | 10        | 6         |
@@ -63,7 +136,7 @@ Assemble the Robile platforms in three different configurations as described bel
 | Power cables             | 2            | 5         | 3         |
 | Plastic covers           | 20           | 24        | 24        |
 | Square connection plates | 0            | 4         | 2         |
-| Security head screws     | 0            | 16        | 8         |
+| Security head screws     | 0            | 16        | 8         | -->
 ### Configuration 01:  
 * Assembling a Robile platform using one battery, one CPU, one active and two passive bricks
 > Robile1 platform:  
