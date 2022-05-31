@@ -86,8 +86,8 @@ Setup catkin workspace
   .. code-block:: bash
 
     source /opt/ros/noetic/setup.bash
-    mkdir -p ~/noetic/src; cd ~/noetic/src
-    catkin_init_workspace
+    mkdir -p ~/catkin_ws_AMR/src  
+    cd ~/catkin_ws_AMR
     catkin build
 
 * Clone and compile the repository on ROBILE
@@ -96,16 +96,15 @@ Setup catkin workspace
 
   .. code-block:: bash
 
-    cd ~/noetic/src;
+    cd ~/catkin_ws_AMR/src  
     git clone https://github.com/HBRS-AMR/Robile.git
 
   Then go on with installing further external dependencies:
 
   .. code-block:: bash
 
-    cd ~/noetic/src/Robile
-    ./repository.debs ###### NOT YET CONFIGURED
-    source ~/noetic/devel/setup.bash
+    cd ~/catkin_ws_AMR/src/Robile
+    source ~/catkin_ws_AMR/devel/setup.bash
 
   The last command should be added to the ~/.bashrc file so that they do not need to be executed everytime you open a new terminal.
 
@@ -113,7 +112,7 @@ Setup catkin workspace
 
   .. code-block:: bash
 
-    cd ~/noetic
+    cd ~/catkin_ws_AMR
     catkin build
 
   If no errors appear everything is ready to use. Great job!
