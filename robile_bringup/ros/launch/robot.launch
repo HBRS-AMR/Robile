@@ -20,7 +20,7 @@
    <rosparam command="load" file="$(find robile_navigation_demo)/ros/config/laser_sick_config.yaml" />
 </node>
 
-<include file="$(find smart_wheel_driver)/launch/narko.launch"/>
-<node pkg="joy" type="joy_node" name="joy" output="screen" />
+<include file="$(find kelo_tulip)/launch/example_joypad.launch"/>
+<!-- <node pkg="joy" type="joy_node" name="joy" output="screen" /> -->
 
 </launch>
