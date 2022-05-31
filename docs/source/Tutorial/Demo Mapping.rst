@@ -35,7 +35,10 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
   .. note::
 
       Export ROS_MASTER_URI to wifi ip-address and export ROS_IP to your system ip-address.
-      Now run "rviz" in the terminal and add 'map' and 'laser_scan' displays. Change the topics accordingly.
+      export ROS_MASTER_URI=http://192.168.0.101:11311 && export ROS_IP=*your_system_ip_address*
+      
+      your_system_ip_address can be found by running 'ifconfig'. Please make sure you are connected to the same network as the robot(ROBILE5G).
+      Now run "rviz" in the same terminal. Add 'map' and 'laser_scan' displays and change the topics accordingly.
 
 * Run the map saver
 
