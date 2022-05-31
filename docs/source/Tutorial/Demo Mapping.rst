@@ -36,7 +36,7 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
   .. code-block:: bash
 
-      export ROS_MASTER_URI=**robile_ip_address**:11311 && export ROS_IP=**your_system_ip_address**  
+      export ROS_MASTER_URI=<robile_ip_address>:11311 && export ROS_IP=<your_system_ip_address>  
 
   - your_system_ip_address can be found by running 'ifconfig'. Please make sure you are connected to the same network as the robot(ROBILE5G).
       
