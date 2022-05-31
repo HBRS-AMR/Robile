@@ -5,7 +5,14 @@ Tutorial for creating a map
 
 This tutorial is a demonstration for creating a  map of an environment using "gmapping" algorithm of ROS navigation stack. 
 
+* Connecting to the robot
+  .. code-block:: bash
 
+      ssh -x studentkelo@192.168.0.101   [Robile1]
+      ssh -x studentkelo@192.168.0.102   [Robile2]
+      ssh -x studentkelo@192.168.0.103   [Robile3]
+
+      Password: "area5142"
 
 * Launch the robot
 
