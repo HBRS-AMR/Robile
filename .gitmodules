@@ -1,0 +1,3 @@
+[submodule "kelo_tulip"]
+	path = kelo_tulip
+	url = git@github.com:mas-group/kelo_tulip.git
