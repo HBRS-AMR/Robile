@@ -8,9 +8,9 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 * Connecting to the robot
   .. code-block:: bash
 
-      ssh -x studentkelo@192.168.0.101   [Robile1]  
-      ssh -x studentkelo@192.168.0.102   [Robile2]  
-      ssh -x studentkelo@192.168.0.103   [Robile3]  
+      ssh -x studentkelo@192.168.0.101   [Robile1]   
+      ssh -x studentkelo@192.168.0.102   [Robile2]   
+      ssh -x studentkelo@192.168.0.103   [Robile3]   
 
       Password for all three platforms: "area5142"  
 
@@ -32,18 +32,15 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
 * Run the robot using joystick to map an environment
   
+  - Export ROS_MASTER_URI to wifi ip-address and export ROS_IP to your system ip-address.  
+
   .. note::
 
-      Export ROS_MASTER_URI to wifi ip-address and export ROS_IP to your system ip-address.
-      export ROS_MASTER_URI=*robile_ip_address*:11311 && export ROS_IP=*your_system_ip_address*
-      
-      robile ip_address:  
-      robile1: http://192.168.0.101  
-      robile2: http://192.168.0.102  
-      robile3: http://192.168.0.103  
+      export ROS_MASTER_URI=**robile_ip_address**:11311 && export ROS_IP=**your_system_ip_address**  
 
-      your_system_ip_address can be found by running 'ifconfig'. Please make sure you are connected to the same network as the robot(ROBILE5G).
-      Now run "rviz" in the same terminal. Add 'map' and 'laser_scan' displays and change the topics accordingly.
+  - Your_system_ip_address can be found by running 'ifconfig'. Please make sure you are connected to the same network as the robot(ROBILE5G).
+      
+  - Now run "rviz" in the same terminal. Add 'map' and 'laser_scan' displays and change the topics accordingly.
 
 * Run the map saver
 
