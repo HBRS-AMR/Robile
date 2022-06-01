@@ -48,7 +48,7 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
   .. code-block:: bash
 
-      roscd robile_default_env_config
+      roscd robile_default_env_config/ros/
 
   By using `ls` you can see several folders corresponding to existing environments.
   You can either use an existing map or create a new one:

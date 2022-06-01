@@ -11,6 +11,8 @@
 <node name="map_server" pkg="map_server" type="map_server" args="$(arg map_file)" />
 <arg name="use_map_topic" default="true"/>
 
+<!-- Transform laser scan data to base_laser -->
+<node pkg="tf" type="static_transform_publisher" name="laser_link" args="0.45 0 0.22 0 0 0 /base_link /base_laser 30" />
 
 <!-- Run amcl -->
 

@@ -31,7 +31,16 @@ Check which map will be loaded by the navigation stack:
 
 * Localize the robot in rviz (refer to Localization tutorial)
 
-* 
+* Run move_base_dwa node
+
+  .. code-block:: bash
+
+      roslaunch robile_navigation_demo move_base_dwa.launch 
+
+* Select '2D Nav Goal' in rviz and select the goal position on the map
+
+* Explore different topics such as costmaps, planning, which gives an intuition about the background mechanism
+
   .. note::
       Link to the ROS wiki for navigation : 
       http://wiki.ros.org/navigation
