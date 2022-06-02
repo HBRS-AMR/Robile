@@ -104,7 +104,6 @@ Setup catkin workspace
   .. code-block:: bash
 
     cd ~/catkin_ws_AMR/src/Robile
-
     source ~/catkin_ws_AMR/devel/setup.bash
 
   The last command should be added to the ~/.bashrc file so that they do not need to be executed everytime you open a new terminal.

@@ -1,0 +1,107 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright (c) 2021
+KELO Robotics GmbH
+
+Author:
+Sushant Chavan
+
+
+This software is published under a dual-license: GNU Lesser General Public
+License LGPL 2.1 and BSD license. The dual-license implies that users of this
+code may choose which terms they prefer.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+* Neither the name of Locomotec nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License LGPL as
+published by the Free Software Foundation, either version 2.1 of the
+License, or (at your option) any later version or the BSD license.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License LGPL and the BSD license for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License LGPL and BSD license along with this program.
+-->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="brick_housing" params="name color:=yellow with_wheel:=false">
+
+        <!-- Include required xacro files -->
+        <xacro:include filename="$(find robile_description)/urdf/base_macros/common.xacro" />
+
+        <!-- Properties for a robile brick -->
+        <xacro:property name="robile_size_x" value="0.233"/>
+        <xacro:property name="robile_size_y" value="0.233"/>
+        <xacro:property name="robile_size_z" value="0.239"/>
+        <xacro:property name="center_of_mass_x" value="0.0005"/>
+        <xacro:property name="center_of_mass_y" value="0.0001"/>
+        <xacro:property name="center_of_mass_z" value="0.119"/>
+
+        <link name="${name}_link">
+
+            <!-- Aluminium casing of the robile -->
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <xacro:if value="${with_wheel}">
+                        <mesh filename="package://robile_description/meshes/robile_brick_housing/wheeled_brick_housing.dae" scale="1 1 1"/>
+                    </xacro:if>
+                    <xacro:unless value="${with_wheel}">
+                        <mesh filename="package://robile_description/meshes/robile_brick_housing/general_brick_housing.dae" scale="1 1 1"/>
+                    </xacro:unless>
+                </geometry>
+            </visual>
+
+            <!-- robile lid -->
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://robile_description/meshes/robile_brick_housing/lid.dae" scale="1 1 1"/>
+                </geometry>
+            </visual>
+
+            <!-- robile lid cover (color passed as a parameter) -->
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://robile_description/meshes/robile_brick_housing/lid_cover_${color}.dae" scale="1 1 1"/>
+                </geometry>
+            </visual>
+
+            <!-- Collision box for brick housing -->
+            <collision>
+                <origin xyz="${center_of_mass_x} ${center_of_mass_y} ${center_of_mass_z}" rpy="0 0 0"/>
+                <geometry>
+                    <box size="${robile_size_x} ${robile_size_y} ${robile_size_z}" />
+                </geometry>
+            </collision>
+
+            <!-- Inertia for brick housing -->
+            <xacro:cuboid_inertia mass="5.0"
+                                length="${robile_size_x}"
+                                breadth="${robile_size_y}"
+                                height="${robile_size_z}" 
+                                center_of_mass_x="${center_of_mass_x}"
+                                center_of_mass_y="${center_of_mass_y}"
+                                center_of_mass_z="${center_of_mass_z}"/>
+        </link>
+
+    </xacro:macro>
+
+</robot>

@@ -1,0 +1,99 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright (c) 2021
+KELO Robotics GmbH
+
+Author:
+Sushant Chavan
+
+
+This software is published under a dual-license: GNU Lesser General Public
+License LGPL 2.1 and BSD license. The dual-license implies that users of this
+code may choose which terms they prefer.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+* Neither the name of Locomotec nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License LGPL as
+published by the Free Software Foundation, either version 2.1 of the
+License, or (at your option) any later version or the BSD license.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License LGPL and the BSD license for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License LGPL and BSD license along with this program.
+-->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="kelo_drive" params="name parent *origin">
+
+        <xacro:include filename="$(find robile_description)/urdf/base_macros/common.xacro" />
+        <xacro:include filename="$(find robile_description)/urdf/base_macros/kelo_drive_wheel.urdf.xacro" />
+
+        <!-- PIVOT -->
+        <joint name="${name}_pivot_joint" type="continuous">
+            <xacro:insert_block name="origin" />
+            <axis xyz="0 0 1"/>
+            <parent link="${parent}"/>
+            <child link="${name}_pivot_link" />
+        </joint>
+
+        <transmission name="${name}_pivot_transmission">
+            <type>transmission_interface/SimpleTransmission</type>
+            <joint name="${name}_pivot_joint">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+            </joint>
+            <actuator name="${name}_pivot_motor">
+                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                <mechanicalReduction>1</mechanicalReduction>
+            </actuator>
+        </transmission>
+
+        <link name="${name}_pivot_link">
+            <visual>
+                <origin xyz="0 0 0" rpy="0 0 0"/>
+                <geometry>
+                    <mesh filename="package://robile_description/meshes/kelo_drive/kelo_drive_base.dae" scale="1 1 1"/>
+                </geometry>
+            </visual>
+
+            <!--TODO: Set the correct collisions -->
+            <collision>
+                <origin xyz="0 0 0.07" rpy="0 0 0"/>
+                <geometry>
+                    <box size="0.105 0.154 0.025" />
+                </geometry>
+            </collision>
+
+            <!--TODO: Set the correct inertia-->
+            <xacro:cuboid_inertia mass="10.0" length="0.233" breadth="0.233" height="0.233"/>
+        </link>
+
+        <!-- LEFT HUB WHEEL -->
+        <xacro:kelo_drive_wheel name="${name}_left_hub_wheel" parent="${name}_pivot_link">
+            <origin xyz="-0.01 0.039326 0.001514" rpy="0 0 0.0"/>
+        </xacro:kelo_drive_wheel>
+
+        <!-- RIGHT HUB WHEEL -->
+        <xacro:kelo_drive_wheel name="${name}_right_hub_wheel" parent="${name}_pivot_link">
+            <origin xyz="-0.01 -0.039326 0.001514" rpy="0 0 0.0"/>
+        </xacro:kelo_drive_wheel>
+
+    </xacro:macro>
+
+</robot>
