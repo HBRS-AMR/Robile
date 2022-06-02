@@ -1,0 +1,85 @@
+<?xml version="1.0"?>
+
+<!--
+Copyright (c) 2021
+KELO Robotics GmbH
+
+Author:
+Dharmin Bakaraniya
+
+
+This software is published under a dual-license: GNU Lesser General Public
+License LGPL 2.1 and BSD license. The dual-license implies that users of this
+code may choose which terms they prefer.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+
+* Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.
+* Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the distribution.
+* Neither the name of Locomotec nor the names of its
+contributors may be used to endorse or promote products derived from
+this software without specific prior written permission.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU Lesser General Public License LGPL as
+published by the Free Software Foundation, either version 2.1 of the
+License, or (at your option) any later version or the BSD license.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU Lesser General Public License LGPL and the BSD license for more details.
+
+You should have received a copy of the GNU Lesser General Public
+License LGPL and BSD license along with this program.
+-->
+
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro">
+
+    <xacro:macro name="cylinder_inertia" params="mass length radius
+        center_of_mass_x:=0 center_of_mass_y:=0 center_of_mass_z:=0 
+        center_of_mass_roll:=0 center_of_mass_pitch:=0 center_of_mass_yaw:=0">
+        <inertial>
+            <origin xyz="${center_of_mass_x} ${center_of_mass_y} ${center_of_mass_z}"
+                    rpy="${center_of_mass_roll} ${center_of_mass_pitch} ${center_of_mass_yaw}"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(mass/12)*(3*radius*radius + length*length)}"
+                     iyy="${(mass/12)*(3*radius*radius + length*length)}"
+                     iyz="0.0" ixy="0.0" ixz="0.0"
+                     izz="${(mass/2)*(radius*radius)}" />
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="cuboid_inertia" params="mass length breadth height
+        center_of_mass_x:=0 center_of_mass_y:=0 center_of_mass_z:=0 
+        center_of_mass_roll:=0 center_of_mass_pitch:=0 center_of_mass_yaw:=0">
+        <inertial>
+            <origin xyz="${center_of_mass_x} ${center_of_mass_y} ${center_of_mass_z}"
+                    rpy="${center_of_mass_roll} ${center_of_mass_pitch} ${center_of_mass_yaw}"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(mass/12)*(breadth*breadth + height*height)}"
+                     iyy="${(mass/12)*(height*height + length*length)}"
+                     iyz="0.0" ixy="0.0" ixz="0.0"
+                     izz="${(mass/12)*(breadth*breadth + length*length)}" />
+        </inertial>
+    </xacro:macro>
+
+    <xacro:macro name="sphere_inertia" params="mass radius
+        center_of_mass_x:=0 center_of_mass_y:=0 center_of_mass_z:=0 
+        center_of_mass_roll:=0 center_of_mass_pitch:=0 center_of_mass_yaw:=0">
+        <inertial>
+            <origin xyz="${center_of_mass_x} ${center_of_mass_y} ${center_of_mass_z}"
+                    rpy="${center_of_mass_roll} ${center_of_mass_pitch} ${center_of_mass_yaw}"/>
+            <mass value="${mass}" />
+            <inertia ixx="${(mass*0.4)*(radius*radius)}"
+                     iyy="${(mass*0.4)*(radius*radius)}"
+                     iyz="0.0" ixy="0.0" ixz="0.0"
+                     izz="${(mass*0.4)*(radius*radius)}" />
+        </inertial>
+    </xacro:macro>
+
+</robot>
