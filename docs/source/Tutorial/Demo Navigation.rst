@@ -3,7 +3,7 @@
 Tutorial for navigating in a map 
 ================================
 
-This tutorial is a demonstration for navigating in a map using "amcl" (adaptive Monte Carlo localization) algorithm. It uses a particle filter to track the pose of a robot in a known map.
+This tutorial is a demonstration for navigating in a map
 
 * Launch the robot
 
@@ -29,18 +29,9 @@ Check which map will be loaded by the navigation stack:
 
       roslaunch robile_navigation_demo amcl.launch 
 
-* Localize the robot
+* Localize the robot in rviz (refer to Localization tutorial)
 
-    1. Run rviz
-    2. Select "map" as fixed frame and add required views 
-       - TF 
-       - LaserScan(topic: /scan_filtered) 
-       - Map (topic: /map)
-       - PoseArray (topic: /particlecloud)]
-    3. Select "2D Pose Estimate" and click on the map where the robot is actually located
-    4. Use joystick to rotate and translate such that the PoseArray arrows align
-
-
+* 
   .. note::
       Link to the ROS wiki for navigation : 
       http://wiki.ros.org/navigation

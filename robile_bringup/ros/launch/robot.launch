@@ -22,4 +22,6 @@
 <node pkg="joy" type="joy_node" name="joy" output="screen" />
 
 
+<!--<include file="$(find kelo_tulip)/launch/example_joypad.launch"/> -->
+
 </launch>
