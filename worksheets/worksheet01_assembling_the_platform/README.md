@@ -40,7 +40,7 @@ It consists of Intel(R) Core(TM) i7-8559U CPU, which is used to integrate all se
 
 > Note:  
       Technical details of the platform can be found in this documentation:   
-      https://robile-amr.readthedocs.io/en/devel/Hardware/architecture.html#
+      https://robile-amr.readthedocs.io/en/main/Hardware/architecture.html
 
 ### Overview of communication:
 The communication with the robile platform can be established using ethercat, bluetooth and wifi connection. Wifi connection will be used for communication during the project
@@ -49,7 +49,7 @@ Task
 ----
 
 ### Description
-Assemble the Robile platforms in three different configurations as described below. Please keep the orientation of individual bricks consistent with the images given below. A tutorial video for assembling the "Robile2" platform can be found in this link:  https://youtu.be/4R4dMP8Q0MI
+Assemble the Robile platforms in three different configurations as described below. Please keep the orientation of individual bricks consistent with the images given below. A tutorial video for assembling the "Robile2" platform can be found in this link:  https://www.youtube.com/watch?v=KhVO2T2WNRU
 
 ### Summary of items:
 

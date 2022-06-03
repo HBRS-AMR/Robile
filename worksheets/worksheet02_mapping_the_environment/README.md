@@ -43,12 +43,12 @@ Tasks
 
 * Please setup your machine with Ubuntu 20.04 (else use Docker), ROS Noetic and setup the ROS environment 
     > Instructions to setup your machine can be followed from this tutorial   
-https://robile-amr.readthedocs.io/en/devel/getting_started.html
+https://robile-amr.readthedocs.io/en/main/getting_started.html
 
 ### Task 01:
 * Creating and saving a map of an environment using `gmapping` from ROS navigation stack.  
     > Instructions for creating a map can be followed from this tutorial  
-https://robile-amr.readthedocs.io/en/devel/Tutorial/Demo%20Mapping.html
+https://robile-amr.readthedocs.io/en/main/Tutorial/Demo%20Mapping.html
 
 ### Task 02:  
 * Create a documentation on problems faced and the respective solutions you followed during entire mapping procedure
