@@ -14,7 +14,7 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
       Password for all three platforms: "area5142"  
 
-* In every terminal of the platform, export ROS_IP:
+* In every terminal of the platform, assign 'ROS_IP' to ip address of the robot:
     -  export ROS_IP=<robile_ip_address>
 
 * Launch the robot
@@ -79,7 +79,8 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
   .. code-block:: bash
 
-      export ROBOT_ENV=[map_name_local]
+      export ROBOT_ENV=[map_name/map_name_local]  
+      Eg: export ROBOT_ENV=team_m/corridor_iter_n  
 
   .. note::
 
