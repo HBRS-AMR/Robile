@@ -12,47 +12,56 @@ import matplotlib.pyplot as plt
 
 
 class wall_follower:
+
     def __init__(self):
+
         print("Node initiated..............")
         self.vel_command_publisher = rospy.Publisher(
             '/cmd_vel', Twist, queue_size=1)
         self.max_vel = 0.1
         self.max_ang_vel = 0.1
         self.threshold_wall_dist = 1.0
-        self.command_running = False
-        self.angle_aligned = False
-        self.collison_detected = False
-        self.close_to_wall = False
-        self.robot_center_wrt_laser = np.array([-0.45, 0])
-        self.parallel_to_wall = False
+        # Vector from base_laser to base_link
+        self.center_wrt_laser = np.array([-0.45, 0])
         self.ready_to_publish = True
         self.command_pub = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
+        self.laser_sub_cartesian = None
+        self.laser_scan_processed = False
         rospy.Subscriber('/scan_filtered', LaserScan, self.laser_callback)
-        self.loop_rate = rospy.Rate(rospy.get_param("~loop_rate", 0.2))
+        self.loop_rate = rospy.Rate(1)
+        self.loop_rate.sleep()
+
+    def main(self):
+        """
+        Starts the node
+        """
+
+        rospy.loginfo("Ready to start now...")
+        while not rospy.is_shutdown():
+            if self.ready_to_publish and self.laser_scan_processed:
+                self.ready_to_publish = False
+                self.avoid_collison()
+                self.publish_command_velocity()
+
+                rospy.loginfo(
+                    'one iteration of publish_command_velocity completed now')
+            self.loop_rate.sleep()
 
     def laser_callback(self, msg):
         """
-        This function is called when the subscriber subscribes to a topic
+        This function is called when the subscriber subscribes to a topic (here, topic:/scan_filtered)
         :param msg: msg received from the subscribed topic
         :type msg: depends on the subscribed topic
         """
+
         range_data = msg.ranges
         max_angle = msg.angle_max
         min_angle = msg.angle_min
         max_range = msg.range_max
         min_range = msg.range_min
-        rospy.loginfo('Points: ' + str(len(range_data)) + '  Max-angle: ' + str(
-            max_angle) + '  Min-angle: ' + str(min_angle) + '  Max-range: ' + str(max_range))
 
-        laser_sub_cartesian = self.process_data(
+        self.laser_sub_cartesian = self.process_data(
             np.array(range_data), max_angle, min_angle, max_range, min_range)
-
-        if self.ready_to_publish:
-            self.publish_command_velocity(laser_sub_cartesian)
-            self.ready_to_publish = False
-            
-            rospy.loginfo(
-                'one iteration of publish_command_velocity completed now')
 
     def process_data(self, range_data: np.ndarray, max_angle: int, min_angle: int, max_range: int, min_range: int):
         """
@@ -61,7 +70,9 @@ class wall_follower:
         :return processed_data: 2D array of cartesian coordinates of points along the column
         :rtype processed_data: numpy.ndarray
         """
+
         processed_data = None
+
         # Your CODE here
 
         return processed_data
@@ -79,14 +90,15 @@ class wall_follower:
         :type k: int
         :param thresh_count: number of minimum points required to form a line
         :type thresh_count: int
-        :return: A tuple of two numpy arrays which are the two points which produce
-                a line with the corresponding inliers
+        :return: A tuple of all points for the line fitted using the best_pair of points
         :rtype: tuple
         """
+
         best_point_1 = None
         best_point_2 = None
         inliers = dict()
         best_pair = None
+
         # YOUR CODE HERE
 
         return (best_point_1, best_point_2, inliers[best_pair])
@@ -99,7 +111,9 @@ class wall_follower:
 
         :return: A 2D array of shape (n,2), representing points in cartesian coordinates 
         """
+
         laser_cart_coord = None
+
         # YOUR CODE HERE
 
         return laser_cart_coord
@@ -108,13 +122,14 @@ class wall_follower:
         """
         Function to publish zero linear and angular velocity
         """
+
         msg = Twist()
         msg.linear.x = 0
         msg.linear.y = 0
         msg.angular.z = 0
         rospy.loginfo('publishing zero velocity')
         self.command_pub.publish(msg)
-        rospy.sleep(5)
+        self.loop_rate.sleep()
 
     def rotate(self, angle_rad):
         """
@@ -122,7 +137,9 @@ class wall_follower:
         :param angle_rad: angle of rotation in radians
         :param type: float
         """
+
         # YOUR CODE HERE
+
         return 0
 
     def move(self, direction, distance):
@@ -133,12 +150,14 @@ class wall_follower:
         :param distance: angle of rotation in radians
         :param type: float    
         """
+
         msg = Twist()
 
         # YOUR CODE HERE
+
         return 0
 
-    def verify_collison(self, laser_sub_cartesian):
+    def avoid_collison(self):
         """
         Function to determine if robot is going to collide with any obstacle
         :param direction: 1D array representing the x and y coordinates of direction of motion
@@ -148,6 +167,7 @@ class wall_follower:
         """
 
         # YOUR CODE HERE
+
         return 0
 
     def get_line_params(self, laser_sub_cartesian):
@@ -158,6 +178,7 @@ class wall_follower:
         :return m_c_start_end: tuple of slope, constant of line equation, start and end points of line as 1D arrays 
         :param type: tuple    
         """
+
         points = [point for point in laser_sub_cartesian]
         m_c_start_end = []
 
@@ -178,6 +199,7 @@ class wall_follower:
         """
 
         # YOUR CODE HERE
+        
         return 0
 
 
