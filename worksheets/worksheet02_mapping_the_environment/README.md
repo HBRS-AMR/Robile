@@ -1,43 +1,17 @@
-Worksheet 02: Creating a map of the environment
+Worksheet 02: Map creation - Localization - Navigation
 ==============
 
 Objectives
 ---------
-* To create a map of an environment using laser scan data
-* To investigate limitations of mapping an environment 
-<!-- publishes ROS geometry_msgs/Twist messages to the cmd_vel -->
-<!-- The default launch file in kelo_tulip/launch/example.launch loads the YAML configuration from config/example.yaml. Feel free to change parameters directly in this config file, or to make a copy and adjust the launch file to load the new file -->
-<!-- roslaunch kelo_tulip example.launch -->
+* To creating and saving a map of an environment using laser scan data (Reference: http://wiki.ros.org/gmapping)
+* To investigate limitations of mapping an environment  
 
-<!-- Wheels: The controller needs to know the number of wheels and their location in the body fixed frame of the platform as well as the offset of their pivot encoder (the encoder value when the wheel is oriented forward). This information should be included in the YAML configuration file in the following manner -->
+* To localize in the map using amcl (Reference: http://wiki.ros.org/amcl)  
+* To investigate limitations of localizing in an environment  
 
-<!-- num_wheels: 4
+* To navigate to a specified goal after localization (Referene: http://wiki.ros.org/move_base)  
+* To report the effects of important navigation parameters  
 
-wheel0:
-  ethercat_number: 6
-  x: 0.175
-  y: 0.1605
-  a: 3.14
-
-wheel1:
-  ... -->
-
-
-
-Introduction
----------
-### Nodes
-* laser_filter
-    - Subscribed topics
-        - cdc
-        - 
-    - Published topics
-* node2
-    - Subscribed topics
-    - Published topics
-### Parameters
-* 
-* 
 Tasks
 ----------
 
@@ -46,9 +20,24 @@ Tasks
 https://robile-amr.readthedocs.io/en/main/getting_started.html
 
 ### Task 01:
-* Creating and saving a map of an environment using `gmapping` from ROS navigation stack.  
+* Creating and saving a map of an environment using `gmapping` from ROS navigation stack   
     > Instructions for creating a map can be followed from this tutorial  
 https://robile-amr.readthedocs.io/en/main/Tutorial/Demo%20Mapping.html
 
-### Task 02:  
 * Create a documentation on problems faced and the respective solutions you followed during entire mapping procedure
+
+### Task 02:  
+* Localizing in the map saved in previous task using `amcl` from ROS navigation stack  
+    > Instructions for localizing in a map can be followed from this tutorial  
+https://robile-amr.readthedocs.io/en/main/Tutorial/index.html#localization   
+
+* Create a documentation on problems faced and the respective solutions you followed during the process of localization  
+
+### Task 03:  
+* Navigating the map using `move_base` from ROS navigation stack  
+    > Instructions for navigating a map can be followed from this tutorial  
+https://robile-amr.readthedocs.io/en/main/Tutorial/Demo%20Navigation.html   
+
+* Create a documentation on effects of varying different navigation parameters on the cost map and navigation plans  
+
+* This [documentation](https://arxiv.org/pdf/1706.09068.pdf) of parameter tuning for navigation would be helpful in understanding the effects of parameters on navigation
