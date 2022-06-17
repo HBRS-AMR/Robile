@@ -15,8 +15,7 @@ Instructions
 ----------
 * Visualisation of the baseline implementation of the wall following application can be found in [this](https://www.youtube.com/watch?v=Qx__mHaQDic) video. Corresponding [bag file](https://drive.google.com/file/d/1J1HzGtJwKeJXjJJ1eiDNKBoABTvVoexD/view?usp=sharing) can be used as reference to verify your implementation
     > Note:  
-    
-  .. code-block:: bash
+    * By running bag file, data published on recorded topics are accessible. Please make sure to run `roscore` before running bag file
 
-      rosbag play <name_of_bag_file>
+    * A bag file can be run using this command `rosbag play <name_of_bag_file>`
 * Include the problems faced and the limitations observed and the corresponding solutions that you found while implementing the wall following application in the documentation
