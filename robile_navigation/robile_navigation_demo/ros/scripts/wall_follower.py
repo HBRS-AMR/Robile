@@ -16,8 +16,6 @@ class wall_follower:
     def __init__(self):
 
         print("Node initiated..............")
-        self.vel_command_publisher = rospy.Publisher(
-            '/cmd_vel', Twist, queue_size=1)
         self.max_vel = 0.1
         self.max_ang_vel = 0.1
         self.threshold_wall_dist = 1.0
@@ -63,10 +61,19 @@ class wall_follower:
         self.laser_sub_cartesian = self.process_data(
             np.array(range_data), max_angle, min_angle, max_range, min_range)
 
-    def process_data(self, range_data: np.ndarray, max_angle: int, min_angle: int, max_range: int, min_range: int):
+    def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float):
         """
         Function to pre-process the laser range data
         :param range_data: 1D numpy array of laser range data
+        :type range_data: numpy.ndarray
+        :param max_angle: upper limit of the angle in radians corresponding to the range measurement
+        :type max_angle: float
+        :param min_angle: lower limit of the angle in radians corresponding to the range measurement
+        :type min_angle: float
+        :param max_range: upper limit of the range that can be measured (in meters)
+        :type max_range: float
+        :param min_range: lower limit of the range that can be measured (in meters)
+        :type min_range: float
         :return processed_data: 2D array of cartesian coordinates of points along the column
         :rtype processed_data: numpy.ndarray
         """
@@ -86,8 +93,8 @@ class wall_follower:
         :param dist_thresh: The parameter used to determine the furthest a point
                             can be from the line and still be considered an inlier
         :type dist_thresh: int
-        :param k: The number of iterations the RANSAC algorithm will run
-        :type k: int
+        :param iterations: The number of iterations the RANSAC algorithm will run
+        :type iterations: int
         :param thresh_count: number of minimum points required to form a line
         :type thresh_count: int
         :return: A tuple of all points for the line fitted using the best_pair of points
@@ -107,7 +114,7 @@ class wall_follower:
         """
         Function to convert polar coordinates to cartesian form
         :param polar_points: 2D array of shape (n,2), where n: no. of points. 
-        First column-range values in meters; Second column: angles in radians
+        First column: range values in meters; Second column: angles in radians
 
         :return: A 2D array of shape (n,2), representing points in cartesian coordinates 
         """
@@ -160,48 +167,38 @@ class wall_follower:
     def avoid_collison(self):
         """
         Function to determine if robot is going to collide with any obstacle
-        :param direction: 1D array representing the x and y coordinates of direction of motion
-        :param type: np.ndarray
-        :param distance: angle of rotation in radians
-        :param type: float    
         """
 
         # YOUR CODE HERE
 
         return 0
 
-    def get_line_params(self, laser_sub_cartesian):
+    def get_line_params(self):
         """
         Function to extract line parameters from laser scan data
-        :param laser_sub_cartesian: 2D array representing laser scan data in cartesian coordinates
-        :param type: np.ndarray
         :return m_c_start_end: tuple of slope, constant of line equation, start and end points of line as 1D arrays 
         :param type: tuple    
         """
 
-        points = [point for point in laser_sub_cartesian]
+        points = [point for point in self.laser_sub_cartesian]
         m_c_start_end = []
 
         # YOUR CODE HERE
 
         return m_c_start_end
 
-    def reset_flags(self):
-        self.angle_aligned = False
-        self.parallel_to_wall = False
-        self.close_to_wall = False
-
-    def publish_command_velocity(self, laser_sub_cartesian):
+    def publish_command_velocity(self):
         """
-        Function to determine linear and angular velocities to be published by infering from line parameters  
-        :param laser_sub_cartesian: 2D array representing laser scan data in cartesian coordinates
-        :param type: np.ndarray   
+        Function to determine linear and angular velocities to be published by infering from line parameters    
         """
 
         # YOUR CODE HERE
         
         return 0
 
+    def __del__(self):
+        self.publish_zero_twist()
+        rospy.loginfo('Destructor called.... Published zero velocity')
 
 class Line:
     """
@@ -242,3 +239,4 @@ class Line:
 if __name__ == '__main__':
     rospy.init_node("wall_follower")
     OBJ = wall_follower()
+    OBJ.main()
