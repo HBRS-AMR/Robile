@@ -101,13 +101,27 @@ class wall_follower:
         :rtype: tuple
         """
 
-        best_point_1 = None
-        best_point_2 = None
-        inliers = dict()
+        best_point_1 = ()
+        best_point_2 = ()
+        inliers = ()
         best_pair = None
-
-        # YOUR CODE HERE
-
+        best_inliers_len = 0
+        best_point_1 = []
+        best_point_2 = []
+        for i in range(k):
+            rand_num = random.sample(range(0, len(points)), 2)
+            start = points[rand_num[0]]
+            end = points[rand_num[1]]
+            line = Line(start,end)
+            inliers_len = 0
+            for point in points:
+                dist = line.point_dist(point)
+                if dist <= dist_thresh:
+                    inliers_len = inliers_len + 1
+            if best_inliers_len < inliers_len:
+                best_inliers_len = inliers_len
+                best_point_1 = start
+                best_point_2 = end
         return (best_point_1, best_point_2, inliers[best_pair])
 
     def np_polar2rect(self, polar_points):
