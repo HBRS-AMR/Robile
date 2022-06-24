@@ -75,7 +75,7 @@ class wall_follower:
         :param min_range: lower limit of the range that can be measured (in meters)
         :type min_range: float
         :return processed_data: 2D array of cartesian coordinates of points along the column
-        :rtype processed_data: numpy.ndarray
+        :rtype: numpy.ndarray
         """
 
         processed_data = None
@@ -113,10 +113,10 @@ class wall_follower:
     def np_polar2rect(self, polar_points):
         """
         Function to convert polar coordinates to cartesian form
-        :param polar_points: 2D array of shape (n,2), where n: no. of points. 
-        First column: range values in meters; Second column: angles in radians
-
-        :return: A 2D array of shape (n,2), representing points in cartesian coordinates 
+        :param polar_points: 2D array of shape (n,2), where n: no. of points; First column: range values in meters; Second column: angles in radians
+        :type polar_points: np.ndarray
+        :return laser_cart_coord: A 2D array of shape (n,2), representing points in cartesian coordinates  
+        :rtype: np.ndarray
         """
 
         laser_cart_coord = None
@@ -154,7 +154,7 @@ class wall_follower:
         Function to publish direction and distance of travel 
         :param direction: 1D array representing the x and y coordinates of direction of motion
         :param type: np.ndarray
-        :param distance: angle of rotation in radians
+        :param distance: distance to be travelled in input 'direction' in meters
         :param type: float    
         """
 
@@ -177,7 +177,7 @@ class wall_follower:
         """
         Function to extract line parameters from laser scan data
         :return m_c_start_end: tuple of slope, constant of line equation, start and end points of line as 1D arrays 
-        :param type: tuple    
+        :rtype: tuple    
         """
 
         points = [point for point in self.laser_sub_cartesian]
@@ -226,11 +226,23 @@ class Line:
         self.unit_line = self.line / self.length
 
     def point_dist(self, point: np.ndarray):
+        """
+        Function to find least distance between a point and the line
+        :param point: 1D array representing a point in cartesian coordinates
+        :type point: numpy.ndarray
+        :return: shortest distance from the point to the line in meters
+        :rtype: float
+        """
         if np.shape(point) != (2,):
             raise ValueError("Start point must have the shape (2,)")
         return np.linalg.norm(np.cross(self.line, self.start - point)) / self.length
 
     def equation(self):
+        """
+        Function to calculate the parameters (m,c) of equation of line "y=mx+c"
+        :return (m,c): m-> slope of line; c-> 'y' intercept of the line
+        :rtype: (float, float)
+        """
         m = self.line[1]/self.line[0]
         c = self.start[1] - m*self.start[0]
         return (m, c)
