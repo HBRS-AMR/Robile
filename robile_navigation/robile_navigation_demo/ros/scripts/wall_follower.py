@@ -9,6 +9,7 @@ import tf
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import matplotlib.pyplot as plt
+import scipy
 
 
 class wall_follower:
@@ -143,25 +144,27 @@ class wall_follower:
                 best_inliers = inliers
         return (best_point_1, best_point_2, best_inliers)
 
-
-
-
     def find_all_lines(self, points: list, dist_thresh: int, iterations: int, thresh_count: int, best_inliers):
-        
-        
-        points == 0
+        lines = []
         data_2 = points.copy()
-        new_data = data_2 - best_inliers
-        
-        (best_point_1, best_point_2, best_inliers) = self.RANSAC(points, self.threshold_wall_dist, 100, 2)
+        while True:
+            (best_point_1, best_point_2, best_inliers) = self.RANSAC(data_2, self.threshold_wall_dist, 100, 2)
+            lines.append((best_point_1, best_point_2, best_inliers))
+            index = np.argwhere(data_2==best_point_1)
+            data_2 = np.delete(data_2, index)
+            index = np.argwhere(data_2==best_point_2)
+            data_2 = np.delete(data_2, index)
+            for i in best_inliers
+                index = np.argwhere(data_2==i)
+                data_2 = np.delete(data_2, index)
+            if len(data_2)==0:
+                break
+        return lines
 
-        return True
-
-
-    def filter_data(self, points):
-        
-
-
+    def filter_data(self, points, kernel_size):
+        fitered = scipy.signal.medfilt2d(input, kernel_size)
+        return fitered
+    
     def np_polar2rect(self, polar_points):
         """
         Function to convert polar coordinates to cartesian form
