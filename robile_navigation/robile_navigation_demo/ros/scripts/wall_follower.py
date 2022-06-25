@@ -154,7 +154,7 @@ class wall_follower:
             data_2 = np.delete(data_2, index)
             index = np.argwhere(data_2==best_point_2)
             data_2 = np.delete(data_2, index)
-            for i in best_inliers
+            for i in best_inliers:
                 index = np.argwhere(data_2==i)
                 data_2 = np.delete(data_2, index)
             if len(data_2)==0:
