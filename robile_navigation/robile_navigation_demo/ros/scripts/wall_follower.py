@@ -120,33 +120,28 @@ class wall_follower:
         :rtype: tuple
         """
 
-        best_point_1 = None
-        best_point_2 = None
-        inliers = dict()
-        best_pair = None
-   
-        best_inliers_count = 0
-        for i in range(0,iterations):
-            random_number = np.random.randint(0, len(points), size = 2)
-            random_points = points[random_number]
-            
-            line = Line(random_points[0], random_points[1])
-            
-            inliers_count = 0
-
+        best_point_1 = []
+        best_point_2 = []
+        best_inliers = []
+        best_inliers_len = 0
+        for i in range(iterations):
+            inliers = []
+            rand_num = random.sample(range(0, len(points)), dist_thresh)
+            start = points[rand_num[0]]
+            end = points[rand_num[1]]
+            line = Line(start,end)
+            inliers_len = 0
             for point in points:
-                distance = line.point_dist(point)
-                if distance <= dist_thresh:
-                    inliers_count = inliers_count + 1 
-            
-            if  best_inliers_count < inliers_count:
-                best_inliers_count = inliers_count
-                best_point_1 = random_points[0]
-                best_point_2 = random_points[1]
-                
-
-        #return (best_point_1, best_point_2, inliers[best_pair])
-        return (best_point_1, best_point_2) #removed inliers from given return 
+                dist = line.point_dist(point)
+                if dist <= dist_thresh:
+                    inliers_len = inliers_len + 1
+                    inliers.append(point)
+            if best_inliers_len < inliers_len:
+                best_inliers_len = inliers_len
+                best_point_1 = start
+                best_point_2 = end
+                best_inliers = inliers
+        return (best_point_1, best_point_2, best_inliers)
 
 
     def np_polar2rect(self, polar_points):
@@ -159,11 +154,12 @@ class wall_follower:
         """
 
         laser_cart_coord = None
-        # center = np.array([0,0])
-        # r = np_array.T[0,]
-        # theta = np_array.T[1,]
-        # x = r*np.sin(np.deg2rad(theta))
-        # y = r*np.cos(np.deg2rad(theta))
+        center = np.array([0,0])
+        r = polar_points.T[0,]
+        theta = polar_points.T[1,]
+        x = r*np.sin(np.deg2rad(theta))
+        y = r*np.cos(np.deg2rad(theta))
+        laser_cart_coord = np.array([x, y]).T
         return laser_cart_coord
 
     def publish_zero_twist(self):
@@ -223,10 +219,10 @@ class wall_follower:
         points = [point for point in self.laser_sub_cartesian]
         m_c_start_end = []
 
-        BestFitLinePoints = RANSAC(points, self.threshold_wall_dist, 100, 2)
-        wall = Line(BestFitLinePoints[0], BestFitLinePoints[1])
+        (best_point_1, best_point_2, best_inliers) = self.RANSAC(points, self.threshold_wall_dist, 100, 2)
+        wall = Line(best_point_1,best_point_2)
         m,c = wall.equation()
-        m_c_start_end = (m,c, BestFitLinePoints[0], BestFitLinePoints[1])
+        m_c_start_end = (m,c, best_point_1, best_point_2)
 
         return m_c_start_end
 
