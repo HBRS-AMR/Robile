@@ -83,7 +83,9 @@ class wall_follower:
         processed_data = None
         angle = []
 
-        for i in range(min_angle, max_angle, ang_inc):
+        N = int((max_angle - min_angle)/ang_inc)
+
+        for i in np.linspace(min_angle, max_angle, N):
             angle.append(i)
         angle = np.array(angle)
 
@@ -92,12 +94,18 @@ class wall_follower:
         range_filter_data = []
         filter_angle = []
 
-        for i in range(len(range_data)):
-            if range_data[i] < new_max_range and range_data[i] > new_min_range:
-                range_filter_data.append(range_data[i])
-                filter_angle.append(angle[i])
+        # for i in range(len(range_data)):
+        #     if range_data[i] < new_max_range and range_data[i] > new_min_range:
+        #         range_filter_data.append(range_data[i])
+        #         filter_angle.append(angle[i])
 
-        for i, j in zip(range_filter_data, filter_angle):
+        # for i, j in zip(range_filter_data, filter_angle):
+        #     x.append(i * m.cos(np.rad2deg(j)))
+        #     y.append(i * m.sin(np.rad2deg(j)))
+
+
+
+        for i, j in zip(range_data, angle):
             x.append(i * m.cos(np.rad2deg(j)))
             y.append(i * m.sin(np.rad2deg(j)))
 
@@ -133,7 +141,7 @@ class wall_follower:
         best_inliers_len = 0
         for i in range(iterations):
             inliers = []
-            rand_num = random.sample(range(0, len(points)), dist_thresh)
+            rand_num = random.sample(range(0, len(points)), thresh_count)
             start = points[rand_num[0]]
             end = points[rand_num[1]]
             line = Line(start,end)
@@ -150,7 +158,7 @@ class wall_follower:
                 best_inliers = inliers
         return (best_point_1, best_point_2, best_inliers)
 
-    def find_all_lines(self, points: list, dist_thresh: int, iterations: int, thresh_count: int, best_inliers):
+    def find_all_lines(self, points: list, dist_thresh: int, iterations: int, thresh_count: int):
         lines = []
         data_2 = points.copy()
         while True:
@@ -244,7 +252,7 @@ class wall_follower:
         """
 
         points = [point for point in self.laser_sub_cartesian]
-        lines = find_all_lines(points)
+        lines = self.find_all_lines(points, self.threshold_wall_dist, 100, 2)
         params = []
         closest = []
         distance = 100000
@@ -256,7 +264,7 @@ class wall_follower:
             m,c = wall.equation()
             m_c_start_end = (m,c, i[0], i[1])
             params.append(m_c_start_end)
-            dist = wall.point_dist(self.center_wrt_laser)
+            dist = wall.point_dist(points)
             if dist < distance:
                 distance = dist
                 closest = m_c_start_end
@@ -269,7 +277,7 @@ class wall_follower:
         """
         Function to determine linear and angular velocities to be published by infering from line parameters    
         """
-        get_line_params()
+        self.get_line_params()
 
         
         return 0
