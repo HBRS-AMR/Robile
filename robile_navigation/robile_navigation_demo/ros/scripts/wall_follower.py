@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import math
+import math as m
 import time
 import rospy
 import numpy as np
@@ -57,11 +57,12 @@ class wall_follower:
         min_angle = msg.angle_min
         max_range = msg.range_max
         min_range = msg.range_min
+        ang_inc = msg.angle_increment #added new line to get angle increment data from message header
 
         self.laser_sub_cartesian = self.process_data(
-            np.array(range_data), max_angle, min_angle, max_range, min_range)
+            np.array(range_data), max_angle, min_angle, max_range, min_range, ang_inc)
 
-    def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float):
+    def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float, ang_inc: float):
         """
         Function to pre-process the laser range data
         :param range_data: 1D numpy array of laser range data
@@ -79,10 +80,28 @@ class wall_follower:
         """
 
         processed_data = None
+        angle = []
 
-        # Your CODE here
+        for i in range(min_angle, max_angle, ang_inc):
+            angle.append(i)
+        angle = np.array(angle)
 
+        x = []
+        y = []
+
+
+        for i, j in zip(range_data, angle):
+            x.append(i * m.cos(np.rad2deg(j)))
+            y.append(i * m.sin(np.rad2deg(j)))
+
+        x = np.array(x).T
+        y = np.array(y).T
+
+        processed_data = np.vstack((x,y)).T
+        self.laser_scan_processed = True
         return processed_data
+
+
 
     def RANSAC(self, points: list, dist_thresh: int, iterations: int, thresh_count: int):
         """
@@ -101,28 +120,34 @@ class wall_follower:
         :rtype: tuple
         """
 
-        best_point_1 = ()
-        best_point_2 = ()
-        inliers = ()
+        best_point_1 = None
+        best_point_2 = None
+        inliers = dict()
         best_pair = None
-        best_inliers_len = 0
-        best_point_1 = []
-        best_point_2 = []
-        for i in range(k):
-            rand_num = random.sample(range(0, len(points)), 2)
-            start = points[rand_num[0]]
-            end = points[rand_num[1]]
-            line = Line(start,end)
-            inliers_len = 0
+   
+        best_inliers_count = 0
+        for i in range(0,iterations):
+            random_number = np.random.randint(0, len(points), size = 2)
+            random_points = points[random_number]
+            
+            line = Line(random_points[0], random_points[1])
+            
+            inliers_count = 0
+
             for point in points:
-                dist = line.point_dist(point)
-                if dist <= dist_thresh:
-                    inliers_len = inliers_len + 1
-            if best_inliers_len < inliers_len:
-                best_inliers_len = inliers_len
-                best_point_1 = start
-                best_point_2 = end
-        return (best_point_1, best_point_2, inliers[best_pair])
+                distance = line.point_dist(point)
+                if distance <= dist_thresh:
+                    inliers_count = inliers_count + 1 
+            
+            if  best_inliers_count < inliers_count:
+                best_inliers_count = inliers_count
+                best_point_1 = random_points[0]
+                best_point_2 = random_points[1]
+                
+
+        #return (best_point_1, best_point_2, inliers[best_pair])
+        return (best_point_1, best_point_2) #removed inliers from given return 
+
 
     def np_polar2rect(self, polar_points):
         """
@@ -134,9 +159,11 @@ class wall_follower:
         """
 
         laser_cart_coord = None
-
-        # YOUR CODE HERE
-
+        # center = np.array([0,0])
+        # r = np_array.T[0,]
+        # theta = np_array.T[1,]
+        # x = r*np.sin(np.deg2rad(theta))
+        # y = r*np.cos(np.deg2rad(theta))
         return laser_cart_coord
 
     def publish_zero_twist(self):
@@ -183,7 +210,6 @@ class wall_follower:
         Function to determine if robot is going to collide with any obstacle
         """
 
-        # YOUR CODE HERE
 
         return 0
 
@@ -197,16 +223,21 @@ class wall_follower:
         points = [point for point in self.laser_sub_cartesian]
         m_c_start_end = []
 
-        # YOUR CODE HERE
+        BestFitLinePoints = RANSAC(points, self.threshold_wall_dist, 100, 2)
+        wall = Line(BestFitLinePoints[0], BestFitLinePoints[1])
+        m,c = wall.equation()
+        m_c_start_end = (m,c, BestFitLinePoints[0], BestFitLinePoints[1])
 
         return m_c_start_end
+
+
 
     def publish_command_velocity(self):
         """
         Function to determine linear and angular velocities to be published by infering from line parameters    
         """
+        get_line_params()
 
-        # YOUR CODE HERE
         
         return 0
 
@@ -226,12 +257,12 @@ class Line:
     """
 
     def __init__(self, start: np.ndarray, end: np.ndarray):
-        if np.shape(start) != (2,):
-            raise ValueError("Start point must have the shape (2,)", start)
-        if np.shape(end) != (2,):
-            raise ValueError("End point must have the shape (2,)")
-        if (start == end).all():
-            raise ValueError("Start and end points must be different")
+        # if np.shape(start) != (2,):
+        #     raise ValueError("Start point must have the shape (2,)", start)
+        # if np.shape(end) != (2,):
+        #     raise ValueError("End point must have the shape (2,)")
+        # if (start == end).all():
+        #     raise ValueError("Start and end points must be different")
 
         # Calculate useful properties of the line
         self.start = start
@@ -240,8 +271,8 @@ class Line:
         self.unit_line = self.line / self.length
 
     def point_dist(self, point: np.ndarray):
-        if np.shape(point) != (2,):
-            raise ValueError("Start point must have the shape (2,)")
+        # if np.shape(point) != (2,):
+        #     raise ValueError("Start point must have the shape (2,)")
         return np.linalg.norm(np.cross(self.line, self.start - point)) / self.length
 
     def equation(self):
