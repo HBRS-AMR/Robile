@@ -61,9 +61,9 @@ class wall_follower:
         ang_inc = msg.angle_increment #added new line to get angle increment data from message header
 
         self.laser_sub_cartesian = self.process_data(
-            np.array(range_data), max_angle, min_angle, max_range, min_range, ang_inc)
+            np.array(range_data), max_angle, min_angle, max_range, min_range, ang_inc, new_max_range = 10, new_min_range=min_range)
 
-    def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float, ang_inc: float):
+    def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float, ang_inc: float, new_max_range, new_min_range):
         """
         Function to pre-process the laser range data
         :param range_data: 1D numpy array of laser range data
@@ -89,9 +89,15 @@ class wall_follower:
 
         x = []
         y = []
+        range_filter_data = []
+        filter_angle = []
 
+        for i in range(len(range_data)):
+            if range_data[i] < new_max_range and range_data[i] > new_min_range:
+                range_filter_data.append(range_data[i])
+                filter_angle.append(angle[i])
 
-        for i, j in zip(range_data, angle):
+        for i, j in zip(range_filter_data, filter_angle):
             x.append(i * m.cos(np.rad2deg(j)))
             y.append(i * m.sin(np.rad2deg(j)))
 
@@ -154,7 +160,7 @@ class wall_follower:
             data_2 = np.delete(data_2, index)
             index = np.argwhere(data_2==best_point_2)
             data_2 = np.delete(data_2, index)
-            for i in best_inliers
+            for i in best_inliers:
                 index = np.argwhere(data_2==i)
                 data_2 = np.delete(data_2, index)
             if len(data_2)==0:
@@ -162,7 +168,7 @@ class wall_follower:
         return lines
 
     def filter_data(self, points, kernel_size):
-        fitered = scipy.signal.medfilt2d(input, kernel_size)
+        fitered = scipy.signal.medfilt2d(points, kernel_size)
         return fitered
     
     def np_polar2rect(self, polar_points):
@@ -238,15 +244,25 @@ class wall_follower:
         """
 
         points = [point for point in self.laser_sub_cartesian]
-        m_c_start_end = []
+        lines = find_all_lines(points)
+        params = []
+        closest = []
+        distance = 100000
 
-        (best_point_1, best_point_2, best_inliers) = self.RANSAC(points, self.threshold_wall_dist, 100, 2)
-        wall = Line(best_point_1,best_point_2)
-        m,c = wall.equation()
-        m_c_start_end = (m,c, best_point_1, best_point_2)
 
-        return m_c_start_end
+        for i in lines:
 
+            wall = Line(i[0],i[1])
+            m,c = wall.equation()
+            m_c_start_end = (m,c, i[0], i[1])
+            params.append(m_c_start_end)
+            dist = wall.point_dist(self.center_wrt_laser)
+            if dist < distance:
+                distance = dist
+                closest = m_c_start_end
+
+
+        return params, closest
 
 
     def publish_command_velocity(self):
@@ -257,6 +273,9 @@ class wall_follower:
 
         
         return 0
+
+    def plotting(self, params):
+        return True
 
     def __del__(self):
         self.publish_zero_twist()
@@ -311,6 +330,7 @@ class Line:
         m = self.line[1]/self.line[0]
         c = self.start[1] - m*self.start[0]
         return (m, c)
+
 
 
 if __name__ == '__main__':
