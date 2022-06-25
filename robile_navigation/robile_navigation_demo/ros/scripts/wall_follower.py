@@ -144,6 +144,24 @@ class wall_follower:
         return (best_point_1, best_point_2, best_inliers)
 
 
+
+
+    def find_all_lines(self, points: list, dist_thresh: int, iterations: int, thresh_count: int, best_inliers):
+        
+        
+        points == 0
+        data_2 = points.copy()
+        new_data = data_2 - best_inliers
+        
+        (best_point_1, best_point_2, best_inliers) = self.RANSAC(points, self.threshold_wall_dist, 100, 2)
+
+        return True
+
+
+    def filter_data(self, points):
+        
+
+
     def np_polar2rect(self, polar_points):
         """
         Function to convert polar coordinates to cartesian form
