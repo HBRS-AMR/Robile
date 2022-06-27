@@ -60,17 +60,14 @@ class wall_follower:
         ang_inc = msg.angle_increment #added new line to get angle increment data from message header
 
         self.laser_sub_cartesian = self.process_data(np.array(range_data), max_angle, min_angle, 
-    
                                                      max_range, min_range, ang_inc, new_max_range = 10)
-
-
 
     def odom_callback(self, msg):
         x_pos = msg.pose.pose.position.x
         y_pos = msg.pose.pose.position.y
         z_ort = msg.pose.pose.orientation.z
 
-        self.pos_values = (x_pos, y_pos, z_ort)
+        self.cur_pos = (x_pos, y_pos, z_ort)
 
     def listener(self):
 
@@ -273,7 +270,7 @@ class wall_follower:
         msg.linear.x = 0
         msg.linear.y = 0
         msg.angular.z = 0
-        #rospy.loginfo('publishing zero velocity')
+        rospy.loginfo('publishing zero velocity')
         self.command_pub.publish(msg)
         self.loop_rate.sleep()
 
@@ -283,16 +280,44 @@ class wall_follower:
         :param angle_rad: angle of rotation in radians
         :param type: float
         """
+        x_int, y_int, ang_int = self.cur_pos
+        ang_des = ang_int+angle_rad
         msg = Twist()
-        msg.angular.z = 0
-        #rospy.loginfo('publishing rotate robot')
+        msg.angular.z = max_ang_vel
+        rospy.loginfo('publishing rotate robot')
         self.command_pub.publish(msg)
         self.loop_rate.sleep()
+        while True:
+            x_cur, y_cur, ang_cur = self.cur_pos
+            if ang_cur == ang_des:
+                self.publish_zero_twist()
         # YOUR CODE HERE
+        return 0      
+    
+    def move_direc(self, direction, destination):
+        msg = Twist()
+        if direction == "x":
+            msg.linear.x = self.max_vel
+            msg.linear.y = 0
+            msg.angular.z = 0
+        else:
+            msg.linear.x = 0
+            msg.linear.y = self.max_vel
+            msg.angular.z = 0
+        self.command_pub.publish(msg)
+        self.loop_rate.sleep()
+        if direction == "x":
+            while True:
+                x_cur, y_cur, ang_cur = self.cur_pos
+                if x_cur == destination:
+                    self.publish_zero_twist()
+        else:
+            while True:
+                x_cur, y_cur, ang_cur = self.cur_pos
+                if y_cur == destination:
+                    self.publish_zero_twist()
 
-        return 0
-
-    def move(self, direction, distance, robot_cord):
+    def move(self, direction, distance):
         """
         Function to publish direction and distance of travel 
         :param direction: 1D array representing the x and y coordinates of direction of motion
@@ -300,20 +325,15 @@ class wall_follower:
         :param distance: distance to be travelled in input 'direction' in meters
         :param type: float    
         """
-
-
+        x_int, y_int, ang_int = self.cur_pos
         msg = Twist()
         deg = np.arctan2(direction[0],direction[1])
         x = distance*m.sin(deg)
         y = distance*m.cos(deg)
+        x_des, y_des = x_int+x, y_int+y
         # YOUR CODE HERE
-        msg = Twist()
-        msg.linear.x = 0
-        msg.linear.y = 0
-        msg.angular.z = 0
-        #rospy.loginfo('publishing zero velocity')
-        self.command_pub.publish(msg)
-        self.loop_rate.sleep()
+        self.move_direc(self, "x", x_des)
+        self.move_direc(self, "y", y_des)
         return 0
 
     def avoid_collison(self):
@@ -326,7 +346,7 @@ class wall_follower:
         """
         Function to determine linear and angular velocities to be published by infering from line parameters    
         """
-        self.get_line_params()
+        (slope, c, start, end) = self.find_wall(self.center_wrt_laser, 0.1, 100, 2, 100, 10):
         return 0
 
     def plotting(self, params):
