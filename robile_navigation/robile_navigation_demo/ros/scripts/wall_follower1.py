@@ -7,6 +7,7 @@ import tf
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 #import matplotlib.pyplot as plt
+from nav_msgs.msg import Odometry
 import scipy
 
 class wall_follower:
@@ -26,7 +27,7 @@ class wall_follower:
         rospy.Subscriber('/scan_filtered', LaserScan, self.laser_callback)
         self.loop_rate = rospy.Rate(1)
         self.loop_rate.sleep()
-
+        
     def main(self):
         """
         Starts the node
@@ -38,6 +39,8 @@ class wall_follower:
                 self.ready_to_publish = False
                 self.avoid_collison()
                 self.publish_command_velocity()
+                self.listener()
+                print(self.pos_values)
 
                 rospy.loginfo(
                     'one iteration of publish_command_velocity completed now')
@@ -57,7 +60,27 @@ class wall_follower:
         ang_inc = msg.angle_increment #added new line to get angle increment data from message header
 
         self.laser_sub_cartesian = self.process_data(np.array(range_data), max_angle, min_angle, 
+    
                                                      max_range, min_range, ang_inc, new_max_range = 10)
+
+
+
+    def odom_callback(self, msg):
+        x_pos = msg.pose.pose.position.x
+        y_pos = msg.pose.pose.position.y
+        z_ort = msg.pose.pose.orientation.z
+
+        self.pos_values = (x_pos, y_pos, z_ort)
+
+    def listener(self):
+
+        # run simultaneously.
+        rospy.init_node('odom_listener', anonymous=True)
+
+        rospy.Subscriber('odom', Odometry, self.odom_callback)
+
+        # spin() simply keeps python from exiting until this node is stopped
+        rospy.spin()
 
     def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float, ang_inc: float, new_max_range: float):
         """
@@ -79,8 +102,6 @@ class wall_follower:
         processed_data = None
         #N = int((max_angle - min_angle)/ang_inc)
         angle = np.arange(min_angle,max_angle+ang_inc, ang_inc)
-        print(angle.shape)
-        print(range_data.shape)
         polar_points = np.vstack((range_data,angle)).T
         
         filtered_polar_points = []
@@ -252,7 +273,7 @@ class wall_follower:
         msg.linear.x = 0
         msg.linear.y = 0
         msg.angular.z = 0
-        rospy.loginfo('publishing zero velocity')
+        #rospy.loginfo('publishing zero velocity')
         self.command_pub.publish(msg)
         self.loop_rate.sleep()
 
@@ -264,7 +285,7 @@ class wall_follower:
         """
         msg = Twist()
         msg.angular.z = 0
-        rospy.loginfo('publishing rotate robot')
+        #rospy.loginfo('publishing rotate robot')
         self.command_pub.publish(msg)
         self.loop_rate.sleep()
         # YOUR CODE HERE
@@ -279,6 +300,8 @@ class wall_follower:
         :param distance: distance to be travelled in input 'direction' in meters
         :param type: float    
         """
+
+
         msg = Twist()
         deg = np.arctan2(direction[0],direction[1])
         x = distance*m.sin(deg)
@@ -288,7 +311,7 @@ class wall_follower:
         msg.linear.x = 0
         msg.linear.y = 0
         msg.angular.z = 0
-        rospy.loginfo('publishing zero velocity')
+        #rospy.loginfo('publishing zero velocity')
         self.command_pub.publish(msg)
         self.loop_rate.sleep()
         return 0
