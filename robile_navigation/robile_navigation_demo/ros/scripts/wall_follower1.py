@@ -155,11 +155,15 @@ class wall_follower:
             end = points[rand_num[1]]
             line = Line(start,end)
             inliers_len = 0
-            for point in points:
-                dist = line.point_dist(point)
-                if dist <= dist_thresh:
-                    inliers_len = inliers_len + 1
-                    inliers.append(point)
+            try:
+                for point in points:
+                    print(point)
+                    dist = line.point_dist(point)
+                    if dist <= dist_thresh:
+                        inliers_len = inliers_len + 1
+                        inliers.append(point)
+            except:
+                pass
             if best_inliers_len < inliers_len:
                 best_inliers_len = inliers_len
                 best_point_1 = start
