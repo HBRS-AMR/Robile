@@ -59,7 +59,7 @@ class wall_follower:
         self.laser_sub_cartesian = self.process_data(np.array(range_data), max_angle, min_angle, 
                                                      max_range, min_range, ang_inc, new_max_range = 10)
 
-    def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float, ang_inc: float, new_max_range):
+    def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float, ang_inc: float, new_max_range: float):
         """
         Function to pre-process the laser range data
         :param range_data: 1D numpy array of laser range data
@@ -152,11 +152,26 @@ class wall_follower:
         return fitered
     
     def find_all_lines(self, points: list, dist_thresh: int, iterations: int, thresh_count: int):
+        """
+        Algorithm to find all lines in a set of 2D points
+        :param points: The list of points to fit a line where each point
+                    is an numpy array in the form array of form [x,y].
+        :type points: numpy.ndarray
+        :param dist_thresh: The parameter used to determine the furthest a point
+                            can be from the line and still be considered an inlier
+        :type dist_thresh: int
+        :param iterations: The number of iterations the RANSAC algorithm will run
+        :type iterations: int
+        :param thresh_count: number of minimum points required to form a line
+        :type thresh_count: int
+        :return lines: A tuple of all points for the line fitted using the best_pair of points
+        :rtype: tuple
+        """
         lines = []
         data_2 = self.filter_data(points, kernel_size=3)
         while True:
-            (best_point_1, best_point_2, best_inliers) = self.RANSAC(data_2, self.threshold_wall_dist, 100, 2)
-            lines.append((best_point_1, best_point_2))
+            (best_point_1, best_point_2, best_inliers) = self.RANSAC(data_2, dist_thresh, iterations, thresh_count)
+            lines.append((best_point_1, best_point_2, best_inliers))
             best_inliers.append(best_point_1)
             best_inliers.append(best_point_2)
             for i in best_inliers:
@@ -166,33 +181,63 @@ class wall_follower:
                 break
         return lines
     
-    def get_line_params(self):
+    def get_close_line(self, robot_cord, lines, thresh):
+        """
+        Algorithm to find clossest line to robot
+        :param robot_cord: Coordinate of robot as array of form [x,y].
+        :type robot_cord: numpy.ndarray
+        :param lines: array containing tuple of all points for the line fitted using 
+                      the best_pair of points
+        :type lines: numpy.ndarray
+        :param thresh: The min number of points to be considered a line
+        :type thresh: int
+        :return closest: A tuple of best_pair of points
+        :rtype: tuple
+        """
+        closest = []
+        distance = 100000
+        for i in lines:
+            wall = Line(i[0],i[1])
+            dist = wall.point_dist(robot_cord)
+            if dist < distance and len(i[2]) > thresh:
+                distance = dist
+                closest = (i[0],i[1])
+        return closest
+    
+    def get_line_params(self,line):
         """
         Function to extract line parameters from laser scan data
+        :param line: tuple of best_pair of points
+        :type line: tupple
         :return m_c_start_end: tuple of slope, constant of line equation, start and end points of line as 1D arrays 
         :rtype: tuple    
         """
-        points = [point for point in self.laser_sub_cartesian]
-        lines = self.find_all_lines(points, self.threshold_wall_dist, 100, 2)
-        params = []
-        for i in lines:
-            wall = Line(i[0],i[1])
-            slope, intercept = wall.equation()
-            m_c_start_end = (slope, intercept, i[0], i[1])
-            params.append(m_c_start_end)
-        return params
+        wall = Line(line[0],line[1])
+        slope, intercept = wall.equation()
+        m_c_start_end = (slope, intercept, line[0], line[1])
+        return m_c_start_end
     
-    def get_close_line(self, robot_cord, params):
-        closest = []
-        distance = 100000
-        for i in params:
-            wall = Line(i[2],i[3])
-            dist = wall.point_dist(robot_cord)
-            if dist < distance:
-                distance = dist
-                closest = i
-        return closest
-
+    def find_wall(self, robot_cord, dist_thresh: int, iterations: int, thresh_count: int, thresh: int):
+        """
+        Function to find the clossest wall
+        :param robot_cord: Coordinate of robot as array of form [x,y].
+        :type robot_cord: numpy.ndarray
+        :param dist_thresh: The parameter used to determine the furthest a point
+                            can be from the line and still be considered an inlier
+        :type dist_thresh: int
+        :param iterations: The number of iterations the RANSAC algorithm will run
+        :type iterations: int
+        :param thresh_count: number of minimum points required to form a line
+        :type thresh_count: int
+        :return closest_wall_params: tuple of slope, constant of line equation, start and end points of line as 1D arrays 
+        :rtype: tuple    
+        """
+        points = [point for point in self.laser_sub_cartesian]
+        lines = self.find_all_lines(points, dist_thresh, iterations, thresh_count)
+        closest_wall = self.get_close_line(self, robot_cord, lines, thresh=thresh)
+        closest_wall_params = self.get_line_params(self,closest_wall)
+        return closest_wall_params
+        
     def publish_zero_twist(self):
         """
         Function to publish zero linear and angular velocity
