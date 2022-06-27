@@ -78,7 +78,9 @@ class wall_follower:
 
         processed_data = None
         #N = int((max_angle - min_angle)/ang_inc)
-        angle = range(min_angle,max_angle,ang_inc)
+        angle = np.arange(min_angle,max_angle+ang_inc, ang_inc)
+        print(angle.shape)
+        print(range_data.shape)
         polar_points = np.vstack((range_data,angle)).T
         
         filtered_polar_points = []
