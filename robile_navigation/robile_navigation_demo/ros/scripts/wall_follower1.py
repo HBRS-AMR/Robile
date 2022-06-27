@@ -151,7 +151,7 @@ class wall_follower:
         fitered = scipy.signal.medfilt2d(points, kernel_size)
         return fitered
     
-    def find_all_lines(self, points: list, dist_thresh: int, iterations: int, thresh_count: int):
+    def find_all_lines(self, points: list, dist_thresh: int, iterations: int, thresh_count: int, no_line: int):
         """
         Algorithm to find all lines in a set of 2D points
         :param points: The list of points to fit a line where each point
@@ -164,6 +164,8 @@ class wall_follower:
         :type iterations: int
         :param thresh_count: number of minimum points required to form a line
         :type thresh_count: int
+        :param no_line: max no. of lines to be found
+        :type no_line: int
         :return lines: A tuple of all points for the line fitted using the best_pair of points
         :rtype: tuple
         """
@@ -177,7 +179,7 @@ class wall_follower:
             for i in best_inliers:
                 index = np.argwhere(data_2==i)
                 data_2 = np.delete(data_2, index)
-            if len(data_2)<10:
+            if len(lines)>=no_line or len(data_2)<10:
                 break
         return lines
     
@@ -217,7 +219,7 @@ class wall_follower:
         m_c_start_end = (slope, intercept, line[0], line[1])
         return m_c_start_end
     
-    def find_wall(self, robot_cord, dist_thresh: int, iterations: int, thresh_count: int, thresh: int):
+    def find_wall(self, robot_cord, dist_thresh: int, iterations: int, thresh_count: int, thresh: int, no_line: int):
         """
         Function to find the clossest wall
         :param robot_cord: Coordinate of robot as array of form [x,y].
@@ -229,11 +231,13 @@ class wall_follower:
         :type iterations: int
         :param thresh_count: number of minimum points required to form a line
         :type thresh_count: int
+        :param no_line: max no. of lines to be found
+        :type no_line: int
         :return closest_wall_params: tuple of slope, constant of line equation, start and end points of line as 1D arrays 
         :rtype: tuple    
         """
         points = [point for point in self.laser_sub_cartesian]
-        lines = self.find_all_lines(points, dist_thresh, iterations, thresh_count)
+        lines = self.find_all_lines(points, dist_thresh, iterations, thresh_count, no_line)
         closest_wall = self.get_close_line(self, robot_cord, lines, thresh=thresh)
         closest_wall_params = self.get_line_params(self,closest_wall)
         return closest_wall_params
