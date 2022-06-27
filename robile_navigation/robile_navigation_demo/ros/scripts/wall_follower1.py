@@ -346,7 +346,7 @@ class wall_follower:
         """
         Function to determine linear and angular velocities to be published by infering from line parameters    
         """
-        (slope, c, start, end) = self.find_wall(self.center_wrt_laser, 0.1, 100, 2, 100, 10):
+        (slope, c, start, end) = self.find_wall(self.center_wrt_laser, 0.1, 100, 2, 100, 10)
         return 0
 
     def plotting(self, params):
