@@ -260,12 +260,16 @@ class wall_follower:
         :param angle_rad: angle of rotation in radians
         :param type: float
         """
-
+        msg = Twist()
+        msg.angular.z = 0
+        rospy.loginfo('publishing rotate robot')
+        self.command_pub.publish(msg)
+        self.loop_rate.sleep()
         # YOUR CODE HERE
 
         return 0
 
-    def move(self, direction, distance):
+    def move(self, direction, distance, robot_cord):
         """
         Function to publish direction and distance of travel 
         :param direction: 1D array representing the x and y coordinates of direction of motion
@@ -274,7 +278,17 @@ class wall_follower:
         :param type: float    
         """
         msg = Twist()
+        deg = np.arctan2(direction[0],direction[1])
+        x = distance*m.sin(deg)
+        y = distance*m.cos(deg)
         # YOUR CODE HERE
+        msg = Twist()
+        msg.linear.x = 0
+        msg.linear.y = 0
+        msg.angular.z = 0
+        rospy.loginfo('publishing zero velocity')
+        self.command_pub.publish(msg)
+        self.loop_rate.sleep()
         return 0
 
     def avoid_collison(self):
