@@ -8,7 +8,7 @@ from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 #import matplotlib.pyplot as plt
 from nav_msgs.msg import Odometry
-import scipy
+#import scipy
 
 class wall_follower:
 
@@ -167,9 +167,9 @@ class wall_follower:
                 best_inliers = inliers
         return (best_point_1, best_point_2, best_inliers)
     
-    def filter_data(self, points, kernel_size):
-        fitered = scipy.signal.medfilt2d(points, kernel_size)
-        return fitered
+    #def filter_data(self, points, kernel_size):
+      #  fitered = scipy.medfilt2d(points, kernel_size)
+      #  return fitered
     
     def find_all_lines(self, points: list, dist_thresh: int, iterations: int, thresh_count: int, no_line: int):
         """
@@ -190,7 +190,7 @@ class wall_follower:
         :rtype: tuple
         """
         lines = []
-        data_2 = self.filter_data(points, kernel_size=3)
+        data_2 = points.copy() #self.filter_data(points, kernel_size=3)
         while True:
             (best_point_1, best_point_2, best_inliers) = self.RANSAC(data_2, dist_thresh, iterations, thresh_count)
             lines.append((best_point_1, best_point_2, best_inliers))
