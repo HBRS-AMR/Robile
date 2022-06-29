@@ -50,6 +50,7 @@ def take_action():
     if regions['f'] > d and regions['fl'] > d and regions['fr'] > d:
         change_state(0,0)
     elif regions['f'] < d and regions['fl'] > d and regions['fr'] > d:
+        
         change_state(1,1)
     elif regions['f'] > d and regions['fl'] > d and regions['fr'] < d:
         change_state(2,2)
@@ -102,6 +103,7 @@ def main():
     rospy.init_node('reading_laser')
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
     rospy.Subscriber('/scan_filtered', LaserScan, clbk_laser)
+    state_ == 0
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
         msg = Twist()
