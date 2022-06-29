@@ -110,10 +110,11 @@ def main():
             msg = find_wall()
             #print("Finding The wall")
         elif state_ == 1:
-            msg = turn_left()
             if i==0:
                 msg = find_wall()
                 i=1
+            else:
+                msg = turn_left()
             #print("Turning Left")
         elif state_ == 2:
             msg = follow_the_wall()
