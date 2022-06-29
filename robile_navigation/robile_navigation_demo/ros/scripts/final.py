@@ -22,8 +22,7 @@ state_dict_ = {
     3: 'stop'
 }
 
-def return_thres(array, n=4):
-    global d
+def return_thres(array, n=4, d=0.7):
     within_range = []
     x=0
     for i in array:
@@ -56,7 +55,7 @@ def change_state(cond,state):
 
 
 def take_action():
-    global regions_, d
+    global regions_
     regions = regions_
     msg = Twist()
     d = 0.7
