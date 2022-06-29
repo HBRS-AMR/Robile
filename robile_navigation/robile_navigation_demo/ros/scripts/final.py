@@ -36,10 +36,10 @@ def clbk_laser(msg):
     take_action()
 
 
-def change_state(state):
+def change_state(cond,state):
     global state_, state_dict_
     if state is not state_:
-        print('Wall follower - [%s] - %s' % (state, state_dict_[state]))
+        print('Wall follower - [%s] [%s] - %s' % (cond, state, state_dict_[state]))
         state_ = state
 
 
@@ -48,24 +48,24 @@ def take_action():
     regions = regions_
     d = 0.7
     if regions['f'] > d and regions['fl'] > d and regions['fr'] > d:
-        change_state(0)
+        change_state(0,0)
     elif regions['f'] < d and regions['fl'] > d and regions['fr'] > d:
-        change_state(1)
+        change_state(1,1)
     elif regions['f'] > d and regions['fl'] > d and regions['fr'] < d:
-        change_state(2)
+        change_state(2,2)
     elif regions['f'] > d and regions['fl'] < d and regions['fr'] > d:
-        change_state(0)
+        change_state(3,0)
     elif regions['f'] < d and regions['fl'] > d and regions['fr'] < d:
-        change_state(1)
+        change_state(4,1)
     elif regions['f'] < d and regions['fl'] < d and regions['fr'] > d:
-        change_state(0)
+        change_state(5,0)
     elif regions['f'] < d and regions['fl'] < d and regions['fr'] < d:
         if regions['l'] > d:
-            change_state(1)
+            change_state(6,1)
         elif regions['r'] > d:
-            change_state(0)
+            change_state(6,0)
     elif regions['f'] > d and regions['fl'] < d and regions['fr'] < d:
-        change_state(2)
+        change_state(7,2)
     else:
         rospy.loginfo(regions)
 
