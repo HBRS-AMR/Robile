@@ -22,15 +22,27 @@ state_dict_ = {
     3: 'stop'
 }
 
-
+def return_thres(array, n=4):
+    global d
+    within_range = []
+    x=0
+    for i in array:
+        if i<d:
+            within_range.append(i)
+            x=x+1
+    if x>n:
+        return min(within_range)
+    else:
+        return 10
+    
 def clbk_laser(msg):
     global regions_
     regions_ = {
-        'r':  min(min(msg.ranges[0:87]), 10),
-        'fr': min(min(msg.ranges[88:175]), 10),
-        'f':  min(min(msg.ranges[176:264]), 10),
-        'fl':  min(min(msg.ranges[265:353]), 10),
-        'l':   min(min(msg.ranges[354:435]), 10),
+        'r':  min(return_thres(msg.ranges[0:87]), 10),
+        'fr': min(return_thres(msg.ranges[88:175]), 10),
+        'f':  min(return_thres(msg.ranges[176:264]), 10),
+        'fl':  min(return_thres(msg.ranges[265:353]), 10),
+        'l':   min(return_thres(msg.ranges[354:435]), 10),
     }
     #print(msg)
     take_action()
@@ -44,7 +56,7 @@ def change_state(cond,state):
 
 
 def take_action():
-    global regions_
+    global regions_, d
     regions = regions_
     msg = Twist()
     d = 0.7
@@ -74,7 +86,7 @@ def take_action():
 def find_wall():
     msg = Twist()
     msg.linear.x = 0.2
-    msg.angular.z = -0.2
+    msg.angular.z = -0.1
     return msg
 
 def turn_left():
