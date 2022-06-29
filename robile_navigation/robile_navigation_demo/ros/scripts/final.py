@@ -101,9 +101,9 @@ def main():
     global pub_
     i=0
     rospy.init_node('reading_laser')
-    pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
+    pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     rospy.Subscriber('/scan_filtered', LaserScan, clbk_laser)
-    rate = rospy.Rate(20)
+    rate = rospy.Rate(1)
     while not rospy.is_shutdown():
         msg = Twist()
         if state_ == 0:
