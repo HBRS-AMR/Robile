@@ -99,7 +99,6 @@ def stop():
 
 def main():
     global pub_
-    i=0
     rospy.init_node('reading_laser')
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=10)
     rospy.Subscriber('/scan_filtered', LaserScan, clbk_laser)
