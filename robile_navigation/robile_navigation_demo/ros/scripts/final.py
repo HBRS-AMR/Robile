@@ -99,12 +99,14 @@ def stop():
 
 def main():
     global pub_
-    
+    i=0
     rospy.init_node('reading_laser')
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
     rospy.Subscriber('/scan_filtered', LaserScan, clbk_laser)
-    state_ == 0
     rate = rospy.Rate(20)
+    if i==0:
+        state_ = 0
+        i=1
     while not rospy.is_shutdown():
         msg = Twist()
         if state_ == 0:
