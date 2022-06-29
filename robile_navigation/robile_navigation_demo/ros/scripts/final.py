@@ -51,7 +51,7 @@ def take_action():
     if regions['f'] > d and regions['fl'] > d and regions['fr'] > d:
         change_state(0,0)
     elif regions['f'] < d and regions['fl'] > d and regions['fr'] > d:
-        change_state(1,1)
+        change_state(1,0)
     elif regions['f'] > d and regions['fl'] > d and regions['fr'] < d:
         change_state(2,2)
     elif regions['f'] > d and regions['fl'] < d and regions['fr'] > d:
