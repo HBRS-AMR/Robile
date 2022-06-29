@@ -46,6 +46,7 @@ def change_state(cond,state):
 def take_action():
     global regions_
     regions = regions_
+    msg = Twist()
     d = 0.7
     if regions['f'] > d and regions['fl'] > d and regions['fr'] > d:
         change_state(0,0)
