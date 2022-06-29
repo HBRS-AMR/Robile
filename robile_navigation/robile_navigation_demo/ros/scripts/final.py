@@ -29,6 +29,7 @@ def return_thres(array, n=10, d=0.7):
         if i<d:
             within_range.append(i)
             x=x+1
+    print(x)
     if x>n:
         return min(within_range)
     else:
