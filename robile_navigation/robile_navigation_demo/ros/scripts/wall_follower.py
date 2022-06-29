@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import math
+import math as m
 import time
 import rospy
 import numpy as np
@@ -9,6 +9,7 @@ import tf
 from sensor_msgs.msg import LaserScan
 from geometry_msgs.msg import Twist
 import matplotlib.pyplot as plt
+import scipy
 
 
 class wall_follower:
@@ -57,11 +58,12 @@ class wall_follower:
         min_angle = msg.angle_min
         max_range = msg.range_max
         min_range = msg.range_min
+        ang_inc = msg.angle_increment #added new line to get angle increment data from message header
 
         self.laser_sub_cartesian = self.process_data(
-            np.array(range_data), max_angle, min_angle, max_range, min_range)
+            np.array(range_data), max_angle, min_angle, max_range, min_range, ang_inc, new_max_range = 10, new_min_range=min_range)
 
-    def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float):
+    def process_data(self, range_data: np.ndarray, max_angle: float, min_angle: float, max_range: float, min_range: float, ang_inc: float, new_max_range, new_min_range):
         """
         Function to pre-process the laser range data
         :param range_data: 1D numpy array of laser range data
@@ -79,10 +81,42 @@ class wall_follower:
         """
 
         processed_data = None
+        angle = []
 
-        # Your CODE here
+        N = int((max_angle - min_angle)/ang_inc)
 
+        for i in np.linspace(min_angle, max_angle, N):
+            angle.append(i)
+        angle = np.array(angle)
+
+        x = []
+        y = []
+        range_filter_data = []
+        filter_angle = []
+
+        # for i in range(len(range_data)):
+        #     if range_data[i] < new_max_range and range_data[i] > new_min_range:
+        #         range_filter_data.append(range_data[i])
+        #         filter_angle.append(angle[i])
+
+        # for i, j in zip(range_filter_data, filter_angle):
+        #     x.append(i * m.cos(np.rad2deg(j)))
+        #     y.append(i * m.sin(np.rad2deg(j)))
+
+
+
+        for i, j in zip(range_data, angle):
+            x.append(i * m.cos(np.rad2deg(j)))
+            y.append(i * m.sin(np.rad2deg(j)))
+
+        x = np.array(x).T
+        y = np.array(y).T
+
+        processed_data = np.vstack((x,y)).T
+        self.laser_scan_processed = True
         return processed_data
+
+
 
     def RANSAC(self, points: list, dist_thresh: int, iterations: int, thresh_count: int):
         """
@@ -101,15 +135,50 @@ class wall_follower:
         :rtype: tuple
         """
 
-        best_point_1 = None
-        best_point_2 = None
-        inliers = dict()
-        best_pair = None
+        best_point_1 = []
+        best_point_2 = []
+        best_inliers = []
+        best_inliers_len = 0
+        for i in range(iterations):
+            inliers = []
+            rand_num = random.sample(range(0, len(points)), thresh_count)
+            start = points[rand_num[0]]
+            end = points[rand_num[1]]
+            line = Line(start,end)
+            inliers_len = 0
+            for point in points:
+                dist = line.point_dist(point)
+                if dist <= dist_thresh:
+                    inliers_len = inliers_len + 1
+                    inliers.append(point)
+            if best_inliers_len < inliers_len:
+                best_inliers_len = inliers_len
+                best_point_1 = start
+                best_point_2 = end
+                best_inliers = inliers
+        return (best_point_1, best_point_2, best_inliers)
 
-        # YOUR CODE HERE
+    def find_all_lines(self, points: list, dist_thresh: int, iterations: int, thresh_count: int):
+        lines = []
+        data_2 = points.copy()
+        while True:
+            (best_point_1, best_point_2, best_inliers) = self.RANSAC(data_2, self.threshold_wall_dist, 100, 2)
+            lines.append((best_point_1, best_point_2, best_inliers))
+            index = np.argwhere(data_2==best_point_1)
+            data_2 = np.delete(data_2, index)
+            index = np.argwhere(data_2==best_point_2)
+            data_2 = np.delete(data_2, index)
+            for i in best_inliers:
+                index = np.argwhere(data_2==i)
+                data_2 = np.delete(data_2, index)
+            if len(data_2)==0:
+                break
+        return lines
 
-        return (best_point_1, best_point_2, inliers[best_pair])
-
+    def filter_data(self, points, kernel_size):
+        fitered = scipy.signal.medfilt2d(points, kernel_size)
+        return fitered
+    
     def np_polar2rect(self, polar_points):
         """
         Function to convert polar coordinates to cartesian form
@@ -120,9 +189,12 @@ class wall_follower:
         """
 
         laser_cart_coord = None
-
-        # YOUR CODE HERE
-
+        center = np.array([0,0])
+        r = polar_points.T[0,]
+        theta = polar_points.T[1,]
+        x = r*np.sin(np.deg2rad(theta))
+        y = r*np.cos(np.deg2rad(theta))
+        laser_cart_coord = np.array([x, y]).T
         return laser_cart_coord
 
     def publish_zero_twist(self):
@@ -169,7 +241,6 @@ class wall_follower:
         Function to determine if robot is going to collide with any obstacle
         """
 
-        # YOUR CODE HERE
 
         return 0
 
@@ -181,20 +252,38 @@ class wall_follower:
         """
 
         points = [point for point in self.laser_sub_cartesian]
-        m_c_start_end = []
+        lines = self.find_all_lines(points, self.threshold_wall_dist, 100, 2)
+        params = []
+        closest = []
+        distance = 100000
 
-        # YOUR CODE HERE
 
-        return m_c_start_end
+        for i in lines:
+
+            wall = Line(i[0],i[1])
+            m,c = wall.equation()
+            m_c_start_end = (m,c, i[0], i[1])
+            params.append(m_c_start_end)
+            dist = wall.point_dist(points)
+            if dist < distance:
+                distance = dist
+                closest = m_c_start_end
+
+
+        return params, closest
+
 
     def publish_command_velocity(self):
         """
         Function to determine linear and angular velocities to be published by infering from line parameters    
         """
+        self.get_line_params()
 
-        # YOUR CODE HERE
         
         return 0
+
+    def plotting(self, params):
+        return True
 
     def __del__(self):
         self.publish_zero_twist()
@@ -212,12 +301,12 @@ class Line:
     """
 
     def __init__(self, start: np.ndarray, end: np.ndarray):
-        if np.shape(start) != (2,):
-            raise ValueError("Start point must have the shape (2,)", start)
-        if np.shape(end) != (2,):
-            raise ValueError("End point must have the shape (2,)")
-        if (start == end).all():
-            raise ValueError("Start and end points must be different")
+        # if np.shape(start) != (2,):
+        #     raise ValueError("Start point must have the shape (2,)", start)
+        # if np.shape(end) != (2,):
+        #     raise ValueError("End point must have the shape (2,)")
+        # if (start == end).all():
+        #     raise ValueError("Start and end points must be different")
 
         # Calculate useful properties of the line
         self.start = start
@@ -226,6 +315,9 @@ class Line:
         self.unit_line = self.line / self.length
 
     def point_dist(self, point: np.ndarray):
+      
+        # if np.shape(point) != (2,):
+        #     raise ValueError("Start point must have the shape (2,)")
         """
         Function to find least distance between a point and the line
         :param point: 1D array representing a point in cartesian coordinates
@@ -246,6 +338,7 @@ class Line:
         m = self.line[1]/self.line[0]
         c = self.start[1] - m*self.start[0]
         return (m, c)
+
 
 
 if __name__ == '__main__':
