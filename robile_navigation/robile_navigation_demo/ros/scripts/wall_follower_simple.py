@@ -30,13 +30,14 @@ state_dict_ = {
 def clbk_laser(msg):
     global regions_
     regions_ = {
-        'right':  min(min(msg.ranges[0:143]), 10),
-        'fright': min(min(msg.ranges[144:287]), 10),
-        'front':  min(min(msg.ranges[288:431]), 10),
-        'fleft':  min(min(msg.ranges[432:575]), 10),
-        'left':   min(min(msg.ranges[576:713]), 10),
+        'right':  min(min(msg.ranges[0:87]), 10),
+        'fright': min(min(msg.ranges[88:175]), 10),
+        'front':  min(min(msg.ranges[176:264]), 10),
+        'fleft':  min(min(msg.ranges[265:353]), 10),
+        'left':   min(min(msg.ranges[354:435]), 10),
 
     }
+    print(msg)
 
     take_action()
 
@@ -44,7 +45,7 @@ def clbk_laser(msg):
 def change_state(state):
     global state_, state_dict_
     if state is not state_:
-        print 'Wall follower - [%s] - %s' % (state, state_dict_[state])
+        print('Wall follower - [%s] - %s' % (state, state_dict_[state]))
         state_ = state
 
 
@@ -57,7 +58,7 @@ def take_action():
     
     state_description = ''
     
-    d = 1.5
+    d = 0.7
     
     
     if regions['front'] > d and regions['fleft'] > d and regions['fright'] > d:
@@ -92,19 +93,19 @@ def take_action():
 def find_wall():
     msg = Twist()
     msg.linear.x = 0.2
-    msg.angular.z = -0.3
+    msg.angular.z = -0.2
     return msg
 
 def turn_left():
     msg = Twist()
-    msg.angular.z = 0.3
+    msg.angular.z = 0.5
     return msg
 
 def follow_the_wall():
     global regions_
     
     msg = Twist()
-    msg.linear.x = 0.5
+    msg.linear.x = 0.2
     return msg
 
 
@@ -115,7 +116,7 @@ def main():
     
     pub_ = rospy.Publisher('/cmd_vel', Twist, queue_size=1)
     
-    sub = rospy.Subscriber('/m2wr/laser/scan', LaserScan, clbk_laser)
+    sub = rospy.Subscriber('/scan_filtered', LaserScan, clbk_laser)
     
     rate = rospy.Rate(20)
     while not rospy.is_shutdown():
