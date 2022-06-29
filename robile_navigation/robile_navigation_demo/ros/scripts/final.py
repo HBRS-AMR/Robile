@@ -104,15 +104,15 @@ def main():
         msg = Twist()
         if state_ == 0:
             msg = find_wall()
-            print("Finding The wall")
+            #print("Finding The wall")
         elif state_ == 1:
             msg = turn_left()
-            print("Turning Left")
+            #print("Turning Left")
         elif state_ == 2:
             msg = follow_the_wall()
-            print("Following the wall")
+            #print("Following the wall")
         elif state_ == 3:
-            print("Stopping")
+            #print("Stopping")
             msg = stop()
         else:
             rospy.logerr('Unknown state!')
