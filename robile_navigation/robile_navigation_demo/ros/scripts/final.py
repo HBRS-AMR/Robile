@@ -32,7 +32,7 @@ def clbk_laser(msg):
         'fl':  min(min(msg.ranges[265:353]), 10),
         'l':   min(min(msg.ranges[354:435]), 10),
     }
-    print(msg)
+    #print(msg)
     take_action()
 
 
@@ -60,7 +60,10 @@ def take_action():
     elif regions['f'] < d and regions['fl'] < d and regions['fr'] > d:
         change_state(0)
     elif regions['f'] < d and regions['fl'] < d and regions['fr'] < d:
-        change_state(3)
+        if regions['l'] > d:
+            change_state(1)
+        elif regions['r'] > d:
+            change_state(0)
     elif regions['f'] > d and regions['fl'] < d and regions['fr'] < d:
         change_state(2)
     else:
