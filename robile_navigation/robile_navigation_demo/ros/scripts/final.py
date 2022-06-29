@@ -22,7 +22,7 @@ state_dict_ = {
     3: 'stop'
 }
 
-def return_thres(array, n=20, d=0.75):
+def return_thres(array, n=20, d=0.8):
     within_range = []
     x=0
     for i in array:
@@ -59,7 +59,7 @@ def take_action():
     global regions_
     regions = regions_
     msg = Twist()
-    d = 0.75
+    d = 0.8
     if regions['f'] > d and regions['fl'] > d and regions['fr'] > d:
         change_state(0,0)
     elif regions['f'] < d and regions['fl'] > d and regions['fr'] > d:
