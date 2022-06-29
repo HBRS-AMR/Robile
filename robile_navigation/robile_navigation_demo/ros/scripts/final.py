@@ -22,14 +22,14 @@ state_dict_ = {
     3: 'stop'
 }
 
-def return_thres(array, n=20, d=0.7):
+def return_thres(array, n=20, d=0.75):
     within_range = []
     x=0
     for i in array:
         if i<d:
             within_range.append(i)
             x=x+1
-    print(x)
+    #print(x)
     if x>n:
         return min(within_range)
     else:
@@ -59,7 +59,7 @@ def take_action():
     global regions_
     regions = regions_
     msg = Twist()
-    d = 0.7
+    d = 0.75
     if regions['f'] > d and regions['fl'] > d and regions['fr'] > d:
         change_state(0,0)
     elif regions['f'] < d and regions['fl'] > d and regions['fr'] > d:
