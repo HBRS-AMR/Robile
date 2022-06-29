@@ -22,7 +22,7 @@ state_dict_ = {
     3: 'stop'
 }
 
-def return_thres(array, n=10, d=0.7):
+def return_thres(array, n=20, d=0.7):
     within_range = []
     x=0
     for i in array:
