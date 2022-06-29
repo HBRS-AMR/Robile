@@ -96,14 +96,12 @@ def turn_left():
 
 def follow_the_wall():
     global regions_
-    
     msg = Twist()
     msg.linear.x = 0.2
     return msg
 
 def stop():
     msg = Twist()
-    msg.linear.x = 0
     msg.linear.x = 0
     msg.angular.z = 0
     return msg
