@@ -50,7 +50,6 @@ def take_action():
     if regions['f'] > d and regions['fl'] > d and regions['fr'] > d:
         change_state(0,0)
     elif regions['f'] < d and regions['fl'] > d and regions['fr'] > d:
-        
         change_state(1,1)
     elif regions['f'] > d and regions['fl'] > d and regions['fr'] < d:
         change_state(2,2)
@@ -73,20 +72,20 @@ def take_action():
 
 def find_wall():
     msg = Twist()
-    msg.linear.x = 0.2
-    msg.angular.z = -0.2
+    #msg.linear.x = 0.2
+    #msg.angular.z = -0.2
     return msg
 
 def turn_left():
     msg = Twist()
-    msg.angular.z = 0.5
+    #msg.angular.z = 0.5
     return msg
 
 def follow_the_wall():
     global regions_
     
     msg = Twist()
-    msg.linear.x = 0.2
+    #msg.linear.x = 0.2
     return msg
 
 def stop():
@@ -110,11 +109,7 @@ def main():
             msg = find_wall()
             #print("Finding The wall")
         elif state_ == 1:
-            if i==0:
-                msg = find_wall()
-                i=1
-            else:
-                msg = turn_left()
+            msg = turn_left()
             #print("Turning Left")
         elif state_ == 2:
             msg = follow_the_wall()
