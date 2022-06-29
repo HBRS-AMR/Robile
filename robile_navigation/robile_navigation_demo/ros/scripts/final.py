@@ -70,7 +70,7 @@ def take_action():
 def find_wall():
     msg = Twist()
     msg.linear.x = 0.2
-    msg.angular.z = -0.3
+    msg.angular.z = -0.2
     return msg
 
 def turn_left():
@@ -112,6 +112,7 @@ def main():
             msg = follow_the_wall()
             print("Following the wall")
         elif state_ == 3:
+            print("Stopping")
             msg = stop()
         else:
             rospy.logerr('Unknown state!')
