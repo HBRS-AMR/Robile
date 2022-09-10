@@ -20,4 +20,6 @@ Instructions
     > * By running bag file, data published on recorded topics are accessible. Please make sure to run `roscore` before running bag file
     > * A bag file can be run using this command `rosbag play <name_of_bag_file>`  
 
-* Include the problems faced and the limitations observed and the corresponding solutions that you found while implementing the wall following application in the documentation
+* Instructions to run the robot in simulation can be followed from the [tutorial](https://robile-amr.readthedocs.io/en/main/Tutorial/Demo%20Simulation.html)  
+
+* Include the problems faced and the limitations observed during the implementation. Document the corresponding strategies that you found while implementing the wall following application in the report
