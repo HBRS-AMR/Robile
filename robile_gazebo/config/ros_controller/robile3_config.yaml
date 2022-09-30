@@ -1,0 +1,44 @@
+ # Publish all joint states -----------------------------------
+joint_state_controller:
+  type: joint_state_controller/JointStateController
+  publish_rate: 50
+
+# Velocity Controllers -----------------------------------------
+robile_1_left_hub_wheel_controller:
+  type: effort_controllers/JointVelocityController
+  joint: robile_1_drive_left_hub_wheel_joint
+  pid: {p: 100.0, i: 10.0, d: 0.01}
+robile_1_right_hub_wheel_controller:
+  type: effort_controllers/JointVelocityController
+  joint: robile_1_drive_right_hub_wheel_joint
+  pid: {p: 100.0, i: 10.0, d: 0.01}
+
+
+robile_2_left_hub_wheel_controller:
+  type: effort_controllers/JointVelocityController
+  joint: robile_2_drive_left_hub_wheel_joint
+  pid: {p: 100.0, i: 10.0, d: 0.01}
+robile_2_right_hub_wheel_controller:
+  type: effort_controllers/JointVelocityController
+  joint: robile_2_drive_right_hub_wheel_joint
+  pid: {p: 100.0, i: 10.0, d: 0.01}
+
+
+robile_5_left_hub_wheel_controller:
+  type: effort_controllers/JointVelocityController
+  joint: robile_5_drive_left_hub_wheel_joint
+  pid: {p: 100.0, i: 10.0, d: 0.01}
+robile_5_right_hub_wheel_controller:
+  type: effort_controllers/JointVelocityController
+  joint: robile_5_drive_right_hub_wheel_joint
+  pid: {p: 100.0, i: 10.0, d: 0.01}
+
+
+robile_6_left_hub_wheel_controller:
+  type: effort_controllers/JointVelocityController
+  joint: robile_6_drive_left_hub_wheel_joint
+  pid: {p: 100.0, i: 10.0, d: 0.01}
+robile_6_right_hub_wheel_controller:
+  type: effort_controllers/JointVelocityController
+  joint: robile_6_drive_right_hub_wheel_joint
+  pid: {p: 100.0, i: 10.0, d: 0.01}

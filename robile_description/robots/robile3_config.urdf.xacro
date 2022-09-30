@@ -1,6 +1,6 @@
 <?xml version='1.0'?>
 
-<robot xmlns:xacro="http://ros.org/wiki/xacro" name="4_wheel_config" >
+<robot xmlns:xacro="http://ros.org/wiki/xacro" name="robile3_config" >
 
     <!-- Include desired robile bricks -->
     <xacro:include filename="$(find robile_description)/urdf/robile_bricks/robile_active_wheel_brick.urdf.xacro" />

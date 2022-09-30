@@ -27,3 +27,8 @@ Navigation
 ===========
 .. toctree::
     Demo Navigation.rst    
+
+Simulation - Wall following behaviour
+===========
+.. toctree::
+    Demo Simulation.rst    

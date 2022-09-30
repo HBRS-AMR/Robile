@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launch>
+
+    <node pkg="robile_navigation_demo" type="wall_follower.py" respawn="false" name="wall_follower" output="screen">
+
+  </node>
+
+</launch>

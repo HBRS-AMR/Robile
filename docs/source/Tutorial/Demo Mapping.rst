@@ -14,6 +14,12 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
       Password for all three platforms: "area5142"  
 
+* In every terminal of the platform, assign 'ROS_IP' to ip address of the robot
+
+  .. code-block:: bash
+
+        export ROS_IP=<robile_ip_address>
+
 * Launch the robot
 
   .. code-block:: bash
@@ -36,7 +42,7 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
   .. code-block:: bash
 
-      export ROS_MASTER_URI=<robile_ip_address>:11311 && export ROS_IP=<your_system_ip_address>  
+      export ROS_MASTER_URI=http://<robile_ip_address>:11311 && export ROS_IP=<your_system_ip_address>  
 
   - your_system_ip_address can be found by running 'ifconfig'. Please make sure you are connected to the same network as the robot(ROBILE5G).
       
@@ -76,11 +82,12 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
   .. code-block:: bash
 
-      export ROBOT_ENV=[map_name_local]
+      export ROBOT_ENV=[map_name/map_name_local]  
+      Eg: export ROBOT_ENV=team_m/corridor_iter_n  
 
   .. note::
 
-      Usually the `.rosc` script is used to set the environment, among other variables
+      Usually the `.rosc` script is used to set the environment variable, among other variables
 
   .. note::
       Link to the ROS wiki for gmapping: 

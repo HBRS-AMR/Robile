@@ -21,7 +21,7 @@ Check which map will be loaded by the navigation stack:
 
   .. code-block:: bash
 
-      export ROBOT_ENV=[map_name_local]
+      export ROBOT_ENV=[map_name/map_name_local] 
 
 * Run amcl node
 
