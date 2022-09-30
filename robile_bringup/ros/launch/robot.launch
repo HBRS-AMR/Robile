@@ -20,7 +20,7 @@
 <!-- Launch the wheel driver -->
 <include file="$(find smart_wheel_driver)/launch/narko.launch"/>
 <node pkg="joy" type="joy_node" name="joy" output="screen" />
-
+<node pkg="tf" type="static_transform_publisher" name="laser_link" args="0.45 0 0.22 0 0 0 /base_link /base_laser 30" />
 
 <!--<include file="$(find kelo_tulip)/launch/example_joypad.launch"/> -->
 
