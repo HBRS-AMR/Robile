@@ -97,12 +97,12 @@ Setup catkin workspace
   .. code-block:: bash
 
     cd ~/catkin_ws_AMR/src  
-    git clone --recurse-submodules https://github.com/HBRS-AMR/Robile.git
+    git clone --recurse-submodules https://github.com/HBRS-AMR/Robile.git  
 
   Then go on with installing further external dependencies:
-  
+
   .. code-block:: bash
-    
+
     cd ~/catkin_ws_AMR/src
     git clone https://github.com/splintered-reality/py_trees_ros.git  
 
