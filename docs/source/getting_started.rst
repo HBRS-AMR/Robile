@@ -102,6 +102,7 @@ Setup catkin workspace
   Then go on with installing further external dependencies:
   
   .. code-block:: bash
+    
     cd ~/catkin_ws_AMR/src
     git clone https://github.com/splintered-reality/py_trees_ros.git  
 
