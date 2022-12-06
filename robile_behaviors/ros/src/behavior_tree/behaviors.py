@@ -117,7 +117,7 @@ class rotate(pt.behaviour.Behaviour):
             # line_parameters: [per_dist, slope, const, end_pts]
             line_parameters.sort(key=lambda x: x[0])
 
-            # prioritising line parameters by considering new wall of the corner
+            # prioritising line parameters by considering new wall at a corner
             line_parameters_prioritised = line_parameters
             for line_param in line_parameters:
                 if abs(line_param[1]) > 2 and line_param[0] < self.wall_priority_thresh:
@@ -176,7 +176,10 @@ class rotate(pt.behaviour.Behaviour):
                 [orientation.x, orientation.y, orientation.z, orientation.w])
             twist_msg.angular.z = float(np.sign(
                 self.angle_to_rotate)*self.max_ang_vel)
-            remaining_angle = self.angle_to_rotate+self.yaw_at_begining-current_yaw
+
+            # as yaw has range b/w +/-2pi, considering the edge cases
+            angle_rotated = min(abs(self.yaw_at_begining-current_yaw), -abs(self.yaw_at_begining-current_yaw)%(2*np.pi))
+            remaining_angle = abs(self.angle_to_rotate) - angle_rotated            
 
             if abs(remaining_angle) <= self.align_threshold:
                 self.alignment_status = True
@@ -298,7 +301,7 @@ class move(pt.behaviour.Behaviour):
                 self.blackboard.parent_wall_location = "right"
             x_at_begining, y_at_begining = self.blackboard.odom_data.position.x, self.blackboard.odom_data.position.y
             self.dist_to_move = (np.linalg.norm(
-                line_parameters[0][-1][0]-line_parameters[0][-1][1]))-self.safe_dist_thresh
+                line_parameters[0][-1][0]-line_parameters[0][-1][1]))
             self.start_coordinates = np.array([x_at_begining, y_at_begining])
             self.blackboard.move_log = [
                 self.dist_to_move, self.start_coordinates]
@@ -759,7 +762,6 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
                 laser_sub_cartesian = process_data(range_data=np.array(self.blackboard.laser_scan_grid), max_angle=self.blackboard.max_angle,
                                                    min_angle=self.blackboard.min_angle, max_range=self.blackboard.max_range, min_range=self.blackboard.min_range,
                                                    sigma=self.sigma, rf_max_pts=self.rf_max_pts, reduce_bool=False)
-                self.blackboard.laser_scan_grid = "Processed(wall_param_grid2bb)"
 
                 # get probability of cell being occupied
                 grid_occupancy_probability = np.round(get_occupancy_probability(
@@ -771,9 +773,11 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
 
                 if self.algorithm == 'online':
                     # get line parameters from the occupied cell coordinates
+                    self.blackboard.laser_scan_grid = "Processed(wall_param_grid2bb)-Online"
                     self.blackboard.line_parameters = online_get_line_params(
                         array_of_occupied_cells, self.e, self.incr, self.max_dist, self.k)
                 if self.algorithm == 'ransac':
+                    self.blackboard.laser_scan_grid = "Processed(wall_param_grid2bb)-RANSAC"
                     rospy.loginfo(
                         "[WALL PARAMETERS Grid] update: using RANSAC")
                     # get line parameters from the occupied cell coordinates
@@ -781,6 +785,7 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
                     self.blackboard.line_parameters = RANSAC_get_line_params(
                         points, self.dist_thresh, self.iterations, self.thresh_count)
                     if len(self.blackboard.line_parameters) == 0:
+                        self.blackboard.laser_scan_grid = "Processed(wall_param_grid2bb)-Online"
                         rospy.loginfo(
                             "[WALL PARAMETERS Grid] update: using Online line detection")
                         # get line parameters from the occupied cell coordinates
@@ -798,7 +803,6 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
                 self.blackboard.laser_scan_grid = "RANSAC is being used"
                 rospy.loginfo(
                     '[WALL PARAMETERS Grid] update: SUCCESS, grids NOT occupied, using RANSAC')
-                # return pt.common.Status.SUCCESS
                 return pt.common.Status.FAILURE
 
         else:

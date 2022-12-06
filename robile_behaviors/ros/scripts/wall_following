@@ -5,6 +5,8 @@ import py_trees as pt
 import py_trees_ros as ptr
 import py_trees.console as console
 from sensor_msgs.msg import LaserScan
+from std_msgs.msg import Float32
+from nav_msgs.msg import Odometry
 import rospy
 import sys
 import operator
@@ -15,7 +17,7 @@ def create_root():
     """
     Method to construct the behavior tree
     """
-    # behaviors
+    # initialising all required behaviors
     root = pt.composites.Parallel("root")
 
     topics2bb = pt.composites.Sequence("Topics2BB")
@@ -26,7 +28,7 @@ def create_root():
                                    threshold=30.0)
     laser_scan2bb = laser_scan_filtered2bb(name="ScanFiltered",
                                            topic_name="/scan_filtered",
-                                           safe_range=0.3)
+                                           safe_range=0.4)
     odom_data2bb = odom2bb(name="OdomData",
                            topic_name="/odom")
 
@@ -70,7 +72,7 @@ def create_root():
     fetch_publish_wall_param = pt.composites.Sequence("fetch publish wall_params")
 
     grid_status2bb = grid_occupancy_status2bb(
-        name="Grid Status", topic_name="/scan_filtered", min_points=100, grid_size_x=1, grid_size_y=1)
+        name="Grid Status", topic_name="/scan_filtered", min_points=100, grid_size_x=1, grid_size_y=1.4)
     wall_pose2bb = pt.composites.Selector("Wall_Parameter2bb")
     move_towards_wall = move(name="move towards wall",
                              topic_name="/cmd_vel", towards_wall=True, max_linear_vel=0.2, safe_dist_thresh=0.8)
@@ -91,7 +93,6 @@ def create_root():
     )
     publish_line_param = publish_lines(
         name="publish line params", topic_name="/line_end_pts")
-
 
 
     idle = pt.behaviours.Running(name="Idle")
@@ -141,7 +142,7 @@ def main():
         def tick_printer(t): return pt.display.print_ascii_tree(
             t.root, show_status=True)
 
-        behaviour_tree.tick_tock(sleep_ms=2000, post_tick_handler=tick_printer)
+        behaviour_tree.tick_tock(sleep_ms=500, post_tick_handler=tick_printer)
 
     except KeyboardInterrupt:
         rospy.signal_shutdown(

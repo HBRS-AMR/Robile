@@ -1,5 +1,4 @@
 import numpy as np
-from geometry_msgs.msg import Twist
 import random
 
 class Line:
@@ -51,7 +50,8 @@ class Line:
                  and c is the y intercept
         :rtype: tuple of floats
         """
-        m = self.line[1]/self.line[0]
+        # adding 1e-5 to handle cases where self.line[0] is zero
+        m = self.line[1]/(self.line[0]+1e-5)
         c = self.start[1] - m*self.start[0]
         return (m, c)
 
@@ -156,7 +156,6 @@ def get_occupancy_probability(laser_sub_cartesian: np.ndarray, grid_size_x: floa
     gridx = np.arange(0, grid_size_x+grid_width, grid_width)
     gridy = np.arange(-(grid_size_y/2), (grid_size_y/2)+grid_width, grid_width)
     grid, _, _ = np.histogram2d(laser_sub_cartesian[:,0], laser_sub_cartesian[:,1], bins=[gridx, gridy])
-    print("np.max(grid)\n", np.max(grid))
     grid = grid/np.max(grid) 
     return grid
 
