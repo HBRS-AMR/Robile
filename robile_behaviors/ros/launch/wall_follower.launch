@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <include file="$(find robile_gazebo)/launch/robile3_platform.launch"/>
+
+  <node name="wall_following_node" pkg="robile_behaviors" type="wall_following" output="screen"/>
+  <node name="line_marker_node" pkg="robile_behaviors" type="marker_line" output="screen"/>
+  <node name="battery_node" pkg="robile_behaviors" type="battery_voltage_publisher" output="screen"/>
+  
+</launch>

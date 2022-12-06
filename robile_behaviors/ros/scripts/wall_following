@@ -1,0 +1,153 @@
+#!/usr/bin/env python
+
+import functools
+import py_trees as pt
+import py_trees_ros as ptr
+import py_trees.console as console
+from sensor_msgs.msg import LaserScan
+import rospy
+import sys
+import operator
+from behavior_tree.behaviors import *
+
+
+def create_root():
+    """
+    Method to construct the behavior tree
+    """
+    # behaviors
+    root = pt.composites.Parallel("root")
+
+    topics2bb = pt.composites.Sequence("Topics2BB")
+    priorities = pt.composites.Selector("Priorities")
+
+    battery2bb = battery_status2bb(name="BatteryState",
+                                   topic_name="/mileage",
+                                   threshold=30.0)
+    laser_scan2bb = laser_scan_filtered2bb(name="ScanFiltered",
+                                           topic_name="/scan_filtered",
+                                           safe_range=0.3)
+    odom_data2bb = odom2bb(name="OdomData",
+                           topic_name="/odom")
+
+    battery_available = pt.meta.success_is_failure(ptr.subscribers.WaitForData)(name="Wait for Battery",
+                                                                                topic_name='/mileage',
+                                                                                topic_type=Float32,
+                                                                                clearing_policy=pt.common.ClearingPolicy.NEVER)
+    laser_scan_available = pt.meta.success_is_failure(ptr.subscribers.WaitForData)(name="Wait for LaserScan",
+                                                                                   topic_name='/scan_filtered',
+                                                                                   topic_type=LaserScan,
+                                                                                   clearing_policy=pt.common.ClearingPolicy.NEVER)
+    odom_available = pt.meta.success_is_failure(ptr.subscribers.WaitForData)(name="Wait for Odom",
+                                                                                topic_name='/odom',
+                                                                                topic_type=Odometry,
+                                                                                clearing_policy=pt.common.ClearingPolicy.NEVER)
+  
+    collison_check = pt.meta.success_is_failure(
+        pt.composites.Selector)(name="Collison Emergency")
+    battery_check = pt.meta.success_is_failure(
+        pt.composites.Selector)(name="Battery Emergency")
+    move_align_follow = pt.meta.success_is_failure(
+        pt.composites.Sequence)(name="Move-Align-Follow")
+
+    is_no_collison = pt.blackboard.CheckBlackboardVariable(
+        name="No Collison?",
+        variable_name="collison_warning",  # updated in the pt.battery.ToBlackboard
+        expected_value=False  # expecting collison_warning to be False
+    )
+    stop_platform = stop_motion(name="Stop Platform")
+    move_away = move(name="Avoid Collison", topic_name="/cmd_vel",
+                     avoid_collison=True, max_linear_vel=0.2)
+
+    is_battery_ok = pt.blackboard.CheckBlackboardVariable(
+        name="Battery Ok?",
+        variable_name="battery_low_warning",  # updated in the pt.battery.ToBlackboard
+        expected_value=False  # expecting battery_low_warning to be False
+    )
+    rotate_platform = rotate(name="Rotate Platform",
+                             topic_name="/cmd_vel", max_ang_vel=0.2)
+
+    fetch_publish_wall_param = pt.composites.Sequence("fetch publish wall_params")
+
+    grid_status2bb = grid_occupancy_status2bb(
+        name="Grid Status", topic_name="/scan_filtered", min_points=100, grid_size_x=1, grid_size_y=1)
+    wall_pose2bb = pt.composites.Selector("Wall_Parameter2bb")
+    move_towards_wall = move(name="move towards wall",
+                             topic_name="/cmd_vel", towards_wall=True, max_linear_vel=0.2, safe_dist_thresh=0.8)
+    move_along_wall = move(name="move along wall",
+                           topic_name="/cmd_vel", along_wall=True, max_linear_vel=0.2, wall_priority_thresh=0.8)
+    align = rotate(name="align to wall", topic_name="/cmd_vel", to_align=True, max_ang_vel=0.2,
+                   wall_priority_thresh=0.6, align_threshold=0.2)
+
+    get_wall_param_ransac = wall_param_ransac2bb(
+        name="WallPram RANSAC", topic_name="/scan_filtered")
+    get_wall_param_grid = wall_param_grid2bb(
+        name="WallParam Grid", topic_name="/scan_filtered", algorithm='ransac')
+    wait_for_line_param = pt.blackboard.WaitForBlackboardVariable(
+        name="LineParam available?",
+        variable_name="num_walls",
+        expected_value=0,  # number of walls detected should be greater than zero
+        comparison_operator=operator.gt
+    )
+    publish_line_param = publish_lines(
+        name="publish line params", topic_name="/line_end_pts")
+
+
+
+    idle = pt.behaviours.Running(name="Idle")
+
+    # tree formation
+    root.add_children([topics2bb, priorities])
+
+    topics2bb.add_children([battery2bb, laser_scan2bb, odom_data2bb])
+    priorities.add_children(
+        [battery_available, laser_scan_available, odom_available, collison_check, battery_check, move_align_follow, idle])
+
+    collison_check.add_children([is_no_collison, stop_platform, move_away])
+    battery_check.add_children([is_battery_ok, rotate_platform])
+
+    move_align_follow.add_children(
+        [fetch_publish_wall_param, move_towards_wall, fetch_publish_wall_param, align, fetch_publish_wall_param, move_along_wall])
+
+    fetch_publish_wall_param.add_children([grid_status2bb, wall_pose2bb, wait_for_line_param, publish_line_param])
+
+    wall_pose2bb.add_children([get_wall_param_grid, get_wall_param_ransac])
+
+    return root
+
+
+def shutdown(behaviour_tree):
+    """
+    This method will be called on termination of the behavior tree
+    """
+    rospy.loginfo("[SHUTDOWN] shutting down the behavior_tree")
+    behaviour_tree.interrupt()
+
+
+def main():
+    """
+    Main function initiates behavior tree construction
+    """
+    # Initialising the node with name "behavior_tree"
+    try:
+        rospy.init_node("behavior_tree")
+        root = create_root()
+        behaviour_tree = ptr.trees.BehaviourTree(root)
+        rospy.on_shutdown(functools.partial(shutdown, behaviour_tree))
+        if not behaviour_tree.setup(timeout=15):
+            console.logerror("failed to setup the tree, aborting.")
+            sys.exit(1)
+
+        def tick_printer(t): return pt.display.print_ascii_tree(
+            t.root, show_status=True)
+
+        behaviour_tree.tick_tock(sleep_ms=2000, post_tick_handler=tick_printer)
+
+    except KeyboardInterrupt:
+        rospy.signal_shutdown(
+            "Shutting down node due to keyboard interruption")
+
+
+if __name__ == '__main__':
+    main()
+
