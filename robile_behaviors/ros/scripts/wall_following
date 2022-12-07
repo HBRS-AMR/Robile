@@ -28,7 +28,7 @@ def create_root():
                                    threshold=30.0)
     laser_scan2bb = laser_scan_filtered2bb(name="ScanFiltered",
                                            topic_name="/scan_filtered",
-                                           safe_range=0.4)
+                                           safe_range=0.35)
     odom_data2bb = odom2bb(name="OdomData",
                            topic_name="/odom")
 
@@ -72,19 +72,18 @@ def create_root():
     fetch_publish_wall_param = pt.composites.Sequence("fetch publish wall_params")
 
     grid_status2bb = grid_occupancy_status2bb(
-        name="Grid Status", topic_name="/scan_filtered", min_points=100, grid_size_x=1, grid_size_y=1.4)
+        name="Grid Status", topic_name="/scan_filtered", min_points=100, grid_size_x=1.6, grid_size_y=2.)
     wall_pose2bb = pt.composites.Selector("Wall_Parameter2bb")
     move_towards_wall = move(name="move towards wall",
-                             topic_name="/cmd_vel", towards_wall=True, max_linear_vel=0.2, safe_dist_thresh=0.8)
+                             topic_name="/cmd_vel", towards_wall=True, max_linear_vel=0.5, safe_dist_thresh=0.8)
     move_along_wall = move(name="move along wall",
-                           topic_name="/cmd_vel", along_wall=True, max_linear_vel=0.2, wall_priority_thresh=0.8)
-    align = rotate(name="align to wall", topic_name="/cmd_vel", to_align=True, max_ang_vel=0.2,
-                   wall_priority_thresh=0.6, align_threshold=0.2)
+                           topic_name="/cmd_vel", along_wall=True, max_linear_vel=0.5)
+    align = rotate(name="align to wall", topic_name="/cmd_vel", to_align=True, max_ang_vel=0.5, align_threshold=0.2)
 
     get_wall_param_ransac = wall_param_ransac2bb(
-        name="WallPram RANSAC", topic_name="/scan_filtered")
+        name="WallPram RANSAC", topic_name="/scan_filtered", wall_priority_thresh=0.8)
     get_wall_param_grid = wall_param_grid2bb(
-        name="WallParam Grid", topic_name="/scan_filtered", algorithm='ransac')
+        name="WallParam Grid", topic_name="/scan_filtered", algorithm='ransac', grid_size_x=1.6, grid_size_y=2., wall_priority_thresh=0.8)
     wait_for_line_param = pt.blackboard.WaitForBlackboardVariable(
         name="LineParam available?",
         variable_name="num_walls",
@@ -142,7 +141,7 @@ def main():
         def tick_printer(t): return pt.display.print_ascii_tree(
             t.root, show_status=True)
 
-        behaviour_tree.tick_tock(sleep_ms=500, post_tick_handler=tick_printer)
+        behaviour_tree.tick_tock(sleep_ms=50, post_tick_handler=tick_printer)
 
     except KeyboardInterrupt:
         rospy.signal_shutdown(

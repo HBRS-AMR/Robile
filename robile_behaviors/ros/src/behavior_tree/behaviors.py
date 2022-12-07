@@ -117,14 +117,6 @@ class rotate(pt.behaviour.Behaviour):
             # line_parameters: [per_dist, slope, const, end_pts]
             line_parameters.sort(key=lambda x: x[0])
 
-            # prioritising line parameters by considering new wall at a corner
-            line_parameters_prioritised = line_parameters
-            for line_param in line_parameters:
-                if abs(line_param[1]) > 2 and line_param[0] < self.wall_priority_thresh:
-                    line_parameters_prioritised = [line_param]
-                    break
-            line_parameters = line_parameters_prioritised
-
             angle_rad = np.arctan(line_parameters[0][1])
             if abs(line_parameters[0][1]) > 2 and self.blackboard.parent_wall_location == "right":
                 if np.all(line_parameters[0][-1][:, 1] < 0):
@@ -217,7 +209,7 @@ class move(pt.behaviour.Behaviour):
     """
 
     def __init__(self, name="move platform", topic_name="/cmd_vel", towards_wall=False, along_wall=False,
-                 avoid_collison=False, direction=[-1.0, 0.0], max_linear_vel=0.1, safe_dist_thresh=0.6, wall_priority_thresh=0.6):
+                 avoid_collison=False, direction=[-1.0, 0.0], max_linear_vel=0.1, safe_dist_thresh=0.8, allowance=0.2):
         rospy.loginfo("[MOVE] __init__")
 
         self.topic_name = topic_name
@@ -230,8 +222,8 @@ class move(pt.behaviour.Behaviour):
         self.to_move_bool = False
         self.direction = direction
         self.safe_dist_thresh = safe_dist_thresh
-        # wall found within 'wall_priority_thresh' distance is prioritised to align with
-        self.wall_priority_thresh = wall_priority_thresh
+        # allowance: distance allowed to deviate from wall while moving along the wall
+        self.allowance = allowance
 
         super(move, self).__init__(name)
 
@@ -258,14 +250,6 @@ class move(pt.behaviour.Behaviour):
             line_parameters = self.blackboard.line_parameters
             # sorting based on perpendicular distance
             line_parameters.sort(key=lambda x: x[0])
-
-            # prioritising line parameters by considering new wall of the corner
-            line_parameters_prioritised = line_parameters
-            for line_param in line_parameters:
-                if abs(line_param[1]) > 2 and line_param[0] < self.wall_priority_thresh:
-                    line_parameters_prioritised = [line_param]
-                    break
-            line_parameters = line_parameters_prioritised
 
             angle_rad = np.arctan(-1/line_parameters[0][1])
             perpendicular_vector = [np.cos(angle_rad), np.sin(angle_rad)]
@@ -320,7 +304,9 @@ class move(pt.behaviour.Behaviour):
         # send the goal
         twist_msg = Twist()
         if self.along_wall or self.towards_wall:
-            if self.to_move_bool:
+            if self.blackboard.corner_detected:
+                return pt.common.Status.SUCCESS
+            elif self.to_move_bool:
                 x_curr, y_curr = self.blackboard.odom_data.position.x, self.blackboard.odom_data.position.y
                 current_coordinates = np.array([x_curr, y_curr])
                 remaining_dist = self.dist_to_move - np.linalg.norm(current_coordinates-self.blackboard.move_log[1])
@@ -330,6 +316,9 @@ class move(pt.behaviour.Behaviour):
                     rospy.loginfo(
                         "[MOVE] update: SUCCESS")
                     self.blackboard.move_log = "[update] moved successfully"
+                    return pt.common.Status.SUCCESS
+
+                if self.along_wall and self.blackboard.point_at_min_dist>self.safe_dist_thresh+self.allowance:
                     return pt.common.Status.SUCCESS
 
                 twist_msg.linear.x = self.direction[0]*self.max_linear_vel
@@ -636,7 +625,7 @@ class wall_param_ransac2bb(ptr.subscribers.ToBlackboard):
     Collecting parameters of line associated with each wall using RANSAC on scan filtered data
     """
 
-    def __init__(self, name, topic_name="/scan_filtered", dist_thresh=0.1, iterations=15, thresh_count=15, sigma=1, rf_max_pts=5):
+    def __init__(self, name, topic_name="/scan_filtered", dist_thresh=0.1, iterations=15, thresh_count=15, sigma=1, rf_max_pts=5, wall_priority_thresh=0.8):
         rospy.loginfo(
             "[WALL PARAMETERS RANSAC] __init__")
         super(wall_param_ransac2bb, self).__init__(name=name,
@@ -658,6 +647,9 @@ class wall_param_ransac2bb(ptr.subscribers.ToBlackboard):
         self.rf_max_pts = rf_max_pts
         # maximum distance between two consecutive points to consider them (used in reduction filter)
         self.sigma = sigma
+        # wall found within 'wall_priority_thresh' distance is prioritised to align with
+        self.wall_priority_thresh = wall_priority_thresh
+        self.blackboard.corner_detected = False        
 
     def update(self):
         """
@@ -685,6 +677,18 @@ class wall_param_ransac2bb(ptr.subscribers.ToBlackboard):
                 self.blackboard.line_parameters = RANSAC_get_line_params(
                     points, self.dist_thresh, self.iterations, self.thresh_count)
 
+                # detecting the corner and discarding parent wall
+                line_parameters = self.blackboard.line_parameters
+                line_parameters.sort(key=lambda x: x[0])                
+                for line_param in line_parameters:
+                    if abs(line_param[1]) > 2 and line_param[0] < self.wall_priority_thresh:
+                        self.blackboard.line_parameters = [line_param]
+                        self.blackboard.corner_detected = True
+                        rospy.loginfo(
+                            "[ROTATE] initialise: Corner detected")
+                        break
+                    self.blackboard.corner_detected = False
+
                 self.blackboard.num_walls = len(
                     self.blackboard.line_parameters)
 
@@ -703,7 +707,7 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
 
     def __init__(self, name, topic_name="/scan_filtered", grid_size_x=1, grid_size_y=1.4, grid_width=0.04,
                  occupancy_thresh=0.1, allowed_deviation=0.45, incr=0.01, max_dist=0.1, min_points=5,
-                 sigma=1, rf_max_pts=5, iterations=10, algorithm="ransac"):
+                 sigma=1, rf_max_pts=5, iterations=10, algorithm="ransac", wall_priority_thresh=0.8):
         rospy.loginfo(
             "[WALL PARAMETERS Grid] __init__")
         super(wall_param_grid2bb, self).__init__(name=name,
@@ -738,11 +742,14 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
         # (RANSAC) The number of iterations the RANSAC algorithm will run for
         self.iterations = iterations
         # (RANSAC) number of minimum points required to form a line
-        self.thresh_count = min_points
+        self.thresh_count = min_points*2
         # maximum number of points allowed in a cluster (used in reduction filter)
         self.rf_max_pts = rf_max_pts
         # maximum distance between two consecutive points to consider them (used in reduction filter)
         self.sigma = sigma
+        # wall found within 'wall_priority_thresh' distance is prioritised to align with
+        self.wall_priority_thresh = wall_priority_thresh
+        self.blackboard.corner_detected = False
 
     def update(self):
         """
@@ -791,6 +798,16 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
                         # get line parameters from the occupied cell coordinates
                         self.blackboard.line_parameters = online_get_line_params(
                             array_of_occupied_cells, self.e, self.incr, self.max_dist, self.k)
+
+                # detecting the corner and discarding parent wall
+                line_parameters = self.blackboard.line_parameters
+                line_parameters.sort(key=lambda x: x[0])                
+                for line_param in line_parameters:
+                    if abs(line_param[1]) > 2 and line_param[0] < self.wall_priority_thresh:
+                        self.blackboard.line_parameters = [line_param]
+                        self.blackboard.corner_detected = True
+                        break
+                    self.blackboard.corner_detected = False
 
                 self.blackboard.num_walls = len(
                     self.blackboard.line_parameters)
