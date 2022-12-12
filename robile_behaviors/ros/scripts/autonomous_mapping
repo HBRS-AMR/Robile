@@ -22,6 +22,7 @@ def create_root():
 
     topics2bb = pt.composites.Sequence("Topics2BB")
     priorities = pt.composites.Selector("Priorities")
+    navigation_stack = pt.composites.Sequence("NavigationStack")    
 
     battery2bb = batteryStatus2bb(name="Battery2BB",
                                    topic_name="/mileage",
@@ -31,6 +32,15 @@ def create_root():
                                            safe_range=0.35)
     odom_data2bb = odom2bb(name="OdomData2BB",
                            topic_name="/odom")
+
+    mapping = pt.composites.Sequence("Map")
+    localisation = pt.composites.Sequence("Localisation")
+    navigation = pt.composites.Sequence("Navigate")
+
+    gmapping = launchNodes(name="GMapping", launch_file="gmapping.launch", mapping_time_out=150)
+    save_map = saveMap(name="SaveMap", map_name="sim_env")
+    amcl = launchNodes(name="AMCL", launch_file="amcl.launch")
+    move_base_dwa = launchNodes(name="MoveBaseDWA", launch_file="move_base_dwa.launch")
 
     wait_for_battery = pt.meta.success_is_failure(ptr.subscribers.WaitForData)(name="WaitForBattery",
                                                                                topic_name='/mileage',
@@ -69,6 +79,11 @@ def create_root():
     rotate_platform = rotate(name="RotatePlatform",
                              topic_name="/cmd_vel", max_ang_vel=0.2)
 
+    is_mapping_complete = pt.blackboard.CheckBlackboardVariable(
+        name="MappingComplete?",
+        variable_name="move_base_dwa_status",
+        expected_value="STOP"
+    )
     get_publish_wall_params = pt.composites.Sequence("GetPublishWallParams")
 
     grid_status2bb = gridOccupancyStatus2bb(
@@ -97,18 +112,23 @@ def create_root():
     idle = pt.behaviours.Running(name="Idle")
 
     # tree formation
-    root.add_children([topics2bb, priorities])
+    root.add_children([topics2bb, navigation_stack, priorities])
 
-    topics2bb.add_children([battery2bb, laser_scan2bb, odom_data2bb])
+    topics2bb.add_children([laser_scan2bb, odom_data2bb, battery2bb])
+    navigation_stack.add_children([mapping, localisation, navigation])
     priorities.add_children(
         [wait_for_battery, wait_for_laser_scan, wait_for_odom, collison_emergency, battery_emergency, move_align_follow, idle])
+
+    mapping.add_children([gmapping, save_map])
+    localisation.add_child(amcl)
+    navigation.add_children([move_base_dwa])
 
     collison_emergency.add_children(
         [is_no_collison, stop_platform, avoid_collison])
     battery_emergency.add_children([is_battery_ok, rotate_platform])
 
     move_align_follow.add_children(
-        [get_publish_wall_params, move_towards_wall, get_publish_wall_params, align_to_wall, get_publish_wall_params, move_along_wall])
+        [is_mapping_complete, get_publish_wall_params, move_towards_wall, get_publish_wall_params, align_to_wall, get_publish_wall_params, move_along_wall])
 
     get_publish_wall_params.add_children(
         [grid_status2bb, wall_params2bb, is_wall_param_available, publish_wall_params])

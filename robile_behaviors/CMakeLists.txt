@@ -11,6 +11,7 @@ COMPONENTS
   tf
   sensor_msgs
   std_msgs
+  rospy
 )
 
 catkin_python_setup()
@@ -20,6 +21,6 @@ install(DIRECTORY ros/launch
 )
 
 
-catkin_install_python(PROGRAMS ros/scripts/wall_following ros/scripts/marker_line ros/scripts/battery_voltage_publisher
+catkin_install_python(PROGRAMS ros/scripts/wall_following ros/scripts/autonomous_mapping ros/scripts/marker_line ros/scripts/battery_voltage_publisher
    DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}/ros/src/behavior_tree
 )

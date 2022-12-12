@@ -4,6 +4,8 @@ import py_trees as pt
 import py_trees_ros as ptr
 
 import rospy
+import roslaunch
+import rospkg
 from tf.transformations import euler_from_quaternion
 
 import std_msgs.msg
@@ -11,12 +13,15 @@ from geometry_msgs.msg import Twist, Point32
 from std_msgs.msg import Float32
 from sensor_msgs.msg import LaserScan, Joy, PointCloud
 from nav_msgs.msg import Odometry
-import numpy as np
+
+import os
 import time
+import numpy as np
+
 from behavior_tree.utils import *
 
 
-class publish_lines(pt.behaviour.Behaviour):
+class publishLines(pt.behaviour.Behaviour):
 
     """
     publishes line parameters (to plot lines in rviz)
@@ -29,7 +34,7 @@ class publish_lines(pt.behaviour.Behaviour):
         self.topic_name = topic_name
         self.blackboard = pt.blackboard.Blackboard()
 
-        super(publish_lines, self).__init__(name)
+        super(publishLines, self).__init__(name)
 
     def setup(self, timeout):
         """
@@ -88,6 +93,7 @@ class rotate(pt.behaviour.Behaviour):
         self.blackboard = pt.blackboard.Blackboard()
         self.max_ang_vel = max_ang_vel  # units: rad/sec
         self.to_align = to_align
+        self.log_start_time = True
         self.align_threshold = align_threshold
         # wall found within 'wall_priority_thresh' distance is prioritised to align with
         self.wall_priority_thresh = wall_priority_thresh
@@ -348,13 +354,14 @@ class move(pt.behaviour.Behaviour):
         """
         rospy.loginfo("[MOVE] terminate: publishing zero linear velocity")
         twist_msg = Twist()
-        twist_msg.linear.x = 0
-        twist_msg.linear.y = 0
-        self.cmd_vel_pub.publish(twist_msg)
+        if not self.along_wall:
+            twist_msg.linear.x = 0
+            twist_msg.linear.y = 0
+            self.cmd_vel_pub.publish(twist_msg)
         return super().terminate(new_status)
 
 
-class stop_motion(pt.behaviour.Behaviour):
+class stopMotion(pt.behaviour.Behaviour):
 
     """
     Stops the robot when it is controlled using joystick or by cmd_vel command
@@ -366,7 +373,7 @@ class stop_motion(pt.behaviour.Behaviour):
         self.cmd_vel_topic = topic_name1
         self.joy_topic = topic_name2
 
-        super(stop_motion, self).__init__(name)
+        super(stopMotion, self).__init__(name)
 
     def setup(self, timeout):
         """
@@ -422,7 +429,110 @@ class stop_motion(pt.behaviour.Behaviour):
         return super().terminate(new_status)
 
 
-class battery_status2bb(ptr.subscribers.ToBlackboard):
+class launchNodes(pt.behaviour.Behaviour):
+    """
+    to run launch files
+    """
+    def __init__(self, name="LaunchFile", pkg="robile_navigation_demo", launch_file=None, mapping_time_out=300, mapping_dist_thresh=0.2):
+        self.name = name
+        info = "[LAUNCH "+name+"] __init__"
+        rospy.loginfo(info)
+        self.blackboard = pt.blackboard.Blackboard()
+        self.pkg = pkg
+        self.launch_file= launch_file
+        self.mapping_time_out = mapping_time_out
+        self.mapping_dist_thresh = mapping_dist_thresh
+        super(launchNodes, self).__init__(name)
+
+    def setup(self, timeout):
+        """
+        Set up things that should be setup only for one time and which generally might 
+        require time to prevent delay in tree initialisation
+        """
+        info = "[LAUNCH "+self.name+"] setup"
+        rospy.loginfo(info)
+        self.uuid = roslaunch.rlutil.get_or_generate_uuid(None, False)
+        self.rospack = rospkg.RosPack()
+        pkg_path = self.rospack.get_path(self.pkg)
+        roslaunch.configure_logging(self.uuid)
+        self.path = pkg_path+"/ros/launch/"+self.launch_file
+        self.launch = roslaunch.parent.ROSLaunchParent(self.uuid, [self.path])
+        self.feedback_message = "setup"
+        return True
+
+    def update(self):
+        """
+        Primary function of the behavior is implemented in this method
+        """
+        info = "[LAUNCH "+self.name+"] update"
+        rospy.loginfo(info)
+        if self.launch_file=="gmapping.launch":
+            if self.blackboard.gmapping_status=="START":
+                self.launch.start()
+                self.mapping_start_time = time.time()
+                self.blackboard.gmapping_status = "RUN"
+                info = "[LAUNCH "+self.name+"] update: started"
+                rospy.loginfo(info)
+                return pt.common.Status.RUNNING
+            elif self.blackboard.gmapping_status=="RUN":
+                # current_coordinate = np.array([self.blackboard.odom_data.position.x, self.blackboard.odom_data.position.y])
+                # dist_from_start_coord = np.linalg.norm(self.blackboard.start_coordinate-current_coordinate)
+                current_time = time.time()
+                time_passed = current_time-self.mapping_start_time
+                if time_passed > self.mapping_time_out:
+                    self.blackboard.gmapping_status = "SAVE"
+                    return pt.common.Status.SUCCESS
+                return pt.common.Status.RUNNING
+
+        if self.launch_file=="amcl.launch":
+            if self.blackboard.amcl_status=="START":
+                self.launch.start()
+                self.blackboard.amcl_status = "RUN"
+                info = "[LAUNCH "+self.name+"] update: started"
+                rospy.loginfo(info)
+
+        if self.launch_file=="move_base_dwa.launch":
+            if self.blackboard.move_base_dwa_status=="START":
+                self.launch.start()
+                self.blackboard.move_base_dwa_status = "RUN"
+                info = "[LAUNCH "+self.name+"] update: started"
+                rospy.loginfo(info)
+                return pt.common.Status.RUNNING
+            elif self.blackboard.move_base_dwa_status == "RUN":
+                return pt.common.Status.RUNNING
+        return pt.common.Status.SUCCESS
+
+
+class saveMap(pt.behaviour.Behaviour):
+    """
+    save and load the saved map after 
+    """
+    def __init__(self, name="SaveMap", map_name="sim_env"):
+        rospy.loginfo("[SAVE MAP] __init__")
+        self.map_saved = False
+        self.map_name = map_name
+        self.blackboard = pt.blackboard.Blackboard()
+        self.rospack = rospkg.RosPack()
+        self.map_path = self.rospack.get_path('robile_default_env_config')+'/ros/maps/'+self.map_name
+        super(saveMap, self).__init__(name)
+
+    def update(self):
+        """
+        Primary function of the behavior is implemented in this method
+        """
+        rospy.loginfo("[SAVE MAP] update")
+        if (not self.map_saved) and self.blackboard.gmapping_status=='SAVE':
+            node_description = "rosrun map_server map_saver -f "+self.map_path+" --free 20 --occ 80"
+            os.system(node_description)
+            os.system('rosnode kill /slam_gmapping')
+            os.environ['ROBOT_ENV'] = "maps/" + self.map_name
+            self.map_saved = True
+            self.blackboard.amcl_status = 'START' 
+            self.blackboard.move_base_dwa_status = 'START'
+        return pt.common.Status.SUCCESS 
+
+
+class batteryStatus2bb(ptr.subscribers.ToBlackboard):
 
     """
     Checking battery status
@@ -430,7 +540,7 @@ class battery_status2bb(ptr.subscribers.ToBlackboard):
 
     def __init__(self,  name, topic_name="/mileage", threshold=30.0):
         rospy.loginfo("[BATTERY] __init__")
-        super(battery_status2bb, self).__init__(name=name,
+        super(batteryStatus2bb, self).__init__(name=name,
                                                 topic_name=topic_name,
                                                 topic_type=Float32,
                                                 blackboard_variables={
@@ -442,6 +552,7 @@ class battery_status2bb(ptr.subscribers.ToBlackboard):
         self.blackboard = pt.blackboard.Blackboard()
         self.blackboard.battery_low_warning = False
         self.threshold = threshold
+       
 
     def update(self):
         """
@@ -452,7 +563,7 @@ class battery_status2bb(ptr.subscribers.ToBlackboard):
         """
         rospy.loginfo('[BATTERY] update')
         self.logger.debug("%s.update()" % self.__class__.__name__)
-        status = super(battery_status2bb, self).update()
+        status = super(batteryStatus2bb, self).update()
 
         if status != pt.common.Status.RUNNING:
             if self.blackboard.battery < self.threshold:
@@ -468,7 +579,7 @@ class battery_status2bb(ptr.subscribers.ToBlackboard):
         return status
 
 
-class laser_scan_filtered2bb(ptr.subscribers.ToBlackboard):
+class laserScanFiltered2bb(ptr.subscribers.ToBlackboard):
 
     """
     Checking filtered laser_scan to avoid possible collison
@@ -476,7 +587,7 @@ class laser_scan_filtered2bb(ptr.subscribers.ToBlackboard):
 
     def __init__(self, name, topic_name="/scan_filtered", safe_range=0.4):
         rospy.loginfo("[LASER SCAN] __init__")
-        super(laser_scan_filtered2bb, self).__init__(name=name,
+        super(laserScanFiltered2bb, self).__init__(name=name,
                                                      topic_name=topic_name,
                                                      topic_type=LaserScan,
                                                      blackboard_variables={
@@ -500,13 +611,13 @@ class laser_scan_filtered2bb(ptr.subscribers.ToBlackboard):
         rospy.loginfo(
             "[LASER SCAN] update")
         self.logger.debug("%s.update()" % self.__class__.__name__)
-        status = super(laser_scan_filtered2bb, self).update()
+        status = super(laserScanFiltered2bb, self).update()
 
         if status != pt.common.Status.RUNNING:
             # splitting data into segments to handle possible noises
             segment_size = 20
             scan_data_np_array = np.array(self.blackboard.laser_scan)
-            self.blackboard.laser_scan = "Processed(laser_scan_filtered2bb)"
+            self.blackboard.laser_scan = "Processed(laserScanFiltered2bb)"
             # laser scanner points which are outside the min and max range are assigned zero distance
             scan_data_np_array[scan_data_np_array == 0.0] = 20.0
             scan_data_np_array = scan_data_np_array.reshape(segment_size, -1)
@@ -552,6 +663,11 @@ class odom2bb(ptr.subscribers.ToBlackboard):
                                       )
 
         self.blackboard = pt.blackboard.Blackboard()
+        self.save_initial_pose = True
+        # initialising navigation launch file status
+        self.blackboard.gmapping_status = 'STOP'
+        self.blackboard.amcl_status = 'STOP'
+        self.blackboard.move_base_dwa_status = 'STOP'        
 
     def update(self):
         """
@@ -560,10 +676,14 @@ class odom2bb(ptr.subscribers.ToBlackboard):
         rospy.loginfo("[ODOM] update")
         self.logger.debug("%s.update()" % self.__class__.__name__)
         status_subscribe = super(odom2bb, self).update()
+        if self.save_initial_pose:
+            # self.blackboard.start_coordinate = np.array([self.blackboard.odom_data.position.x, self.blackboard.odom_data.position.y])
+            self.blackboard.gmapping_status = 'START'
+            self.save_initial_pose = False
         return status_subscribe
 
 
-class grid_occupancy_status2bb(ptr.subscribers.ToBlackboard):
+class gridOccupancyStatus2bb(ptr.subscribers.ToBlackboard):
 
     """
     Determining whether the grid consists of sufficient laser scan points
@@ -571,7 +691,7 @@ class grid_occupancy_status2bb(ptr.subscribers.ToBlackboard):
 
     def __init__(self, name, topic_name="/scan_filtered", min_points=100, grid_size_x=1, grid_size_y=1.4):
         rospy.loginfo("[GRID STATUS] __init__")
-        super(grid_occupancy_status2bb, self).__init__(name=name,
+        super(gridOccupancyStatus2bb, self).__init__(name=name,
                                                        topic_name=topic_name,
                                                        topic_type=LaserScan,
                                                        blackboard_variables={
@@ -593,11 +713,11 @@ class grid_occupancy_status2bb(ptr.subscribers.ToBlackboard):
         rospy.loginfo(
             "[GRID STATUS] update")
         self.logger.debug("%s.update()" % self.__class__.__name__)
-        status = super(grid_occupancy_status2bb, self).update()
+        status = super(gridOccupancyStatus2bb, self).update()
 
         if status != pt.common.Status.RUNNING:
             laser_scan_array = np.array(self.blackboard.laser_scan_grid)
-            self.blackboard.laser_scan_grid = "Processed(grid_occupancy_status2bb)"
+            self.blackboard.laser_scan_grid = "Processed(gridOccupancyStatus2bb)"
             angles = np.linspace(
                 self.blackboard.min_angle, self.blackboard.max_angle, laser_scan_array.shape[0])
             laser_sub_cartesian = np_polar2cart(
@@ -619,7 +739,7 @@ class grid_occupancy_status2bb(ptr.subscribers.ToBlackboard):
         return status
 
 
-class wall_param_ransac2bb(ptr.subscribers.ToBlackboard):
+class wallParamRANSAC2bb(ptr.subscribers.ToBlackboard):
 
     """
     Collecting parameters of line associated with each wall using RANSAC on scan filtered data
@@ -628,7 +748,7 @@ class wall_param_ransac2bb(ptr.subscribers.ToBlackboard):
     def __init__(self, name, topic_name="/scan_filtered", dist_thresh=0.1, iterations=15, thresh_count=15, sigma=1, rf_max_pts=5, wall_priority_thresh=0.8):
         rospy.loginfo(
             "[WALL PARAMETERS RANSAC] __init__")
-        super(wall_param_ransac2bb, self).__init__(name=name,
+        super(wallParamRANSAC2bb, self).__init__(name=name,
                                                    topic_name=topic_name,
                                                    topic_type=LaserScan,
                                                    blackboard_variables={
@@ -658,7 +778,7 @@ class wall_param_ransac2bb(ptr.subscribers.ToBlackboard):
         rospy.loginfo(
             "[WALL PARAMETERS RANSAC] update")
         self.logger.debug("%s.update()" % self.__class__.__name__)
-        status_subscribe = super(wall_param_ransac2bb, self).update()
+        status_subscribe = super(wallParamRANSAC2bb, self).update()
 
         if status_subscribe != pt.common.Status.RUNNING:
             if self.blackboard.grid_occupied:
@@ -672,7 +792,7 @@ class wall_param_ransac2bb(ptr.subscribers.ToBlackboard):
                 laser_sub_cartesian = process_data(range_data=np.array(self.blackboard.laser_scan_ransac), max_angle=self.blackboard.max_angle,
                                                    min_angle=self.blackboard.min_angle, max_range=self.blackboard.max_range, min_range=self.blackboard.min_range,
                                                    sigma=self.sigma, rf_max_pts=self.rf_max_pts, reduce_bool=True)
-                self.blackboard.laser_scan_ransac = "Processed(wall_param_ransac2bb)"
+                self.blackboard.laser_scan_ransac = "Processed(wallParamRANSAC2bb)"
                 points = [point for point in laser_sub_cartesian]
                 self.blackboard.line_parameters = RANSAC_get_line_params(
                     points, self.dist_thresh, self.iterations, self.thresh_count)
@@ -699,7 +819,7 @@ class wall_param_ransac2bb(ptr.subscribers.ToBlackboard):
         return status_subscribe
 
 
-class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
+class wallParamGrid2bb(ptr.subscribers.ToBlackboard):
 
     """
     Collecting parameters of line associated with each wall using occupied cells from grid, by optionally using RANSAC or online line extraction algorithm
@@ -710,7 +830,7 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
                  sigma=1, rf_max_pts=5, iterations=10, algorithm="ransac", wall_priority_thresh=0.8):
         rospy.loginfo(
             "[WALL PARAMETERS Grid] __init__")
-        super(wall_param_grid2bb, self).__init__(name=name,
+        super(wallParamGrid2bb, self).__init__(name=name,
                                                  topic_name=topic_name,
                                                  topic_type=LaserScan,
                                                  blackboard_variables={
@@ -758,7 +878,7 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
         rospy.loginfo(
             "[WALL PARAMETERS Grid] update")
         self.logger.debug("%s.update()" % self.__class__.__name__)
-        status_subscribe = super(wall_param_grid2bb, self).update()
+        status_subscribe = super(wallParamGrid2bb, self).update()
 
         if status_subscribe != pt.common.Status.RUNNING:
 
@@ -780,11 +900,11 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
 
                 if self.algorithm == 'online':
                     # get line parameters from the occupied cell coordinates
-                    self.blackboard.laser_scan_grid = "Processed(wall_param_grid2bb)-Online"
+                    self.blackboard.laser_scan_grid = "Processed(wallParamGrid2bb)-Online"
                     self.blackboard.line_parameters = online_get_line_params(
                         array_of_occupied_cells, self.e, self.incr, self.max_dist, self.k)
                 if self.algorithm == 'ransac':
-                    self.blackboard.laser_scan_grid = "Processed(wall_param_grid2bb)-RANSAC"
+                    self.blackboard.laser_scan_grid = "Processed(wallParamGrid2bb)-RANSAC"
                     rospy.loginfo(
                         "[WALL PARAMETERS Grid] update: using RANSAC")
                     # get line parameters from the occupied cell coordinates
@@ -792,7 +912,7 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
                     self.blackboard.line_parameters = RANSAC_get_line_params(
                         points, self.dist_thresh, self.iterations, self.thresh_count)
                     if len(self.blackboard.line_parameters) == 0:
-                        self.blackboard.laser_scan_grid = "Processed(wall_param_grid2bb)-Online"
+                        self.blackboard.laser_scan_grid = "Processed(wallParamGrid2bb)-Online"
                         rospy.loginfo(
                             "[WALL PARAMETERS Grid] update: using Online line detection")
                         # get line parameters from the occupied cell coordinates
@@ -824,4 +944,3 @@ class wall_param_grid2bb(ptr.subscribers.ToBlackboard):
 
         else:
             return status_subscribe
-
