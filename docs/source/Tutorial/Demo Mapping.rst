@@ -20,11 +20,17 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
 
         export ROS_IP=<robile_ip_address>
 
-* Launch the robot
+* Launch the robot (on real robot)
 
   .. code-block:: bash
 
       roslaunch robile_bringup robot.launch
+
+* Launch the robot (in simulation)
+
+  .. code-block:: bash
+
+      roslaunch robile_gazebo robile3_platform.launch
 
 * Run 2D SLAM
 
@@ -35,6 +41,18 @@ This tutorial is a demonstration for creating a  map of an environment using "gm
   .. note::
 
       The map is built using the front laser's only
+
+* In simulation control the robot using teleop keys,
+  
+    .. code-block:: bash
+
+        rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+
+* If `teleop_twist_keyboard` is not installed, 
+  
+    .. code-block:: bash
+
+        sudo apt-get install ros-noetic-teleop-twist-keyboard
 
 * Run the robot using joystick to map an environment
   
