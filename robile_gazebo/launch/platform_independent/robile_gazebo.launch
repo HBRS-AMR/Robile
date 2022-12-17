@@ -12,7 +12,7 @@
     <arg name="init_pos_x" default="0.0"/>
     <arg name="init_pos_y" default="0.0"/>
     <arg name="init_pos_z" default="0.0"/>
-    <arg name="init_yaw" default="2.0"/>
+    <arg name="init_yaw" default="0.0"/>
 
     <!-- GAZEBO SETUP ARGUMENTS -->
     <arg name="use_sim_time" default="true"/>
@@ -27,7 +27,6 @@
 
     <!-- launch gazebo with empty world -->
     <include file="$(find gazebo_ros)/launch/empty_world.launch">
-    	<arg name="world_name" value="$(find robile_default_env_config)/worlds/corridor_C069_world.world"/> 
         <arg name="paused" value="$(arg paused)"/>
         <arg name="use_sim_time" value="$(arg use_sim_time)"/>
         <arg name="gui" value="$(arg gazebo_gui)"/>

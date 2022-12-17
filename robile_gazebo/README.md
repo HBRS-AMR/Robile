@@ -9,15 +9,17 @@ In addition to a few ROS dependencies, this package also depends on the followin
 1. [kelo_tulip](https://github.com/kelo-robotics/kelo_tulip)
 2. [robile_description](https://github.com/kelo-robotics/robile_description)
 
-Assuming you have a catkin workspace at `~/catkin_ws` and `kelo_tulip` repository, execute the below commands to install the simulator and its dependencies
+Assuming you have a catkin workspace at `~/catkin_ws`, execute the below commands to install the simulator and its dependencies
 
 ~~~ sh
 sudo apt install ros-$ROS_DISTRO-controller-manager ros-$ROS_DISTRO-effort-controllers ros-$ROS_DISTRO-velocity-controllers ros-$ROS_DISTRO-joint-state-controller ros-$ROS_DISTRO-gazebo-ros ros-$ROS_DISTRO-gazebo-ros-control
 
 cd ~/catkin_ws/src
+git clone https://github.com/kelo-robotics/kelo_tulip.git
 git clone https://github.com/kelo-robotics/robile_description.git
+git clone https://github.com/kelo-robotics/robile_gazebo.git
 
-catkin build kelo_tulip
+catkin build kelo_tulip # you will need to enter your password for the kelo_tulip build to complete
 
 catkin build robile_description robile_gazebo
 source ~/catkin_ws/devel/setup.bash

@@ -40,6 +40,8 @@ License LGPL and BSD license along with this program.
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="2_wheel_config" >
 
+    <xacro:arg name="movable_joints" default="true"/>
+
     <!-- Include desired robile bricks -->
     <xacro:include filename="$(find robile_description)/urdf/robile_bricks/robile_active_wheel_brick.urdf.xacro" />
     <xacro:include filename="$(find robile_description)/urdf/robile_bricks/robile_passive_wheel_brick.urdf.xacro" />
@@ -49,11 +51,11 @@ License LGPL and BSD license along with this program.
     <link name="base_link"/>
 
     <!-- Build platform using robile bricks -->
-    <xacro:robile_passive_wheel_brick name="robile_1" parent="base_link">
+    <xacro:robile_passive_wheel_brick name="robile_1" parent="base_link" movable_joints="$(arg movable_joints)">
         <origin xyz="0.233 0.1165 0.05" rpy="0.0 0.0 0.0"/>
     </xacro:robile_passive_wheel_brick>
 
-    <xacro:robile_passive_wheel_brick name="robile_2" parent="base_link">
+    <xacro:robile_passive_wheel_brick name="robile_2" parent="base_link" movable_joints="$(arg movable_joints)">
         <origin xyz="0.233 -0.1165 0.05" rpy="0.0 0.0 0.0"/>
     </xacro:robile_passive_wheel_brick>
 
@@ -65,11 +67,11 @@ License LGPL and BSD license along with this program.
         <origin xyz="0.0 -0.1165 0.05" rpy="0.0 0.0 0.0"/>
     </xacro:robile_master_battery_brick>
 
-    <xacro:robile_active_wheel_brick name="robile_5" parent="base_link">
+    <xacro:robile_active_wheel_brick name="robile_5" parent="base_link" movable_joints="$(arg movable_joints)">
         <origin xyz="-0.233 0.1165 0.05" rpy="0.0 0.0 0.0"/>
     </xacro:robile_active_wheel_brick>
 
-    <xacro:robile_active_wheel_brick name="robile_6" parent="base_link">
+    <xacro:robile_active_wheel_brick name="robile_6" parent="base_link" movable_joints="$(arg movable_joints)">
         <origin xyz="-0.233 -0.1165 0.05" rpy="0.0 0.0 0.0"/>
     </xacro:robile_active_wheel_brick>
 </robot>

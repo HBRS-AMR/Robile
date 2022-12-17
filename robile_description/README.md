@@ -25,6 +25,8 @@ The above ROBILE bricks can be used to construct customized platform's. We descr
     <?xml version='1.0'?>
     <robot xmlns:xacro="http://ros.org/wiki/xacro" name="simple_config" >
 
+        <xacro:arg name="movable_joints" default="true"/>
+
         <!-- Include desired robile bricks -->
         <xacro:include filename="$(find robile_description)/urdf/robile_bricks/robile_active_wheel_brick.urdf.xacro" />
         <xacro:include filename="$(find robile_description)/urdf/robile_bricks/robile_passive_wheel_brick.urdf.xacro" />
@@ -42,19 +44,19 @@ Therefore we instantiate the ROBILE bricks as follows. We can use arbitrary name
 
 ~~~ xml
 <!-- Build platform using robile bricks -->
-<xacro:robile_passive_wheel_brick name="robile_1" parent="base_link">
+<xacro:robile_passive_wheel_brick name="robile_1" parent="base_link" movable_joints="$(arg movable_joints)">
     <origin xyz="0.1165 0.1165 0.05" rpy="0.0 0.0 0.0"/>
 </xacro:robile_passive_wheel_brick>
 
-<xacro:robile_passive_wheel_brick name="robile_2" parent="base_link">
+<xacro:robile_passive_wheel_brick name="robile_2" parent="base_link" movable_joints="$(arg movable_joints)">
     <origin xyz="0.1165 -0.1165 0.05" rpy="0.0 0.0 0.0"/>
 </xacro:robile_passive_wheel_brick>
 
-<xacro:robile_active_wheel_brick name="robile_3" parent="base_link">
+<xacro:robile_active_wheel_brick name="robile_3" parent="base_link" movable_joints="$(arg movable_joints)">
     <origin xyz="-0.1165 -0.1165 0.05" rpy="0.0 0.0 0.0"/>
 </xacro:robile_active_wheel_brick>
 
-<xacro:robile_active_wheel_brick name="robile_4" parent="base_link">
+<xacro:robile_active_wheel_brick name="robile_4" parent="base_link" movable_joints="$(arg movable_joints)">
     <origin xyz="-0.1165 0.1165 0.05" rpy="0.0 0.0 0.0"/>
 </xacro:robile_active_wheel_brick>
 ~~~
@@ -67,6 +69,8 @@ The complete platform configuration file `robots/simple_config.urdf.xacro` would
 <?xml version='1.0'?>
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="simple_config" >
 
+    <xacro:arg name="movable_joints" default="true"/>
+
     <!-- Include desired robile bricks -->
     <xacro:include filename="$(find robile_description)/urdf/robile_bricks/robile_active_wheel_brick.urdf.xacro" />
     <xacro:include filename="$(find robile_description)/urdf/robile_bricks/robile_passive_wheel_brick.urdf.xacro" />
@@ -74,19 +78,19 @@ The complete platform configuration file `robots/simple_config.urdf.xacro` would
     <link name="base_link"/>
 
     <!-- Build platform using robile bricks -->
-    <xacro:robile_passive_wheel_brick name="robile_1" parent="base_link">
+    <xacro:robile_passive_wheel_brick name="robile_1" parent="base_link" movable_joints="$(arg movable_joints)">
         <origin xyz="0.1165 0.1165 0.05" rpy="0.0 0.0 0.0"/>
     </xacro:robile_passive_wheel_brick>
 
-    <xacro:robile_passive_wheel_brick name="robile_2" parent="base_link">
+    <xacro:robile_passive_wheel_brick name="robile_2" parent="base_link" movable_joints="$(arg movable_joints)">
         <origin xyz="0.1165 -0.1165 0.05" rpy="0.0 0.0 0.0"/>
     </xacro:robile_passive_wheel_brick>
 
-    <xacro:robile_active_wheel_brick name="robile_3" parent="base_link">
+    <xacro:robile_active_wheel_brick name="robile_3" parent="base_link" movable_joints="$(arg movable_joints)">
         <origin xyz="-0.1165 -0.1165 0.05" rpy="0.0 0.0 0.0"/>
     </xacro:robile_active_wheel_brick>
 
-    <xacro:robile_active_wheel_brick name="robile_4" parent="base_link">
+    <xacro:robile_active_wheel_brick name="robile_4" parent="base_link" movable_joints="$(arg movable_joints)">
         <origin xyz="-0.1165 0.1165 0.05" rpy="0.0 0.0 0.0"/>
     </xacro:robile_active_wheel_brick>
 

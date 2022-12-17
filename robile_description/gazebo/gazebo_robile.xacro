@@ -40,11 +40,20 @@ License LGPL and BSD license along with this program.
 
 <robot xmlns:xacro="http://ros.org/wiki/xacro" name="robile_platform_gazebo">
 
+    <!-- Args are global and hence all included xacro files will also receive them 
+    https://github.com/ros/xacro/issues/204#issuecomment-852096062 -->
     <xacro:arg name="platform_config" default="" />
+    <xacro:arg name="movable_joints" default="true" />
 
     <!-- Include the xacro file to instantiate the robot -->
     <xacro:include filename="$(find robile_description)/robots/$(arg platform_config).urdf.xacro" />
 
-    <!-- Include the xacro file to start gazebo ros control plugin -->
-    <xacro:include filename="$(find robile_description)/gazebo/gazebo_ros_control.xacro" />
+    <xacro:if value="$(arg movable_joints)">
+        <!-- Include the xacro file to start gazebo ros control plugin -->
+        <xacro:include filename="$(find robile_description)/gazebo/gazebo_ros_control.xacro" />
+    </xacro:if>
+    <xacro:unless value="$(arg movable_joints)">
+        <!-- Include the xacro file to start gazebo ros planar move plugin -->
+        <xacro:include filename="$(find robile_description)/gazebo/gazebo_ros_planar_move.xacro" />
+    </xacro:unless>
 </robot>

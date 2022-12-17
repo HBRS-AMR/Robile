@@ -40,27 +40,37 @@ License LGPL and BSD license along with this program.
 
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
 
-    <xacro:macro name="kelo_drive_wheel" params="name parent *origin">
+    <xacro:macro name="kelo_drive_wheel" params="name parent *origin movable_joints:=true">
 
         <xacro:include filename="$(find robile_description)/urdf/base_macros/common.xacro" />
 
-        <joint name="${name}_joint" type="continuous">
-            <xacro:insert_block name="origin" />
-            <axis xyz="0 1 0"/>
-            <parent link="${parent}"/>
-            <child link="${name}_link" />
-        </joint>
-
-        <transmission name="${name}_transmission">
-            <type>transmission_interface/SimpleTransmission</type>
-            <joint name="${name}_joint">
-                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+        <xacro:if value="${movable_joints}">
+            <joint name="${name}_joint" type="continuous">
+                <xacro:insert_block name="origin" />
+                <axis xyz="0 1 0"/>
+                <parent link="${parent}"/>
+                <child link="${name}_link" />
             </joint>
-            <actuator name="${name}_motor">
-                <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
-                <mechanicalReduction>1</mechanicalReduction>
-            </actuator>
-        </transmission>
+
+            <transmission name="${name}_transmission">
+                <type>transmission_interface/SimpleTransmission</type>
+                <joint name="${name}_joint">
+                    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                </joint>
+                <actuator name="${name}_motor">
+                    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+                    <mechanicalReduction>1</mechanicalReduction>
+                </actuator>
+            </transmission>
+        </xacro:if>
+        <xacro:unless value="${movable_joints}">
+            <joint name="${name}_joint" type="fixed">
+                <xacro:insert_block name="origin" />
+                <axis xyz="0 1 0"/>
+                <parent link="${parent}"/>
+                <child link="${name}_link" />
+            </joint>
+        </xacro:unless>
 
         <link name="${name}_link">
             <visual>
