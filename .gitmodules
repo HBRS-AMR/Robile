@@ -1,3 +1,9 @@
 [submodule "kelo_tulip"]
 	path = kelo_tulip
 	url = https://github.com/mas-group/kelo_tulip.git
+[submodule "robile_description"]
+	path = robile_description
+	url = https://github.com/mas-group/robile_description.git
+[submodule "robile_gazebo"]
+	path = robile_gazebo
+	url = https://github.com/mas-group/robile_gazebo.git
