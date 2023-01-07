@@ -36,7 +36,7 @@ def generate_launch_description():
             node_executable='scan_to_scan_filter_chain',
             node_name='laser_filter',
             output='screen',
-            parameters=[{'command': 'load', '$(find robile_navigation_demo)/ros/config/laser_sick_config.yaml'}]
+            parameters=[{'command': 'load', 'file': '$(find robile_navigation_demo)/ros/config/laser_sick_config.yaml'}]
         )
 
     robot_description = SetEnvironmentVariable(

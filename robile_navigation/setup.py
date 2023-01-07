@@ -2,7 +2,7 @@ from setuptools import setup
 import os
 from glob import glob
 
-package_name = 'robile_bringup'
+package_name = 'robile_navigation'
 
 setup(
     name=package_name,
