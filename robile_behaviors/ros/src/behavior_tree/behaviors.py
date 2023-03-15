@@ -1,4 +1,4 @@
-#! /usr/bin/env python
+#! /usr/bin/env python3
 
 import py_trees as pt
 import py_trees_ros as ptr
