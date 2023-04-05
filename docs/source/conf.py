@@ -18,8 +18,8 @@
 # -- Project information -----------------------------------------------------
 
 project = 'robile-amr'
-copyright = '2022, Malika Warunamal Navaratna'
-author = 'Malika Warunamal Navaratna'
+copyright = '2023'
+author = 'Malika Navaratna, Kishan Sawant'
 
 # The full version, including alpha/beta/rc tags
 release = '0.1'

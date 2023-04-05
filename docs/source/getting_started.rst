@@ -10,9 +10,9 @@ Install Ubuntu
 
 The repository and its related components have been tested under the following Ubuntu distributions:
 
-- ROS Noetic: Ubuntu 20.04
+- Ubuntu 20.04 (ROS2 version: Rolling) 
 
-If you do not have a Ubuntu distribution on your computer you can download it `here <https://ubuntu.com/download/alternative-downloads>`_.
+If you do not have a Ubuntu distribution on your computer you can download it `here <https://releases.ubuntu.com/focal/>`_.
 
 .. _git_version_control:
 
@@ -46,81 +46,90 @@ Git - Version Control
   If you have never worked with git before, we recommend to go through the
   `basic git tutorial <http://excess.org/article/2008/07/ogre-git-tutorial/>`_.
 
-.. .. _getting_started_docker:
-
-.. Docker (Recommended)
-.. ====================
-
-.. To be able to use our software independent of the operating system and/or ROS 
-.. distribution, it is recommended to use docker. You can follow 
-.. :ref:`this tutorial <docker>` to use docker.
-
 .. _robot_operating_system:
 
 ROS - Robot Operating System
 ============================
 
-* Install ROS
+* Install ROS2
 
-  The repository has been tested successfully with the following ROS distributions.
-  Use the link behind a ROS distribution to get to the particular
-  `ROS Noetic installation instructions <http://wiki.ros.org/noetic/Installation/Ubuntu>`_.
+  The repository has been tested successfully with the following ROS2 rolling distribution.
+  Instructions to install ROS2 can be found `here <https://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html>`_.
 
   .. note::
-    Do not forget to update your .bashrc!
+    For convenience, adding the following line in the .bashrc file (located in home location) is recommended: source /opt/ros/rolling/setup.bash
+    If multiple ROS distributions, you can add aliases to the .bashrc file to switch between them.
 
-* ROS Tutorials
+* ROS2 Tutorials
 
-  If you have never worked with ROS before, we recommend to go through
-  `the beginner tutorials provided by ROS <http://wiki.ros.org/ROS/Tutorials>`_.
-
-  In order to understand at least the different core components of ROS, you have to start from tutorial 1 ("Installing and Configuring Your ROS Environment") till tutorial 7 ("Understanding ROS Services and Parameters").
+  If you have never worked with ROS before, it is recommended to go through
+  `the beginner tutorials provided by ROS2 <https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_.
 
 .. _setup_catkin_workspace:
 
-Setup catkin workspace
-=========================
+Dependent packages
+==================
 
-* Create a catkin workspace
+Install following packages on which the repositories are depending on:
 
   .. code-block:: bash
 
-    source /opt/ros/noetic/setup.bash
-    mkdir -p ~/catkin_ws_AMR/src  
-    cd ~/catkin_ws_AMR
-    catkin build
+    sudo apt-get install ros-rolling-gazebo-ros ros-rolling-xacro
 
-* Clone and compile the repository on ROBILE
+Setup colcon workspace
+=========================
+
+*   Colcon is the build system used by ROS2. It is recommended to install it as well by following the instructions `here <https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_. 
+
+*   Create a new workspace (make sure to source the setup.bash file in every terminal if not already added to the .bashrc file )
+
+    .. code-block:: bash
+
+      mkdir -p ~/colcon_ws_AMR/src
+      cd ~/colcon_ws_AMR
+      colcon build
+
+* Clone and build the repositories from the HBRS-AMR group
 
   First of all you have to clone the repository.
 
   .. code-block:: bash
 
-    cd ~/catkin_ws_AMR/src  
-    git clone --recurse-submodules https://github.com/HBRS-AMR/Robile.git  
+    cd ~/catkin_ws_AMR/src 
+    git clone -b rolling git@github.com:HBRS-AMR/Robile.git
+    git clone -b rolling git@github.com:HBRS-AMR/robile_description.git
+
+  Build the packages and source the workspace before continuing (as robile_gazebo depends on robile_description).
+
+  .. code-block:: bash
+
+    cd ~/catkin_ws_AMR
+    colcon build
+    source ~/catkin_ws_AMR/install/local_setup.bash
+
+  Continue with cloning the other repositories:
+
+  .. code-block:: bash
+    cd ~/catkin_ws_AMR/src
+    git clone -b rolling git@github.com:HBRS-AMR/robile_gazebo.git
+    git clone -b rolling git@github.com:HBRS-AMR/kelo_tulip.git
 
   Then go on with installing further external dependencies:
 
   .. code-block:: bash
 
     cd ~/catkin_ws_AMR/src
-    git clone https://github.com/splintered-reality/py_trees_ros.git  
+    git clone -b devel git@github.com:splintered-reality/py_trees_ros.git  
 
-  Clone any other project specific repositories, followed by building the packages and sourcing the workspace.
-
-  .. code-block:: bash
-
-    catkin build 
-    cd ~/catkin_ws_AMR/src/Robile
-    source ~/catkin_ws_AMR/devel/setup.bash
-
-  The last command should be added to the ~/.bashrc file so that they do not need to be executed everytime you open a new terminal.
-
-  And finally compile the repository:
+  Build the packages and source the workspace after cloning required repositories.
 
   .. code-block:: bash
 
     cd ~/catkin_ws_AMR
-    catkin build
+    colcon build
+    source ~/catkin_ws_AMR/install/local_setup.bash
+
+  .. note::
+    While kelo_tulip package is building and if it looks stuck, then please enter the password of your syatem and press enter. This allows to build with sudo privileges.
 
   If no errors appear everything is ready to use. Great job!
