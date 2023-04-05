@@ -65,7 +65,7 @@ ROS - Robot Operating System
   If you have never worked with ROS before, it is recommended to go through
   `the beginner tutorials provided by ROS2 <https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_.
 
-.. _setup_catkin_workspace:
+.. _setup_colcon_workspace:
 
 Dependent packages
 ==================
@@ -95,7 +95,7 @@ Setup colcon workspace
 
   .. code-block:: bash
 
-    cd ~/catkin_ws_AMR/src 
+    cd ~/colcon_ws_AMR/src 
     git clone -b rolling git@github.com:HBRS-AMR/Robile.git
     git clone -b rolling git@github.com:HBRS-AMR/robile_description.git
 
@@ -103,14 +103,14 @@ Setup colcon workspace
 
   .. code-block:: bash
 
-    cd ~/catkin_ws_AMR
+    cd ~/colcon_ws_AMR
     colcon build
-    source ~/catkin_ws_AMR/install/local_setup.bash
+    source ~/colcon_ws_AMR/install/local_setup.bash
 
   Continue with cloning the other repositories:
 
   .. code-block:: bash
-    cd ~/catkin_ws_AMR/src
+    cd ~/colcon_ws_AMR/src
     git clone -b rolling git@github.com:HBRS-AMR/robile_gazebo.git
     git clone -b rolling git@github.com:HBRS-AMR/kelo_tulip.git
 
@@ -118,16 +118,16 @@ Setup colcon workspace
 
   .. code-block:: bash
 
-    cd ~/catkin_ws_AMR/src
+    cd ~/colcon_ws_AMR/src
     git clone -b devel git@github.com:splintered-reality/py_trees_ros.git  
 
   Build the packages and source the workspace after cloning required repositories.
 
   .. code-block:: bash
 
-    cd ~/catkin_ws_AMR
+    cd ~/colcon_ws_AMR
     colcon build
-    source ~/catkin_ws_AMR/install/local_setup.bash
+    source ~/colcon_ws_AMR/install/local_setup.bash
 
   .. note::
     While kelo_tulip package is building and if it looks stuck, then please enter the password of your syatem and press enter. This allows to build with sudo privileges.
