@@ -57,8 +57,8 @@ ROS - Robot Operating System
   Instructions to install ROS2 can be found `here <https://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html>`_.
 
   .. note::
-    For convenience, adding the following line in the .bashrc file (located in home location) is recommended: source /opt/ros/rolling/setup.bash
-    If multiple ROS distributions, you can add aliases to the .bashrc file to switch between them.
+    For convenience, adding the following line in the .bashrc file (located in home location) is recommended: <source /opt/ros/rolling/setup.bash> (without the < >).
+    If multiple ROS distributions are being used, then aliases can be used source particular distribution in the .bashrc file.
 
 * ROS2 Tutorials
 
@@ -67,21 +67,21 @@ ROS - Robot Operating System
 
 .. _setup_colcon_workspace:
 
-Dependent packages
+Dependencies
 ==================
 
-Install following packages on which the repositories are depending on:
+Install following packages on which are the dependencies of the repositories in the HBRS-AMR group:
 
   .. code-block:: bash
 
-    sudo apt-get install ros-rolling-gazebo-ros ros-rolling-xacro
+    sudo apt-get install ros-rolling-gazebo-ros ros-rolling-xacro ros-rolling-tf2-geometry-msgs
 
 Setup colcon workspace
 =========================
 
 *   Colcon is the build system used by ROS2. It is recommended to install it as well by following the instructions `here <https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_. 
 
-*   Create a new workspace (make sure to source the setup.bash file in every terminal if not already added to the .bashrc file )
+*   Create a new workspace (make sure to source the setup.bash file in every terminal if not already added to the .bashrc file). If you are using multiple ROS distributions, then it is recommended to create a separate workspace for each distribution.
 
     .. code-block:: bash
 
@@ -130,6 +130,6 @@ Setup colcon workspace
     source ~/colcon_ws_AMR/install/local_setup.bash
 
   .. note::
-    While kelo_tulip package is building and if it looks stuck, then please enter the password of your syatem and press enter. This allows to build with sudo privileges.
+    While kelo_tulip package is building and if it looks stuck, please enter the password of your system and press enter. This allows to build with sudo privileges.
 
   If no errors appear everything is ready to use. Great job!

@@ -1,157 +1,79 @@
-Worksheet 01: Assembling the ROBILE platform
+Worksheet 01: ROS2 Nodes, Topics, Frames (TF) and URDF
 ====================================
 
-Objectives
-----------
-* To get hands on experience in assembling the robot in different configuration and to appreciate its modularity
-* To learn various forms of communication with the platform
+System setup:
+-------------
+The instructions to set-up the system can be found [here](https://robile-amr.readthedocs.io/en/rolling/getting_started.html)
+Please make sure the version of the documentation is "rolling". It can be found in the left bottom corner of the documentation page. If any issue is found while setting up the system, please contact the teaching assistant.
 
-Introduction
-----------
-
-### Overview of Robile platform components:
-Robile platform is composed of combination of cuboid structures, named as `bricks`.  From the top view, every edge of the brick is of length `233 mm`. Different forms of bricks are,
-* Active wheel brick:  
-It consists of a pair of independently powered active wheel units which have same axis of rotation and a common pivot axis. It consists of input and output ports for power and ethercat cables  
-<img src="../bitmaps/active_wheel.png" width="200" height="200"> 
-<!-- ![Active wheel brick](../bitmaps/active_wheel.png) -->
-
-
-* Passive wheel brick:   
-It is made of a single passive castor wheel unit. However, the wheels are not powered and are free to rotate about the axis of rotation and the pivot axis   
-<img src="../bitmaps/passive_wheel.png" width="200" height="200"> 
-<!-- ![Passive wheel brick](../bitmaps/passive_wheel.png) -->
-
-
-> Bottom view of active and passive wheel bricks:
-<!-- ![Active-Passive wheel](../bitmaps/bottom_view.png) -->
-<img src="../bitmaps/bottom_view.png" width="250" height="350">
-
-* Battery brick:  
-It powers the wheels and CPU of the platform. It consists of emergency stop button, LED dislay, ethercat and power cable ports. It does not have any wheel units  
-<img src="../bitmaps/battery.png" width="200" height="200">  
-<!-- ![Battery brick](../bitmaps/battery.png) -->
-
-* CPU brick:  
-It consists of Intel(R) Core(TM) i7-8559U CPU, which is used to integrate all sensors and process and store data. It consists of ports for HDMI, USB, ethercat and power cable connection.  It does not have any wheel units   
-<img src="../bitmaps/cpu.png" width="200" height="200"> 
-<!-- ![Battery brick](../bitmaps/cpu.png) -->
-
-
+Recap of running the simulation:
+-------------------------------
 > Note:  
-      Technical details of the platform can be found in this [documentation](https://robile-amr.readthedocs.io/en/main/Hardware/architecture.html)
+      - Make sure to source the `/opt/ros/rolling/setup.bash` in every new terminal.
+      - Buid all the packages as mentioned in the `Getting Started` section of the documentation above.
+      - Verify if the branch is set to `rolling` in all the repositories. If not, please switch to `rolling` branch. The branch can be switched by running `git checkout rolling` command in the repository directory.
+      - Please deactivate `conda` environment if it is activated. The `conda` environment can be deactivated by running `conda deactivate` command in the terminal. To do this globally, set the conda configuration by running `conda config --set auto_activate_base false` command in the terminal. This will deactivate the `conda` environment by default.
 
-### Overview of communication:
-The communication with the robile platform can be established using ethercat, bluetooth and wifi connection. Wifi connection will be used for communication during the project
+### Running robile platform in simulation:
 
-Task
-----
+* The simulation can be launched by running the following command in the terminal:
+```bash 
+ros2 launch robile_gazebo gazebo_4_wheel.launch.py
+```
+* In the rviz, select the configuration from the File->Open Config menu. The configuration file can be found in the `robile_gazebo/config/rviz/robile_rolling.rviz` path.
 
-### Description
-Assemble the Robile platforms in three different configurations as described below. Please keep the orientation of individual bricks consistent with the images given below. A tutorial video for assembling the "Robile2" platform can be found [here](https://www.youtube.com/watch?v=KhVO2T2WNRU)
+* In the gazebo, if the platform is not spawned, please stop the simulation by `Ctrl+C` and launch the simulation again. (Please do not use `Ctrl+Z` to stop the simulation. It will not kill the script but will put it in the background.)
 
-### Summary of items:
+* If the launch file stops by itself or even after pressing `Ctrl+C`, please verify if any process named `gz_server` is running. If it exists, then kill the process by using the PID associated with the process. In the below command, replace the `<PID>` with the PID of the process. The PID can be found by running `ps` command in the terminal:
+```bash
+ps
+kill -9 <PID>
+```
 
-<table class="table table-bordered table-hover table-condensed">
-<thead><tr><th rowspan=2 title="Field #1">Item</th>
-<th colspan=3 title="Field #2">Count</th>
-<tr>
-<th>ROBILE-01</th>
-<th>ROBILE-02</th>
-<th>ROBILE-03</th>
-<!-- <th title="Field #3">FIELD3</th>
-<th title="Field #4">FIELD4</th> -->
-</tr></thead>
-<!-- <tbody><tr>
-<td> </td>
-<td>ROBILE-01</td>
-<td>ROBILE-02</td>
-<td>ROBILE-03</td>
-</tr> -->
-<tr>
-<td>Square brackets</td>
-<td>3</td>
-<td>10</td>
-<td>6</td>
-</tr>
-<tr>
-<td>Slot nuts</td>
-<td>20</td>
-<td>40</td>
-<td>24</td>
-</tr>
-<tr>
-<td>L-brackets</td>
-<td>2</td>
-<td>0</td>
-<td>0</td>
-</tr>
-<tr>
-<td>Ethernet cables</td>
-<td>2</td>
-<td>5</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Ethernet end cable</td>
-<td>1</td>
-<td>1</td>
-<td>1</td>
-</tr>
-<tr>
-<td>Power cables</td>
-<td>2</td>
-<td>5</td>
-<td>3</td>
-</tr>
-<tr>
-<td>Plastic covers</td>
-<td>20</td>
-<td>24</td>
-<td>24</td>
-</tr>
-<tr>
-<td>Square connection plates</td>
-<td>0</td>
-<td>4</td>
-<td>2</td>
-</tr>
-<tr>
-<td>Security head screws</td>
-<td>0</td>
-<td>16</td>
-<td>8</td>
-</tr>
-</tbody></table>
+* Great job! You have successfully launched the simulation. Now, let's move on to the exercises.
+* If you are facing any issue, please post your queries in the lea forum of AMR.
 
-<!-- | Item                     | No per robot |           |           |
-|--------------------------|--------------|-----------|-----------|
-|                          | ROBILE-01    | ROBILE-02 | ROBILE-03 |
-| Square brackets          | 3            | 10        | 6         |
-| Slot nuts                | 20           | 40        | 24        |
-| L-brackets               | 2            | 0         | 0         |
-| Ethernet cables          | 2            | 5         | 3         |
-| Ethernet end cable       | 1            | 1         | 1         |
-| Power cables             | 2            | 5         | 3         |
-| Plastic covers           | 20           | 24        | 24        |
-| Square connection plates | 0            | 4         | 2         |
-| Security head screws     | 0            | 16        | 8         | -->
-### Configuration 01:  
-* Assembling a Robile platform using one battery, one CPU, one active and two passive bricks
-> Robile1 platform:  
-<img src="../bitmaps/robile11.png" width="350" height="250"> 
-<!-- ![Robile-1](../bitmaps/robile1.png) -->
+Exercise-01: Move the Robile platform in simulation
+----------------------------------------------------
 
-### Configuration 02:  
-* Assembling a Robile platform using one battery, one CPU, two active and two passive bricks
+> Objective: to understand the basic structure of ROS2 nodes, topics and messages.
 
-> Robile2 platform: 
-<img src="../bitmaps/robile22.png" width="350" height="250">  
-<!-- ![Robile-2](../bitmaps/robile2.png) -->
+Send velocity commands to the robile platform to move in a particular pattern. The velocity commands can be sent to the `\cmd_vel` topic. This topic accepts `geometry_msgs/msg/Twist` message. The `geometry_msgs/msg/Twist` message has two fields `linear` and `angular`. The `linear` field is of type `geometry_msgs/msg/Vector3` and `angular` field is of type `geometry_msgs/msg/Vector3`. The `geometry_msgs/msg/Vector3` message has three fields `x`, `y` and `z`. The `x` and `y` fields in `linear` field are used to specify the linear velocity in x and y directions respectively. The `z` field in `angular` field is used to specify the angular velocity about z-axis. The `geometry_msgs/msg/Twist` message definition can be found [here](https://docs.ros2.org/foxy/api/geometry_msgs/msg/Twist.html)
 
-### Configuration 03:  
-* Assembling a Robile platform using one battery, one CPU and four active bricks
+### Move in circle:
 
-> Robile3 platform:  
-<img src="../bitmaps/robile333.png" width="350" height="250"> 
-<!-- ![Robile-3](../bitmaps/robile3.png) -->
+Move the robile platform in a circular pattern. Write your implementation in the `robile_control_simple` package placed under `Robile/robile_demos/` path to send velocity commands to the robile platform. Build the package from your workspace in a new terminal. Before building, please source the setup.bash file of ROS as described in the `Getting Started` section of the documentation. After building, source the local_setup.bash file (`source ~/WS_Name/install/local_setup.bash`). Run the `robile_control_simple` node to move the platform in a circular pattern. The node can be run by executing the following command in the terminal, once the simulation is launched and rviz is running:
+
+```bash
+ros2 run robile_control_simple circular_motion_publisher
+```
+
+### Move in square:
+
+Once the platform is successfully moving in a circular pattern, create your own node by following the tutorial from [here](https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html). Setup the package.xml, setup.py and your node file similar to the `robile_control_simple` node. Make the robot move a square pattern instead of circular pattern. Please feel free to use additional python libraries if required.
+
+
+Exercise-02: Move the Robile platform to a goal
+------------------------------------------------
+
+> Objective: to understand different available frames in the system and to transform the goal position from one frame to another.
+
+The robot is associated with different frames which simplifies the task of specifying tasks with different scopes. In the simulation, different frames can be viewed under the `tf` section in rviz. The most frequently used frames are `odom`, `base_link` and `base_laser`. When the robot driver is started, the location of the robot will be fixed as `odom` frame. The `base_link` of the robot is assigned to the centroid of the robot measured in 2D plane. The `base_laser` frame is assigned to the laser sensor of the robot. When the robot driver is started, both `odom` and `base_link` will be overlapping. Generally the `odom` frame will be considered as a fixed frame and `base_link` will be used to provide velocity commands. The environment will be perceived with respect to the `base_laser` frame. This can be transformed to the `base_link` to decide the direction of motion and it can be transformed to the `odom` frame to get the global position of the goals or obstacles. This allows to continuously update velocity commands based on the the perception data at the first instance and allows to plan path without active perception.
+
+### Move to a goal:
+
+<img src="../bitmaps/robile_ws0_ex_02" width="350" height="250">
+
+Consider a situation where the robot has to reach a particular location where an object is placed. The robot perceives it with respect to the `base_laser` frame, the robot has to be move towards the goal location. The goal location can be transfomed with respect to the `base_link` frame and also with respect to the `odom` frame (as they might not be overlapping if the robot has already moved after starting its drivers). The transformed goal with respect to the `base_link` can be used to provide the direction for `cmd_vel` and the transformed goal with respect to the `odom` frame can be used to monitor if the robot's `base_link` has reached the goal. In the above image, the dotted line arrow represents the perceived goal with respect to the `base_laser` frame. The solid line arrow represents the transformed goal with respect to the `base_link` frame. As `cmd_vel` is published with respect to the `base_link`, the robot has to be moved along the solid line arrow to reach the goal location. 
+
+
+Write your implementation in the `robile_reach_goal` package placed under `Robile/robile_demos/` path to complete the following tasks:
+* Transform the goal location from `base_laser` frame to `base_link` frame.
+* Transform the goal location from `base_laser` frame to `odom` frame.
+* Use the transformed goal location with respect to `base_link` frame to decide values for the `\cmd_vel` topic.
+* Use the transformed goal location with respect to `odom` frame to monitor if the robot has reached the goal location.
+
+Excercise-03: Add a new sensor to the Robile platform
+------------------------------------------------------
+
+> Objective: to understand the structure of a sensor plugin and to add a new sensor to the platform.
