@@ -74,7 +74,7 @@ Install following packages on which are the dependencies of the repositories in 
 
   .. code-block:: bash
 
-    sudo apt-get install ros-rolling-gazebo-ros ros-rolling-xacro ros-rolling-tf2-geometry-msgs
+    sudo apt-get install ros-rolling-gazebo-ros ros-rolling-turtlebot3-gazebo ros-rolling-xacro ros-rolling-tf2-geometry-msgs
 
 Setup colcon workspace
 =========================
