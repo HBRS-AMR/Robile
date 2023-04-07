@@ -74,7 +74,7 @@ Install following packages on which are the dependencies of the repositories in 
 
   .. code-block:: bash
 
-    pip install --upgrade sphinx docutils
+    pip install --upgrade sphinx docutils py_trees
     sudo apt-get install ros-rolling-gazebo-ros ros-rolling-turtlebot3-gazebo ros-rolling-xacro ros-rolling-tf2-geometry-msgs ros-rolling-turtle-tf2-py ros-rolling-tf2-tools ros-rolling-tf-transformations ros-rolling-joint-state-publisher-gui ros-rolling-joint-state-publisher 
 
 Setup colcon workspace
