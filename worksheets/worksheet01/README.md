@@ -72,7 +72,7 @@ Overview: The robot is associated with different frames which simplify the task 
 * The robot has to decide in which direction it has to move to reach the goal location. It should also monitor if it has reached the goal location.
 * To solve this, goal location can be transformed with respect to the `base_link` frame and also with respect to the `odom` frame (as they might not be overlapping if the robot has already moved after starting its drivers). 
 * The transformed goal with respect to the `base_link` can be used to decide the direction for `cmd_vel` and the transformed goal with respect to the `odom` frame can be used to monitor if the robot's `base_link` has reached the goal. 
-* In the above image, the location of the frames are marked with red colored cross mark. The dotted line arrow represents the perceived goal with respect to the `base_laser` frame. The solid line arrow represents the transformed goal with respect to the `base_link` frame. 
+* In the above image, the location of the frames is marked with the red colored cross mark. The dotted line arrow represents the perceived goal with respect to the `base_laser` frame. The solid line arrow represents the transformed goal with respect to the `base_link` frame. 
 * As `cmd_vel` is published with respect to the `base_link`, the robot has to be moved along the solid line arrow to reach the goal location. 
 
 
@@ -81,10 +81,10 @@ Write your implementation in the `robile_reach_goal` package placed under `Robil
 * Transform the goal location from `base_laser` frame to `odom` frame.
 * Use the transformed goal location with respect to `base_link` frame to decide values for the `\cmd_vel` topic.
 * Use the transformed goal location with respect to `odom` frame to monitor if the robot has reached the goal location.
-* Pass theargument in command line to declare the goal location, else, default goal of (3.0,4.0) will be considered. Run the `robile_reach_goal` node using the following command (for example, to reach the goal location of (5.0,4.0)):
+* Pass the argument in the command line to declare the goal location, else, the default goal of (2.0,1.0) will be considered. Run the `robile_reach_goal` node using the following command (for example, to reach the goal location of (2.0,1.0)):
 
 ```bash
-ros2 run robile_reach_goal reach_goal_publisher 5.0 4.0
+ros2 run robile_reach_goal reach_goal_publisher 2.0 1.0
 ```
 
 Excercise-03: Add a new sensor to the Robile platform
