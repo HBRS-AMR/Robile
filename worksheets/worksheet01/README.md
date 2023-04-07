@@ -66,7 +66,9 @@ Overview: The robot is associated with different frames which simplify the task 
 
 ### Move to a goal:
 
+<p align="center">
 <img src="../bitmaps/robile_ws0_ex_02.png" width="550" height="350">
+</p>
 
 * Consider a situation where the robot has to reach a particular location where it has perceived an object with respect to the `base_laser` frame and it has to move to that location (goal). 
 * The robot has to decide in which direction it has to move to reach the goal location. It should also monitor if it has reached the goal location.
@@ -120,7 +122,9 @@ robile_description
 
 * The camera view should be visible in the rviz window and gazebo window. It would look similar to the image below. Great job! You have successfully added a new sensor to the platform.
 
-<img src="../bitmaps/robile_ws0_ex_03.png" width="550" height="400">
+<p align="center">
+<img src="../bitmaps/robile_ws0_ex_03.png" width="550" height="450">
+</p>
 
 * Please feel free to explore the process of adding a new sensor to the platform. The documentation for the sensor plugins can be found [here](https://classic.gazebosim.org/tutorials?tut=ros_gzplugins).
 
