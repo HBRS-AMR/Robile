@@ -74,6 +74,7 @@ Install following packages on which are the dependencies of the repositories in 
 
   .. code-block:: bash
 
+    pip install --upgrade sphinx docutils
     sudo apt-get install ros-rolling-gazebo-ros ros-rolling-turtlebot3-gazebo ros-rolling-xacro ros-rolling-tf2-geometry-msgs ros-rolling-turtle-tf2-py ros-rolling-tf2-tools ros-rolling-tf-transformations ros-rolling-joint-state-publisher-gui ros-rolling-joint-state-publisher 
 
 Setup colcon workspace
@@ -96,8 +97,8 @@ Setup colcon workspace
   .. code-block:: bash
 
     cd ~/colcon_ws_AMR/src 
-    git clone -b rolling git@github.com:HBRS-AMR/Robile.git
-    git clone -b rolling git@github.com:HBRS-AMR/robile_description.git
+    git clone -b rolling https://github.com/HBRS-AMR/Robile.git
+    git clone -b rolling https://github.com/HBRS-AMR/robile_description.git
 
   Build the packages and source the workspace before continuing (as robile_gazebo depends on robile_description).
 
@@ -110,16 +111,18 @@ Setup colcon workspace
   Continue with cloning the other repositories:
 
   .. code-block:: bash
+    
     cd ~/colcon_ws_AMR/src
-    git clone -b rolling git@github.com:HBRS-AMR/robile_gazebo.git
-    git clone -b rolling git@github.com:HBRS-AMR/kelo_tulip.git
+    git clone -b rolling https://github.com/HBRS-AMR/robile_gazebo.git
+    git clone -b rolling https://github.com/HBRS-AMR/kelo_tulip.git
 
   Then go on with installing further external dependencies:
 
   .. code-block:: bash
 
     cd ~/colcon_ws_AMR/src
-    git clone -b devel git@github.com:splintered-reality/py_trees_ros.git  
+
+    git clone -b devel https://github.com/splintered-reality/py_trees_ros.git  
 
   Build the packages and source the workspace after cloning required repositories.
 
