@@ -86,7 +86,7 @@ Write your implementation in the `robile_reach_goal` package placed under `Robil
 * Pass the argument in the command line to declare the goal location, else, the default goal of (2.0,1.0) will be considered. Run the `robile_reach_goal` node using the following command (for example, to reach the goal location of (2.0,1.0)):
 
 ```bash
-ros2 run robile_reach_goal reach_goal_publisher 2.0 1.0
+ros2 run robile_reach_goal robile_reach_goal 2.0 1.0
 ```
 
 Excercise-03: Add a new sensor to the Robile platform
