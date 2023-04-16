@@ -118,7 +118,7 @@ robile_description
 
 * After adding the camera, build both robile_description and robile_gazebo packages and source the `~/WS_Name/install/local_setup.bash` file.
 
-* Launch the simulation with the camera added to the platform. Select the `robile_gazebo/config/rviz/robile_camera.rviz` configuration file in rviz.
+* Launch the simulation with the camera added to the platform. Select the `robile_gazebo/config/rviz/robile_rolling.rviz` configuration file in rviz.
 
 * The camera view should be visible in the rviz window and gazebo window. It would look similar to the image below. Great job! You have successfully added a new sensor to the platform.
 
