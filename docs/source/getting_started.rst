@@ -77,7 +77,7 @@ Install following packages on which are the dependencies of the repositories in 
     pip install --upgrade sphinx docutils py_trees
     sudo apt-get install ros-rolling-gazebo-ros ros-rolling-turtlebot3-gazebo ros-rolling-xacro ros-rolling-tf2-geometry-msgs ros-rolling-turtle-tf2-py ros-rolling-tf2-tools ros-rolling-tf-transformations ros-rolling-joint-state-publisher-gui ros-rolling-joint-state-publisher ros-rolling-joy-linux ros-rolling-urg-node-msgs
 
-Setup colcon workspace
+Setup Colcon Workspace
 =========================
 
 *   Colcon is the build system used by ROS2. It is recommended to install it as well by following the instructions `here <https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_. 
