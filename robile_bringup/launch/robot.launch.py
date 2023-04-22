@@ -1,62 +1,89 @@
 #!/usr/bin/env python3
 
+import os
 from launch import LaunchDescription
 from launch_ros.actions import Node
+from launch.actions import IncludeLaunchDescription
+from ament_index_python.packages import get_package_share_directory
+from launch.substitutions import PathJoinSubstitution
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+
 
 def generate_launch_description():
 
-    lms1xx = Node(
-            package='lms1xx',
-            node_executable='LMS1xx_node',
-            node_name='lms1xx_laser', 
-            output='screen',
-            parameters=[
-                {'host': '192.168.1.35'},
-                {'frame_id': 'base_laser'}, 
-            ]
-        )
+    lms1xx = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('sick_scan'), 'launch'),
+            '/sick_lms_1xx.launch.py']),
+        launch_arguments={'hostname': '192.168.1.35',
+                          'frame_id': 'base_laser',
+                          'min_angle': '-1.9',
+                          'max_angle': '1.9'}.items()
+    )
 
-    laser_filters = Node(
-            package='laser_filters',
-            node_executable='scan_to_scan_filter_chain',
-            node_name='laser_filter',
-            output='screen',
-            parameters=[{'command': 'load', 'file': '$(find robile_navigation_demo)/ros/config/laser_sick_config.yaml'}]
-        )
+    # laser_filter_config = os.path.join(
+    #     get_package_share_directory('robile_bringup'),
+    #     'config',
+    #     'laser_sick_config.yaml'
+    #     )
 
-    smart_wheel_driver = Node(
-            package='smart_wheel_driver',
-            node_executable='narko.launch',
-            node_name='smart_wheel_driver',
-            output='screen'
-        )
+    # laser_filter = Node(
+    #     package="laser_filters",
+    #     executable="scan_to_scan_filter_chain",
+    #     parameters=[laser_filter_config],
+    # )
 
-    joy = Node(
-            package='joy',
-            node_executable='joy_node',
-            node_name='joy',
-            output='screen'
-        )
+    smart_wheel_driver = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory("kelo_tulip"), 'launch'),
+            '/example_joypad.launch.py'])
+    )
 
     tf2_ros = Node(
-            package='tf2_ros',
-            node_executable='static_transform_publisher',
-            node_name='laser_link',
+        package='tf2_ros',
+        node_executable='static_transform_publisher',
+        node_name='laser_link_node',
+        output='screen',
+        parameters=[{'args': '0.45 0 0.22 0 0 0 /base_link /base_laser 30'}]
+    )
+
+    joint_state_publisher = Node(
+            package='joint_state_publisher',
+            node_executable='joint_state_publisher',
+            node_name='joint_state_publisher',
             output='screen',
-            parameters=[{'args': '0.45 0 0.22 0 0 0 /base_link /base_laser 30'}]
+            parameters=[{'rate': 10}]
         )
 
-    kelo_tulip = Node(
-            package='kelo_tulip',
-            node_executable='example_joypad.launch.py',
-            node_name='kelo_tulip',
+    robot_state_publisher = Node(
+            package='robot_state_publisher',
+            node_executable='robot_state_publisher',
+            node_name='robot_state_publisher',
             output='screen',
-        ) 
+            parameters=[{'publish_frequency': 10}]
+        )  
 
+    rviz_cmd = Node(package='rviz2',
+                    namespace='',
+                    executable='rviz2',
+                    name='rviz2',
+                    output='screen',
+                    )
+    
+    static_transform_cmd = Node(package="tf2_ros",
+                                executable="static_transform_publisher",
+                                output="screen",
+                                arguments=["0", "0", "0", "0", "0",
+                                           "0", "base_footprint", "base_link"]
+                                )
+    
     return LaunchDescription([
         lms1xx,
-        laser_filters,
+        # laser_filter,
         smart_wheel_driver,
-        joy,
-        tf2_ros       
+        tf2_ros,
+        joint_state_publisher,
+        robot_state_publisher,
+        rviz_cmd,
+        static_transform_cmd
     ])
