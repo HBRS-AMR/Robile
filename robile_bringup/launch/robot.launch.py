@@ -21,6 +21,12 @@ def generate_launch_description():
                           'max_angle': '1.9'}.items()
     )
 
+    hukoyu_urg_04 = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([os.path.join(
+            get_package_share_directory('urg_node2'), 'launch'),
+            '/urg_node2.launch.py']),
+    )   
+
     smart_wheel_driver = IncludeLaunchDescription(
         PythonLaunchDescriptionSource([os.path.join(
             get_package_share_directory("kelo_tulip"), 'launch'),
@@ -68,6 +74,7 @@ def generate_launch_description():
     
     return LaunchDescription([
         lms1xx,
+        hukoyu_urg_04,
         smart_wheel_driver,
         static_transform_cmd,
         joint_state_publisher,
