@@ -10,9 +10,9 @@ Install Ubuntu
 
 The repository and its related components have been tested under the following Ubuntu distributions:
 
-- Ubuntu 20.04 (ROS2 version: Rolling) 
+- ROS Humble: Ubuntu 22.04
 
-If you do not have a Ubuntu distribution on your computer you can download it `here <https://releases.ubuntu.com/focal/>`_.
+If you do not have a Ubuntu distribution on your computer you can download it `here <https://ubuntu.com/download/alternative-downloads>`_.
 
 .. _git_version_control:
 
@@ -25,11 +25,21 @@ Git - Version Control
 
   .. code-block:: bash
 
-    sudo apt-get install git-core gitg gitk
+    sudo apt-get install git-core gitg gitk git
 
 * Set Up Git
 
-  Now it's time to configure your settings. To do this you need to open a new Terminal. First you need to tell git your name, so that it can properly label the commits you make:
+  To check if you have already configured user credentials, run the following commands. 
+  If it returns empty string, then proceed with the next step. If not, skip the next step.
+  
+  .. code-block:: bash
+
+    git config --global user.name
+    git config --global user.email
+
+  If you have not configured Git on your system, it's time to configure your settings. 
+  To do this you need to open a new Terminal. First you need to tell git your name, 
+  so that it can properly label the commits you make:
 
   .. code-block:: bash
 
@@ -43,52 +53,72 @@ Git - Version Control
 
 
 * GIT Tutorial
+  
   If you have never worked with git before, we recommend to go through the
-  `basic git tutorial <http://excess.org/article/2008/07/ogre-git-tutorial/>`_.
+  `basic git tutorial <http://excess.org/article/2008/07/ogre-git-tutorial/>`_ and 
+  also a good tutorial can be found in this repository: `practice_git <https://github.com/kvnptl/practice_git>`_, 
+  which you might have used in foundation course.
 
 .. _robot_operating_system:
 
 ROS - Robot Operating System
 ============================
 
-* Install ROS2
+* Install ROS
 
-  The repository has been tested successfully with the following ROS2 rolling distribution.
-  Instructions to install ROS2 can be found `here <https://docs.ros.org/en/rolling/Installation/Ubuntu-Install-Debians.html>`_.
+  The repository has been tested successfully with the ROS2 humble version.
+  Please follow `ROS2 Humble installation <http://wiki.ros.org/noetic/Installation/Ubuntu>`_ instructions, if you have not installed already.
 
   .. note::
-    For convenience, adding the following line in the .bashrc file (located in home location) is recommended: <source /opt/ros/rolling/setup.bash> (without the < >).
-    If multiple ROS distributions are being used, then aliases can be used source particular distribution in the .bashrc file.
+    For convenience, adding the following line in the .bashrc file (located in home location) is recommended: 
+    <source /opt/ros/humble/setup.bash> (without the < >). If multiple ROS distributions are being used, 
+    then aliases can be set for individual distributions in the .bashrc file.
 
-* ROS2 Tutorials
+* ROS Tutorials
 
-  If you have never worked with ROS before, it is recommended to go through
-  `the beginner tutorials provided by ROS2 <https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_.
+  If you have never worked with ROS before, we recommend to go through
+  `the beginner tutorials provided by ROS2 <https://docs.ros.org/en/humble/Tutorials.html>`_.
 
-.. _setup_colcon_workspace:
+  In order to understand at least the different core components of ROS, understanding concepts of **nodes**, **topics**, and getting hands on experience on **writing basic nodes and launch files** are recommended.
+
+.. _setup_catkin_workspace:
 
 Dependencies
-==================
+======================
 
-Install following packages on which are the dependencies of the repositories in the HBRS-AMR group:
+Install following packages:
 
   .. code-block:: bash
 
     pip install --upgrade sphinx docutils py_trees
-    sudo apt-get install ros-rolling-gazebo-ros ros-rolling-turtlebot3-gazebo ros-rolling-xacro ros-rolling-tf2-geometry-msgs ros-rolling-turtle-tf2-py ros-rolling-tf2-tools ros-rolling-tf-transformations ros-rolling-joint-state-publisher-gui ros-rolling-joint-state-publisher ros-rolling-joy-linux ros-rolling-urg-node-msgs
+    sudo apt-get install ros-humble-gazebo-ros ros-humble-turtlebot3-gazebo ros-humble-xacro ros-humble-tf2-geometry-msgs ros-humble-turtle-tf2-py ros-humble-tf2-tools ros-humble-tf-transformations ros-humble-joint-state-publisher-gui ros-humble-joint-state-publisher ros-humble-joy-linux ros-humble-urg-node ros-humble-urg-node-msgs
 
-Setup Colcon Workspace
+
+Setup Colcon workspace
 =========================
 
-*   Colcon is the build system used by ROS2. It is recommended to install it as well by following the instructions `here <https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_. 
+* Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace can be found `here <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_.
 
-*   Create a new workspace (make sure to source the setup.bash file in every terminal if not already added to the .bashrc file). If you are using multiple ROS distributions, then it is recommended to create a separate workspace for each distribution.
+Install Colcon
+-----------------
 
-    .. code-block:: bash
+  .. code-block:: bash
 
-      mkdir -p ~/colcon_ws_AMR/src
-      cd ~/colcon_ws_AMR
-      colcon build
+    sudo apt install python3-colcon-common-extensions
+
+Create a Workspace
+--------------------
+
+  .. code-block:: bash
+
+    source /opt/ros/humble/setup.bash
+    mkdir -p ~/ros2_ws/src
+    cd ~/colcon_ws_AMR
+    colcon build
+    
+  .. note::
+    The ~/workspace_name/ directory (in abve example, it is ~/ros2_ws/) is termed as **root** of the workspace. 
+    In ROS2, while building the packages in a workspace, *colcon build* should be run from the root of the workspace.
 
 * Clone and build the repositories from the HBRS-AMR group
 
@@ -96,7 +126,7 @@ Setup Colcon Workspace
 
   .. code-block:: bash
 
-    cd ~/colcon_ws_AMR/src 
+    cd ~/ros2_ws/src  
     git clone -b rolling https://github.com/HBRS-AMR/Robile.git
     git clone -b rolling https://github.com/HBRS-AMR/robile_description.git
 
@@ -104,15 +134,15 @@ Setup Colcon Workspace
 
   .. code-block:: bash
 
-    cd ~/colcon_ws_AMR
+    cd ~/ros2_ws
     colcon build
-    source ~/colcon_ws_AMR/install/local_setup.bash
+    source ~/ros2_ws/install/setup.bash
 
   Continue with cloning the other repositories:
 
   .. code-block:: bash
-    
-    cd ~/colcon_ws_AMR/src
+
+    cd ~/ros2_ws/src
     git clone -b rolling https://github.com/HBRS-AMR/robile_gazebo.git
     git clone -b rolling https://github.com/HBRS-AMR/kelo_tulip.git
 
@@ -120,19 +150,19 @@ Setup Colcon Workspace
 
   .. code-block:: bash
 
-    cd ~/colcon_ws_AMR/src
+    cd ~/ros2_ws/src
 
-    git clone -b devel https://github.com/splintered-reality/py_trees_ros.git  
+    git clone -b devel https://github.com/splintered-reality/py_trees_ros.git
 
   Build the packages and source the workspace after cloning required repositories.
 
   .. code-block:: bash
 
-    cd ~/colcon_ws_AMR
+    cd ~/ros2_ws
     colcon build
-    source ~/colcon_ws_AMR/install/local_setup.bash
+    source ~/ros2_ws/install/setup.bash
 
   .. note::
-    While kelo_tulip package is building and if it looks stuck, please enter the password of your system and press enter. This allows to build with sudo privileges.
+    While kelo_tulip package is building (can be seen in terminal when *colcon build* is run) and if it looks stuck at around 80%, please enter the password of your system and press enter. Don't worry if you cannot see your system password being typed in thee terminal. After pressing *Enter*, the package will be built successfully. 
 
   If no errors appear everything is ready to use. Great job!
