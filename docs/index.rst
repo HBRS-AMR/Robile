@@ -2,25 +2,25 @@
    sphinx-quickstart on Thu Apr 21 08:58:36 2022.
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
-Robile Robot
-=======================
+
+Welcome to Robile Software Documentation!
+========================================
 
 .. toctree::
   :maxdepth: 2
+  :caption: Setup
   
-
-  introduction
-  getting_started
+  source/getting_started.rst
 
 .. toctree::
   :maxdepth: 2
-  :caption: Hardware
+  :caption: Hardware Details
 
-  Hardware/index.rst
+  source/Hardware/index.rst
 
 .. toctree::
   :maxdepth: 2
-  :caption: Tutorial
+  :caption: Tutorials
 
-  Tutorial/index.rst
+  source/Tutorial/index.rst
 
