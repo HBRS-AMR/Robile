@@ -50,7 +50,7 @@ extensions = [
     "sphinx.ext.intersphinx",
     "sphinx.ext.todo",
     "sphinx.ext.viewcode",
-    "sphinx_copybutton",
+    # "sphinx_copybutton",
     "sphinx_search.extension",
 ]
 
