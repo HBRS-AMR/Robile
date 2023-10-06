@@ -47,12 +47,12 @@ Overview: Send velocity commands to the robile platform to move in a particular 
 ### Move in Circle:
 
 * Move the robile platform in a circular pattern. Write your implementation in the `robile_control_simple` package placed under `Robile/robile_demos/` path to send velocity commands to the robile platform. 
-* Build the package from your workspace in a new terminal. Before building, please source the setup.bash file of ROS as described in the `Getting Started` section of the documentation. After building, source the local_setup.bash file (`source ~/WS_Name/install/local_setup.bash`). 
+* Build the package from your workspace in a new terminal. Before building, please source the setup.bash file of ROS as described in the `Getting Started` section of the documentation. After building, source the local_setup.bash file (`source ~/ws_Name/install/local_setup.bash`). 
 * Run the `robile_control_simple` node to move the platform in a circular pattern. Make sure the simulation is launched and rviz is running and the rviz configuration file is selected (`robile_gazebo/config/rviz/robile.rviz`):
 
-```bash
-ros2 run robile_control_simple circular_motion_publisher
-```
+    ```bash
+    ros2 run robile_control_simple circular_motion_publisher
+    ```
 
 ### Move in Square:
 
@@ -88,9 +88,9 @@ Write your implementation in the `robile_reach_goal` package placed under `Robil
 * Use the transformed goal location with respect to `odom` frame to monitor if the robot has reached the goal location.
 * Pass the argument in the command line to declare the goal location, else, the default goal of (2.0,1.0) will be considered. Run the `robile_reach_goal` node using the following command (for example, to reach the goal location of (2.0,1.0)):
 
-```bash
-ros2 run robile_reach_goal robile_reach_goal 2.0 1.0
-```
+    ```bash
+    ros2 run robile_reach_goal robile_reach_goal 2.0 1.0
+    ```
 
 Excercise-03: Add a new sensor to the Robile platform
 ------------------------------------------------------
@@ -119,7 +119,7 @@ robile_description
 
 * Add a camera to the platform by modifying the `robile_description/gazebo/gazebo_robile_laserscanner_camera.xacro` file similar to the available laser scanner in the file. The camera description file can be found in the `robile_description/urdf/sensors/camera_front.urdf.xacro` file.
 
-* After adding the camera, build both robile_description and robile_gazebo packages and source the `~/WS_Name/install/setup.bash` file.
+* After adding the camera, build both robile_description and robile_gazebo packages and source the `~/ws_Name/install/setup.bash` file.
 
 * Launch the simulation with the camera added to the platform. Select the `robile_gazebo/config/rviz/robile.rviz` configuration file in rviz.
 
@@ -135,22 +135,22 @@ robile_description
 Common Issues:
 --------------
 * Deactivate conda environment. This can be done by running the following command:
-```
-conda deactivate
-```
+    ```
+    conda deactivate
+    ```
 or the configuration file can be modified to deactivate the conda environment by default by running the following command:
-```
-conda config --set auto_activate_base false
-```
+    ```
+    conda config --set auto_activate_base false
+    ```
 * In every new terminal, the ROS environment has to be sourced. This can be done by running the following command:
-```
-source /opt/ros/humble/setup.bash
-```
+    ```
+    source /opt/ros/humble/setup.bash
+    ```
 * After making changes to a package, it has to be built and sourced. `colcon build` should be run from the workspace directory. This can be done by running the following command:
-```
-cd ~/WS_Name
-colcon build
-source ~/WS_Name/install/local_setup.bash
-```
+    ```
+    cd ~/ws_Name
+    colcon build
+    source ~/ws_Name/install/local_setup.bash
+    ```
 * Once gazebo is loaded, select the `robile_gazebo/config/rviz/robile_laserscanner.rviz` configuration file in rviz.
 * While running the simulation, if the `spawn_failed` error is encountered, kill the gazebo process and run the simulation again. Please refer to the earlier commands to kill processes.
