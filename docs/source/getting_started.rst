@@ -19,15 +19,15 @@ If you do not have a Ubuntu distribution on your computer you can download it `h
 Git - Version Control
 =====================
 
-* Installing Git
+  **Installing Git**
 
-  Install the Git core components and some additional GUI's for the version control:
+  Install the Git core components and some additional GUI's for the version control.
 
   .. code-block:: bash
 
     sudo apt-get install git-core gitg gitk git
 
-* Seting up Git
+  **Seting up Git**
 
   To check if you have already configured user credentials, run the following commands. 
   If it returns empty string, then proceed with the next step. If not, skip the next step.
@@ -52,7 +52,7 @@ Git - Version Control
      git config --global user.email "your-email@youremail.com"
 
 
-* GIT Tutorial
+  **Git Tutorial**
   
   If you have never worked with git before, we recommend to go through the
   `basic git tutorial <http://excess.org/article/2008/07/ogre-git-tutorial/>`_ and 
@@ -64,7 +64,7 @@ Git - Version Control
 ROS - Robot Operating System
 ============================
 
-* Install ROS
+  **Install ROS**
 
   The repository has been tested successfully with the ROS2 humble version.
   Please follow `ROS2 Humble installation <http://wiki.ros.org/noetic/Installation/Ubuntu>`_ instructions, if you have not installed already.
@@ -74,9 +74,9 @@ ROS - Robot Operating System
     <source /opt/ros/humble/setup.bash> (without the < >). If multiple ROS distributions are being used, 
     then aliases can be set for individual distributions in the .bashrc file.
 
-* ROS Tutorials
+  **ROS Tutorials**
 
-  If you have never worked with ROS before, we recommend to go through
+  If you have limited experience with ROS before, we recommend to go through
   `the beginner tutorials <https://docs.ros.org/en/humble/Tutorials.html>`_ provided by ROS2.
 
   In order to understand at least the different core components of ROS, understanding concepts of **nodes**, **topics**, and getting hands on experience on **writing basic nodes and launch files** are recommended.
@@ -97,7 +97,8 @@ Install following packages:
 Setup Colcon Workspace
 =========================
 
-* Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace is derived from `this <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_`` link.
+Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace 
+is derived from `this <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_`` link.
 
 **Installing Colcon**
 
@@ -121,7 +122,9 @@ Setup Colcon Workspace
 Cloning Repositories from HBRS-AMR group
 ============================================
 
-  First of all you have to clone and build the **Robile** and **robile_description** repositories. The *Robile* repository contains the core packages to drive the robot and the *robile_description* repository contains the description of the robot.
+  First of all you have to clone and build the **Robile** and **robile_description** repositories. The [Robile](https://github.com/HBRS-AMR/Robile.git) 
+  repository contains the core packages to drive the robot and the [robile_description](https://github.com/HBRS-AMR/robile_description.git) repository 
+  contains the description of the robot.
 
   .. code-block:: bash
 
@@ -137,7 +140,9 @@ Cloning Repositories from HBRS-AMR group
     colcon build
     source ~/ros2_ws/install/setup.bash
 
-  Cloning **robile_gazebo** and **kelo_tulip** repositories. The *robile_gazebo* repository contains the gazebo simulation of the robot and the *kelo_tulip* repository contains the platform controller for the robot.
+  Cloning **robile_gazebo** and **kelo_tulip** repositories. The [robile_gazebo](https://github.com/HBRS-AMR/robile_gazebo.git) 
+  repository contains the gazebo simulation of the robot and the [kelo_tulip](https://github.com/HBRS-AMR/kelo_tulip.git) repository 
+  contains the platform controller for the robot.
 
   .. code-block:: bash
 
@@ -145,14 +150,15 @@ Cloning Repositories from HBRS-AMR group
     git clone -b rolling https://github.com/HBRS-AMR/robile_gazebo.git
     git clone -b rolling https://github.com/HBRS-AMR/kelo_tulip.git
 
-  Cloning **py_trees_ros** repository. The *py_trees_ros* repository is a tool we use to structure and configure the behavior tree implementation for the robot.
+  Cloning **py_trees_ros** repository. The [py_trees_ros](https://github.com/splintered-reality/py_trees_ros.git) 
+  repository is a tool we use to structure and configure the behavior tree implementation for the robot.
 
   .. code-block:: bash
 
     cd ~/ros2_ws/src
     git clone -b devel https://github.com/splintered-reality/py_trees_ros.git
 
-  Build the packages and source the workspace after cloning required repositories.
+  Build the packages and source the workspace after cloning the above repositories.
 
   .. code-block:: bash
 
