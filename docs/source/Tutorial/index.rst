@@ -2,7 +2,7 @@
 Manual for projects
 ##########
 
-Learning objectives
+Learning Objectives
 ===================
 
 - To get hands on experience in assembling the platform and setting up the communication.
@@ -13,12 +13,17 @@ Learning objectives
 
 - To build an application (eg: wall following task) by developing and integrating the perception and navigation modules. Documenting the challenges and possible solutions.
 
-Establish communication
+Running Robile in Simulation
+============================
+.. toctree::
+    Demo Simulation.rst
+
+Establish Communication
 ========================
 .. toctree:: 
     Demo Communication.rst
 
-Mapping environment
+Mapping Environment
 ===================
 .. toctree::
     Demo Mapping.rst
@@ -33,7 +38,7 @@ Navigation
 .. toctree::
     Demo Navigation.rst    
 
-Simulation - Wall following behaviour
-===========
-.. toctree::
-    Demo Simulation.rst    
+.. Wall Following Behaviour in Simulation
+.. ===========
+.. (.. toctree::)
+..     Demo Project.rst    

@@ -8,7 +8,7 @@ Getting started
 Install Ubuntu
 ==============
 
-  The repository and its related components have been tested under the following Ubuntu distributions:
+  The repositories that we will be using and its related components have been tested under the following Ubuntu distributions:
 
   **ROS2 Humble: Ubuntu 22.04**
 
@@ -30,16 +30,15 @@ Git - Version Control
   **Seting up Git**
 
   To check if you have already configured user credentials, run the following commands. 
-  If it returns empty string, then proceed with the next step. If not, skip the next step.
   
   .. code-block:: bash
 
     git config --global user.name
     git config --global user.email
 
-  If you have not configured Git on your system, it's time to configure your settings. 
-  To do this you need to open a new Terminal. First you need to tell git your name, 
-  so that it can properly label the commits you make:
+  If it returns empty string, then it's recommended to tell git your name, and email address,
+  so that it can properly label the commits you make. If it returns your name and email address,
+  then you can skip this step.
 
   .. code-block:: bash
 
@@ -54,9 +53,9 @@ Git - Version Control
 
   **Git Tutorial**
   
-  If you have never worked with git before, we recommend to go through the
+  If you are not comfortable using git yet or would like to refresh th commands, we recommend to go through the
   `basic git tutorial <http://excess.org/article/2008/07/ogre-git-tutorial/>`_ and 
-  also a good tutorial can be found in the repository `practice_git <https://github.com/kvnptl/practice_git>`_, 
+  also follow `practice_git <https://github.com/kvnptl/practice_git>`_ repository, 
   which you might have used in your foundation course.
 
 .. _robot_operating_system:
@@ -66,20 +65,19 @@ ROS - Robot Operating System
 
   **Install ROS**
 
-  The repository has been tested successfully with the ROS2 humble version.
-  Please follow `ROS2 Humble installation <http://wiki.ros.org/noetic/Installation/Ubuntu>`_ instructions, if you have not installed already.
+  Please follow `ROS2 Humble installation <http://wiki.ros.org/noetic/Installation/Ubuntu>`_ instructions, if you have not already installed ROS2.
 
   .. note::
     For convenience, adding the following line in the .bashrc file (located in home location) is recommended: 
-    <source /opt/ros/humble/setup.bash> (without the < >). If multiple ROS distributions are being used, 
+    *source /opt/ros/humble/setup.bash*. If multiple ROS distributions are being used, 
     then aliases can be set for individual distributions in the .bashrc file.
 
   **ROS Tutorials**
 
-  If you have limited experience with ROS before, we recommend to go through
+  To refresh your ROS concepts, we recommend to go through
   `the beginner tutorials <https://docs.ros.org/en/humble/Tutorials.html>`_ provided by ROS2.
 
-  In order to understand at least the different core components of ROS, understanding concepts of **nodes**, **topics**, and getting hands on experience on **writing basic nodes and launch files** are recommended.
+  It is recommended to revise the basic understanding of **nodes** and **topics**, and practicing **writing basic nodes and launch files**.
 
 .. _setup_catkin_workspace:
 
@@ -122,7 +120,7 @@ Setup Colcon Workspace
 Cloning Repositories from HBRS-AMR group
 ============================================
 
-  First of all you have to clone and build the **Robile** and **robile_description** repositories. The `Robile <https://github.com/HBRS-AMR/Robile.git>`_ 
+  First, you have to clone and build the **Robile** and **robile_description** repositories. The `Robile <https://github.com/HBRS-AMR/Robile.git>`_ 
   repository contains the core packages to drive the robot and the `robile_description <https://github.com/HBRS-AMR/robile_description.git>`_ repository 
   contains the description of the robot.
 
@@ -140,25 +138,19 @@ Cloning Repositories from HBRS-AMR group
     colcon build
     source ~/ros2_ws/install/setup.bash
 
-  Cloning **robile_gazebo** and **kelo_tulip** repositories. The `robile_gazebo <https://github.com/HBRS-AMR/robile_gazebo.git>`_ 
-  repository contains the gazebo simulation of the robot and the `kelo_tulip <https://github.com/HBRS-AMR/kelo_tulip.git>`_ repository 
-  contains the platform controller for the robot.
+  We will clone **robile_gazebo**, **kelo_tulip**, and **py_trees_ros** repositories. The `robile_gazebo <https://github.com/HBRS-AMR/robile_gazebo.git>`_ 
+  repository contains the gazebo simulation of the robot, the `kelo_tulip <https://github.com/HBRS-AMR/kelo_tulip.git>`_ repository 
+  contains the platform controller for the robot, and the `py_trees_ros <https://github.com/splintered-reality/py_trees_ros.git>`_ 
+  repository is a tool we use to structure and configure the behavior tree implementation for the robot.
 
   .. code-block:: bash
 
     cd ~/ros2_ws/src
     git clone -b rolling https://github.com/HBRS-AMR/robile_gazebo.git
     git clone -b rolling https://github.com/HBRS-AMR/kelo_tulip.git
-
-  Cloning **py_trees_ros** repository. The `py_trees_ros <https://github.com/splintered-reality/py_trees_ros.git>`_ 
-  repository is a tool we use to structure and configure the behavior tree implementation for the robot.
-
-  .. code-block:: bash
-
-    cd ~/ros2_ws/src
     git clone -b devel https://github.com/splintered-reality/py_trees_ros.git
 
-  Build the packages and source the workspace after cloning the above repositories.
+  Once cloning above repositories, we will build the packages and source the workspace after cloning the above repositories.
 
   .. code-block:: bash
 
@@ -167,6 +159,6 @@ Cloning Repositories from HBRS-AMR group
     source ~/ros2_ws/install/setup.bash
 
   .. note::
-    While kelo_tulip package is building (can be seen in terminal when *colcon build* is run) and if it looks stuck at around 80%, please enter the password of your system and press enter. Don't worry if you cannot see your system password being typed in thee terminal. After pressing *Enter*, the package will be built successfully. 
+    While kelo_tulip package is building (can be seen in terminal when *colcon build* is run) and if it looks stuck at around 80-95%, please type the password of your system and press enter, even if you are not prompted to type. Don't worry if you cannot see your system password being typed in thee terminal. After pressing *Enter*, the package will be built successfully. 
 
   If no errors appear everything is ready to use. Great job!
