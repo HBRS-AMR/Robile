@@ -19,7 +19,7 @@ If you do not have a Ubuntu distribution on your computer you can download it `h
 Git - Version Control
 =====================
 
-* Install Git Software
+* Installing Git
 
   Install the Git core components and some additional GUI's for the version control:
 
@@ -27,7 +27,7 @@ Git - Version Control
 
     sudo apt-get install git-core gitg gitk git
 
-* Set Up Git
+* Seting up Git
 
   To check if you have already configured user credentials, run the following commands. 
   If it returns empty string, then proceed with the next step. If not, skip the next step.
@@ -56,8 +56,8 @@ Git - Version Control
   
   If you have never worked with git before, we recommend to go through the
   `basic git tutorial <http://excess.org/article/2008/07/ogre-git-tutorial/>`_ and 
-  also a good tutorial can be found in this repository: `practice_git <https://github.com/kvnptl/practice_git>`_, 
-  which you might have used in foundation course.
+  also a good tutorial can be found in the repository `practice_git <https://github.com/kvnptl/practice_git>`_, 
+  which you might have used in your foundation course.
 
 .. _robot_operating_system:
 
@@ -77,7 +77,7 @@ ROS - Robot Operating System
 * ROS Tutorials
 
   If you have never worked with ROS before, we recommend to go through
-  `the beginner tutorials provided by ROS2 <https://docs.ros.org/en/humble/Tutorials.html>`_.
+  `the beginner tutorials <https://docs.ros.org/en/humble/Tutorials.html>`_ provided by ROS2.
 
   In order to understand at least the different core components of ROS, understanding concepts of **nodes**, **topics**, and getting hands on experience on **writing basic nodes and launch files** are recommended.
 
@@ -97,17 +97,15 @@ Install following packages:
 Setup Colcon workspace
 =========================
 
-* Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace can be found `here <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_.
+* Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace is derived from `this <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_`` link.
 
-Install Colcon
------------------
+**Installing Colcon**
 
   .. code-block:: bash
 
     sudo apt install python3-colcon-common-extensions
 
-Create a Workspace
---------------------
+**Creating a Workspace**
 
   .. code-block:: bash
 
@@ -117,12 +115,13 @@ Create a Workspace
     colcon build
     
   .. note::
-    The ~/workspace_name/ directory (in abve example, it is ~/ros2_ws/) is termed as **root** of the workspace. 
+    The *~/workspace_name/* directory (in the above example, it is *~/ros2_ws/*) is termed as **root** of the workspace. 
     In ROS2, while building the packages in a workspace, *colcon build* should be run from the root of the workspace.
 
-* Clone and build the repositories from the HBRS-AMR group
+Cloning repositories from the HBRS-AMR group
+============================================
 
-  First of all you have to clone the repository.
+  First of all you have to clone and build the **Robile** and **robile_description** repositories. The *Robile* repository contains the core packages to drive the robot and the *robile_description* repository contains the description of the robot.
 
   .. code-block:: bash
 
