@@ -17,8 +17,11 @@ class CmdVelocityPublisher(Node):
         """
         set the linear and angular velocity of the robot according to required behavior
         """
-        # example: linear velocity in 'x' direction can be set as: "msg.linear.x = 0.5"
+        ## Example: 
+        # linear velocity in 'x' direction can be set as: "msg.linear.x = 0.5"
         msg.linear.x = 0.5 # m/s; this is example code, you need to change this section according to the required behavior
+
+        ### YOUR CODE HERE (plese feel free to change the above example code)
 
         self.publisher_.publish(msg)
 

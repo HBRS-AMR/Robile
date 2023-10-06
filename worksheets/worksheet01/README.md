@@ -18,31 +18,31 @@ Recap of Running the Simulation:
 
 ### Running Robile Platform in Simulation:
 
-The instructions to launch and control Robile can be found [here](https://robile-amr.readthedocs.io/en/humble/source/Tutorial/Demo%20Simulation.html). The following steps further elaborates the steps described in the tutorial.
+The instructions to launch and control Robile can be found in this [tutorial](https://robile-amr.readthedocs.io/en/humble/source/Tutorial/Demo%20Simulation.html). The following steps further elaborates the steps described in the tutorial.
 
 * The simulation can be launched by running the following command in the terminal:
-```bash 
-ros2 launch robile_gazebo gazebo_4_wheel.launch.py
-```
+    ```bash 
+    ros2 launch robile_gazebo gazebo_4_wheel.launch.py
+    ```
 * In the rviz, select the configuration from the File->Open Config menu. The configuration file can be found in the `robile_gazebo/config/rviz/robile.rviz` path.
 
 * In the gazebo, if the platform is not spawned, please stop the simulation by `Ctrl+C` and launch the simulation again. (Please do not use `Ctrl+Z` to stop the simulation. It will not kill the script but will put it in the background.)
 
 * If the launch file stops by itself or even after pressing `Ctrl+C`, please verify if any process named `gzclient` is running. If it exists, then kill the process by using the PID associated with the process. In the below command, replace the `<PID>` with the PID of the process. The PID can be found by running `ps` command in the terminal:
-```bash
-ps
-kill -9 <PID>
-```
+    ```bash
+    ps
+    kill -9 <PID>
+    ```
 
 * Great job! You have successfully launched the simulation. Now, let's move on to the exercises.
-* If you are facing any issues, please feel free to post any of your queries in AMR forum (lea). 
+* If you are facing any issues, please feel free to post any of your queries in the AMR forum (lea). 
 
 Exercise-01: Move the Robile Platform in Simulation
 ----------------------------------------------------
 
 > Objective: to understand the basic structure of ROS2 nodes, topics and messages.
 
-Overview: Send velocity commands to the robile platform to move in a particular pattern. The velocity commands can be sent to the `\cmd_vel` topic. This topic accepts `geometry_msgs/msg/Twist` messages. The `geometry_msgs/msg/Twist` message has two fields `linear` and `angular`. The `linear` field is of type `geometry_msgs/msg/Vector3` and `angular` field is of type `geometry_msgs/msg/Vector3`. The `geometry_msgs/msg/Vector3` message has three fields `x`, `y` and `z`. The `x` and `y` fields in `linear` field are used to specify the linear velocity in x and y directions respectively. The `z` field in `angular` field is used to specify the angular velocity about z-axis. The `geometry_msgs/msg/Twist` message definition can be found [here](https://docs.ros2.org/foxy/api/geometry_msgs/msg/Twist.html)
+Overview: Send velocity commands to the robile platform to move in a particular pattern. The velocity commands can be sent to the `\cmd_vel` topic. This topic accepts `geometry_msgs/msg/Twist` messages. The `geometry_msgs/msg/Twist` message has two fields `linear` and `angular`. The `linear` field is of type `geometry_msgs/msg/Vector3` and `angular` field is of type `geometry_msgs/msg/Vector3`. The `geometry_msgs/msg/Vector3` message has three fields `x`, `y` and `z`. The `x` and `y` fields in `linear` field are used to specify the linear velocity in x and y directions respectively. The `z` field in `angular` field is used to specify the angular velocity about z-axis. The `geometry_msgs/msg/Twist` message definition can be found [here](https://docs.ros2.org/foxy/api/geometry_msgs/msg/Twist.html).
 
 ### Move in Circle:
 
