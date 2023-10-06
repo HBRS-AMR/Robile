@@ -10,7 +10,7 @@ Install Ubuntu
 
 The repository and its related components have been tested under the following Ubuntu distributions:
 
-- ROS Humble: Ubuntu 22.04
+**ROS2 Humble: Ubuntu 22.04**
 
 If you do not have a Ubuntu distribution on your computer you can download it `here <https://ubuntu.com/download/alternative-downloads>`_.
 
