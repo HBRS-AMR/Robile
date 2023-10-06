@@ -8,11 +8,11 @@ Getting started
 Install Ubuntu
 ==============
 
-The repository and its related components have been tested under the following Ubuntu distributions:
+  The repository and its related components have been tested under the following Ubuntu distributions:
 
-**ROS2 Humble: Ubuntu 22.04**
+  **ROS2 Humble: Ubuntu 22.04**
 
-If you do not have a Ubuntu distribution on your computer you can download it `here <https://ubuntu.com/download/alternative-downloads>`_.
+  If you do not have a Ubuntu distribution on your computer you can download it `here <https://ubuntu.com/download/alternative-downloads>`_.
 
 .. _git_version_control:
 
@@ -86,7 +86,7 @@ ROS - Robot Operating System
 Dependencies
 ======================
 
-Install following packages:
+  Install following packages:
 
   .. code-block:: bash
 
@@ -97,16 +97,16 @@ Install following packages:
 Setup Colcon Workspace
 =========================
 
-Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace 
-is derived from `this <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_`` link.
+  Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace 
+  is derived from `this <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_`` link.
 
-**Installing Colcon**
+  **Installing Colcon**
 
   .. code-block:: bash
 
     sudo apt install python3-colcon-common-extensions
 
-**Creating a Workspace**
+  **Creating a Workspace**
 
   .. code-block:: bash
 
