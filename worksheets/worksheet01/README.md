@@ -3,13 +3,14 @@ Worksheet 01: ROS2 Nodes, Topics, Frames (TF) and URDF
 
 System Setup:
 -------------
-* The instructions to set-up the system can be found [here](https://robile-amr.readthedocs.io/en/humble/source/getting_started.html)
+* The instructions to set-up the system can be found [here](https://robile-amr.readthedocs.io/en/humble/source/getting_started.html).
 
 * Please make sure the version of the documentation is "humble". It can be found in the left bottom corner of the documentation page. If any issue is found while setting up the system, please reach out via AMR forum (lea).
 
 Recap of Running the Simulation:
 -------------------------------
 > Note:  
+
       - Make sure to source the `/opt/ros/humble/setup.bash` in every new terminal.
       - Buid all the packages as mentioned in the `Getting Started` section of the documentation above.
       - Verify if the branches of the repositories are set to the ones that are described in [Getting Started](https://robile-amr.readthedocs.io/en/humble/source/getting_started.html). The branch can be switched by running `git checkout *branch_name*` command in the repository directory.
