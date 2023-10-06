@@ -1,27 +1,29 @@
 Worksheet 01: ROS2 Nodes, Topics, Frames (TF) and URDF
-====================================
+======================================================
 
 System Setup:
 -------------
-* The instructions to set-up the system can be found [here](https://robile-amr.readthedocs.io/en/rolling/getting_started.html)
+* The instructions to set-up the system can be found [here](https://robile-amr.readthedocs.io/en/humble/source/getting_started.html)
 
-* Please make sure the version of the documentation is "rolling". It can be found in the left bottom corner of the documentation page. If any issue is found while setting up the system, please reach out via AMR forum (lea).
+* Please make sure the version of the documentation is "humble". It can be found in the left bottom corner of the documentation page. If any issue is found while setting up the system, please reach out via AMR forum (lea).
 
 Recap of Running the Simulation:
 -------------------------------
 > Note:  
-      - Make sure to source the `/opt/ros/rolling/setup.bash` in every new terminal.
+      - Make sure to source the `/opt/ros/humble/setup.bash` in every new terminal.
       - Buid all the packages as mentioned in the `Getting Started` section of the documentation above.
-      - Verify if the branch is set to `rolling` in all the repositories. If not, please switch to `rolling` branch. The branch can be switched by running `git checkout rolling` command in the repository directory.
+      - Verify if the branches of the repositories are set to the ones that are described in [Getting Started](https://robile-amr.readthedocs.io/en/humble/source/getting_started.html). The branch can be switched by running `git checkout *branch_name*` command in the repository directory.
       - Please deactivate `conda` environment if it is activated. The `conda` environment can be deactivated by running `conda deactivate` command in the terminal. To do this globally, set the conda configuration by running `conda config --set auto_activate_base false` command in the terminal. This will deactivate the `conda` environment by default.
 
 ### Running Robile Platform in Simulation:
+
+The instructions to launch and control Robile can be found [here](https://robile-amr.readthedocs.io/en/humble/source/Tutorial/Demo%20Simulation.html). The following steps further elaborates the steps described in the tutorial.
 
 * The simulation can be launched by running the following command in the terminal:
 ```bash 
 ros2 launch robile_gazebo gazebo_4_wheel.launch.py
 ```
-* In the rviz, select the configuration from the File->Open Config menu. The configuration file can be found in the `robile_gazebo/config/rviz/robile_rolling.rviz` path.
+* In the rviz, select the configuration from the File->Open Config menu. The configuration file can be found in the `robile_gazebo/config/rviz/robile.rviz` path.
 
 * In the gazebo, if the platform is not spawned, please stop the simulation by `Ctrl+C` and launch the simulation again. (Please do not use `Ctrl+Z` to stop the simulation. It will not kill the script but will put it in the background.)
 
@@ -32,7 +34,7 @@ kill -9 <PID>
 ```
 
 * Great job! You have successfully launched the simulation. Now, let's move on to the exercises.
-* If you are facing any issues, please post your queries in AMR forum (lea)
+* If you are facing any issues, please feel free to post any of your queries in AMR forum (lea). 
 
 Exercise-01: Move the Robile Platform in Simulation
 ----------------------------------------------------
@@ -45,15 +47,15 @@ Overview: Send velocity commands to the robile platform to move in a particular 
 
 * Move the robile platform in a circular pattern. Write your implementation in the `robile_control_simple` package placed under `Robile/robile_demos/` path to send velocity commands to the robile platform. 
 * Build the package from your workspace in a new terminal. Before building, please source the setup.bash file of ROS as described in the `Getting Started` section of the documentation. After building, source the local_setup.bash file (`source ~/WS_Name/install/local_setup.bash`). 
-* Run the `robile_control_simple` node to move the platform in a circular pattern. Make sure the simulation is launched and rviz is running and the rviz configuration file is selected (`robile_gazebo/config/rviz/robile_rolling.rviz`):
+* Run the `robile_control_simple` node to move the platform in a circular pattern. Make sure the simulation is launched and rviz is running and the rviz configuration file is selected (`robile_gazebo/config/rviz/robile.rviz`):
 
 ```bash
 ros2 run robile_control_simple circular_motion_publisher
 ```
 
-### Move in square:
+### Move in Square:
 
-* Once the platform is successfully moving in a circular pattern, create your own node by following the tutorial from [here](https://docs.ros.org/en/rolling/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html). Setup the package.xml, setup.py and your node file similar to the `robile_control_simple` node. 
+* Once the platform is successfully moving in a circular pattern, create your own node by following the tutorial from [here](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html). Setup the package.xml, setup.py and your node file similar to the `robile_control_simple` node. 
 * Make the robot move a square pattern instead of the circular pattern. Please feel free to use additional python libraries if required.
 
 
@@ -64,7 +66,7 @@ Exercise-02: Move the Robile Platform to a Goal
 
 Overview: The robot is associated with different frames which simplify the task of specifying tasks with different scopes. In the simulation, different frames can be viewed under the `tf` section in rviz. The most frequently used frames are `odom`, `base_link` and `base_laser`. When the robot driver is started, the location of the robot will be fixed as `odom` frame. The `base_link` of the robot is assigned to the centroid of the robot measured in the 2D-plane. The `base_laser` frame is assigned to the laser sensor of the robot. When the robot driver is started, both `odom` and `base_link` will be overlapping. Generally, the `odom` frame will be considered as a fixed frame and `base_link` will be used to provide velocity commands. The environment will be perceived with respect to the `base_laser` frame. This can be transformed to the `base_link` to decide the direction of motion and it can be transformed to the `odom` frame to get the global position of the goals or obstacles. This allows continuously updating velocity commands based on the perception data at the first instance and allows planning the path or the direction without active perception.
 
-### Move to a goal:
+### Move to a Goal:
 
 <p align="center">
 <img src="../bitmaps/robile_ws0_ex_02.png" width="550" height="350">
@@ -116,9 +118,9 @@ robile_description
 
 * Add a camera to the platform by modifying the `robile_description/gazebo/gazebo_robile_laserscanner_camera.xacro` file similar to the available laser scanner in the file. The camera description file can be found in the `robile_description/urdf/sensors/camera_front.urdf.xacro` file.
 
-* After adding the camera, build both robile_description and robile_gazebo packages and source the `~/WS_Name/install/local_setup.bash` file.
+* After adding the camera, build both robile_description and robile_gazebo packages and source the `~/WS_Name/install/setup.bash` file.
 
-* Launch the simulation with the camera added to the platform. Select the `robile_gazebo/config/rviz/robile_rolling.rviz` configuration file in rviz.
+* Launch the simulation with the camera added to the platform. Select the `robile_gazebo/config/rviz/robile.rviz` configuration file in rviz.
 
 * The camera view should be visible in the rviz window and gazebo window. It would look similar to the image below. Great job! You have successfully added a new sensor to the platform.
 
@@ -139,9 +141,9 @@ or the configuration file can be modified to deactivate the conda environment by
 ```
 conda config --set auto_activate_base false
 ```
-* In every new terminal, the ros environment has to be sourced. This can be done by running the following command:
+* In every new terminal, the ROS environment has to be sourced. This can be done by running the following command:
 ```
-source /opt/ros/rolling/setup.bash
+source /opt/ros/humble/setup.bash
 ```
 * After making changes to a package, it has to be built and sourced. `colcon build` should be run from the workspace directory. This can be done by running the following command:
 ```
