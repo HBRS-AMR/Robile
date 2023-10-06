@@ -122,14 +122,14 @@ Setup Colcon Workspace
 Cloning Repositories from HBRS-AMR group
 ============================================
 
-  First of all you have to clone and build the **Robile** and **robile_description** repositories. The [Robile](https://github.com/HBRS-AMR/Robile.git) 
-  repository contains the core packages to drive the robot and the [robile_description](https://github.com/HBRS-AMR/robile_description.git) repository 
+  First of all you have to clone and build the **Robile** and **robile_description** repositories. The `Robile <https://github.com/HBRS-AMR/Robile.git>`_ 
+  repository contains the core packages to drive the robot and the `robile_description <https://github.com/HBRS-AMR/robile_description.git>`_ repository 
   contains the description of the robot.
 
   .. code-block:: bash
 
     cd ~/ros2_ws/src  
-    git clone -b rolling https://github.com/HBRS-AMR/Robile.git
+    git clone -b humble https://github.com/HBRS-AMR/Robile.git
     git clone -b rolling https://github.com/HBRS-AMR/robile_description.git
 
   Build the packages and source the workspace before continuing (as robile_gazebo depends on robile_description).
@@ -140,8 +140,8 @@ Cloning Repositories from HBRS-AMR group
     colcon build
     source ~/ros2_ws/install/setup.bash
 
-  Cloning **robile_gazebo** and **kelo_tulip** repositories. The [robile_gazebo](https://github.com/HBRS-AMR/robile_gazebo.git) 
-  repository contains the gazebo simulation of the robot and the [kelo_tulip](https://github.com/HBRS-AMR/kelo_tulip.git) repository 
+  Cloning **robile_gazebo** and **kelo_tulip** repositories. The `robile_gazebo <https://github.com/HBRS-AMR/robile_gazebo.git>`_ 
+  repository contains the gazebo simulation of the robot and the `kelo_tulip <https://github.com/HBRS-AMR/kelo_tulip.git>`_ repository 
   contains the platform controller for the robot.
 
   .. code-block:: bash
@@ -150,7 +150,7 @@ Cloning Repositories from HBRS-AMR group
     git clone -b rolling https://github.com/HBRS-AMR/robile_gazebo.git
     git clone -b rolling https://github.com/HBRS-AMR/kelo_tulip.git
 
-  Cloning **py_trees_ros** repository. The [py_trees_ros](https://github.com/splintered-reality/py_trees_ros.git) 
+  Cloning **py_trees_ros** repository. The `py_trees_ros <https://github.com/splintered-reality/py_trees_ros.git>`_ 
   repository is a tool we use to structure and configure the behavior tree implementation for the robot.
 
   .. code-block:: bash
