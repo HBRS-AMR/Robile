@@ -1,13 +1,12 @@
 .. _architecture:
 
-Tutorial for running Robile in simulation 
-================================
+Tutorial for Running Robile in Simulation 
+=========================================
 
 In this tutorial, we will learn how to launch and control Robile in simulation. 
 If you have not followed through _getting_started, please do so before continuing.
 
-Launching Robile
-=================
+**Launching Robile**
 
   Before launching Robile, make sure that you have sourced the *setup.bash* file in your workspace. 
   This is a one time activity per terminal.
@@ -24,8 +23,7 @@ Launching Robile
 
       ros2 launch robile_gazebo robile_gazebo gazebo_4_wheel.launch.py  
 
-Control of Robile
-===================================   
+**Controlling Robile** 
 
   The robot can be controlled using the keyboard or by publishing to the */cmd_vel* topic.
   To control the robot using the keyboard, run the following command in a new terminal. Make sure that you have sourced the *setup.bash*  file in new terminal as well.

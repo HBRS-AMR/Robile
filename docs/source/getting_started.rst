@@ -82,7 +82,7 @@ ROS - Robot Operating System
 .. _setup_catkin_workspace:
 
 Dependencies
-======================
+============
 
   Install following packages:
 
@@ -93,7 +93,7 @@ Dependencies
 
 
 Setup Colcon Workspace
-=========================
+======================
 
   Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace 
   is derived from `this <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_`` link.
@@ -118,7 +118,7 @@ Setup Colcon Workspace
     In ROS2, while building the packages in a workspace, *colcon build* should be run from the root of the workspace.
 
 Cloning Repositories from HBRS-AMR group
-============================================
+========================================
 
   First, you have to clone and build the **Robile** and **robile_description** repositories. The `Robile <https://github.com/HBRS-AMR/Robile.git>`_ 
   repository contains the core packages to drive the robot and the `robile_description <https://github.com/HBRS-AMR/robile_description.git>`_ repository 
