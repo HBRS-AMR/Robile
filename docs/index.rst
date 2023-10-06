@@ -8,19 +8,19 @@ Welcome to Robile Software Documentation!
 
 .. toctree::
   :maxdepth: 2
-  :caption: **Setup**
+  .. :caption: Setup
   
   source/getting_started.rst
 
 .. toctree::
   :maxdepth: 2
-  :caption: **Hardware Details**
+  .. :caption: Hardware Details
 
   source/Hardware/index.rst
 
 .. toctree::
   :maxdepth: 2
-  :caption: **Tutorials**
+  .. :caption: Tutorials
 
   source/Tutorial/index.rst
 
