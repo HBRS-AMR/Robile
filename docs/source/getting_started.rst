@@ -94,7 +94,7 @@ Install following packages:
     sudo apt-get install ros-humble-gazebo-ros ros-humble-turtlebot3-gazebo ros-humble-xacro ros-humble-tf2-geometry-msgs ros-humble-turtle-tf2-py ros-humble-tf2-tools ros-humble-tf-transformations ros-humble-joint-state-publisher-gui ros-humble-joint-state-publisher ros-humble-joy-linux ros-humble-urg-node ros-humble-urg-node-msgs
 
 
-Setup Colcon workspace
+Setup Colcon Workspace
 =========================
 
 * Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace is derived from `this <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_`` link.
@@ -118,7 +118,7 @@ Setup Colcon workspace
     The *~/workspace_name/* directory (in the above example, it is *~/ros2_ws/*) is termed as **root** of the workspace. 
     In ROS2, while building the packages in a workspace, *colcon build* should be run from the root of the workspace.
 
-Cloning repositories from the HBRS-AMR group
+Cloning Repositories from HBRS-AMR group
 ============================================
 
   First of all you have to clone and build the **Robile** and **robile_description** repositories. The *Robile* repository contains the core packages to drive the robot and the *robile_description* repository contains the description of the robot.
@@ -137,7 +137,7 @@ Cloning repositories from the HBRS-AMR group
     colcon build
     source ~/ros2_ws/install/setup.bash
 
-  Continue with cloning the other repositories:
+  Cloning **robile_gazebo** and **kelo_tulip** repositories. The *robile_gazebo* repository contains the gazebo simulation of the robot and the *kelo_tulip* repository contains the platform controller for the robot.
 
   .. code-block:: bash
 
@@ -145,12 +145,11 @@ Cloning repositories from the HBRS-AMR group
     git clone -b rolling https://github.com/HBRS-AMR/robile_gazebo.git
     git clone -b rolling https://github.com/HBRS-AMR/kelo_tulip.git
 
-  Then go on with installing further external dependencies:
+  Cloning **py_trees_ros** repository. The *py_trees_ros* repository is a tool we use to structure and configure the behavior tree implementation for the robot.
 
   .. code-block:: bash
 
     cd ~/ros2_ws/src
-
     git clone -b devel https://github.com/splintered-reality/py_trees_ros.git
 
   Build the packages and source the workspace after cloning required repositories.
