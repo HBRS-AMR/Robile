@@ -47,7 +47,7 @@ Overview: Send velocity commands to the robile platform to move in a particular 
 ### Move in Circle:
 
 * Move the robile platform in a circular pattern. Write your implementation in the `robile_control_simple` package placed under `Robile/robile_demos/` path to send velocity commands to the robile platform. 
-* Build the package from your workspace in a new terminal. Before building, please source the setup.bash file of ROS as described in the `Getting Started` section of the documentation. After building, source the local_setup.bash file (`source ~/ws_Name/install/local_setup.bash`). 
+* Build the package from your workspace in a new terminal. Before building, please source the setup.bash file of ROS as described in the `Getting Started` section of the documentation. After building, source the local_setup.bash file (`source ~/ros2_ws/install/local_setup.bash`). 
 * Run the `robile_control_simple` node to move the platform in a circular pattern. Make sure the simulation is launched and rviz is running and the rviz configuration file is selected (`robile_gazebo/config/rviz/robile.rviz`):
 
     ```bash
@@ -98,16 +98,16 @@ Excercise-03: Add a new sensor to the Robile platform
 > Objective: to understand the structure of a sensor plugin and to add a new sensor to the platform.
 
 * Strucure of the robile_description package:
-```
-robile_description
-├── gazebo
-├── meshes
-├── robots
-└── urdf
-    ├── base_macros
-    ├── robile_bricks
-    └── sensors
-```
+    ```
+    robile_description
+    ├── gazebo
+    ├── meshes
+    ├── robots
+    └── urdf
+        ├── base_macros
+        ├── robile_bricks
+        └── sensors
+    ```
 * In simulations, most of the physical interaction of the real robot with the environment can be reproduced. The main features and functionalities to consider are the environment, robot body components, sensors, visual physical model, interaction dynamics with the environment, integration of all physical structures, their functionalities and their interaction with the environment.
 * Different folders are used to organize the different functionalities of the platform.
 * `gazebo` folder forms the high-level integration of any configuration of the robile along with required sensors. Here the parameters for the components of the robot and the sensors are defined. Any of these setups can be used in the launch file of robile_gazebo package to load a particular configuration of the robile.
@@ -119,7 +119,7 @@ robile_description
 
 * Add a camera to the platform by modifying the `robile_description/gazebo/gazebo_robile_laserscanner_camera.xacro` file similar to the available laser scanner in the file. The camera description file can be found in the `robile_description/urdf/sensors/camera_front.urdf.xacro` file.
 
-* After adding the camera, build both robile_description and robile_gazebo packages and source the `~/ws_Name/install/setup.bash` file.
+* After adding the camera, build both robile_description and robile_gazebo packages and source the `~/ros2_ws/install/setup.bash` file.
 
 * Launch the simulation with the camera added to the platform. Select the `robile_gazebo/config/rviz/robile.rviz` configuration file in rviz.
 
@@ -148,9 +148,9 @@ or the configuration file can be modified to deactivate the conda environment by
     ```
 * After making changes to a package, it has to be built and sourced. `colcon build` should be run from the workspace directory. This can be done by running the following command:
     ```
-    cd ~/ws_Name
+    cd ~/ros2_ws
     colcon build
-    source ~/ws_Name/install/local_setup.bash
+    source ~/ros2_ws/install/local_setup.bash
     ```
 * Once gazebo is loaded, select the `robile_gazebo/config/rviz/robile_laserscanner.rviz` configuration file in rviz.
 * While running the simulation, if the `spawn_failed` error is encountered, kill the gazebo process and run the simulation again. Please refer to the earlier commands to kill processes.
