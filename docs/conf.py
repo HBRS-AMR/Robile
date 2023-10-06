@@ -22,7 +22,8 @@ extensions = [
     "sphinx.ext.githubpages",
     "sphinx.ext.intersphinx",
     "sphinx.ext.todo",
-    "sphinx.ext.viewcode",    
+    "sphinx.ext.viewcode",  
+    "sphinx_rtd_theme"  
 ]
 
 templates_path = ['_templates']
