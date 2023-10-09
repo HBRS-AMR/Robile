@@ -17,7 +17,7 @@ If you have not followed through _getting_started, please do so before continuin
 
   .. note::
     Please deactivate `conda` environment if it is activated. The `conda` environment can be deactivated 
-    by running `conda deactivate` command in the terminal. To do this globally, run `conda config --set auto_activate_base false` 
+    by running **conda deactivate** command in the terminal. To do this globally, run **conda config --set auto_activate_base false** 
     command in the terminal. This will deactivate the `conda` environment by default.
 
   Now we will run the launch file to launch Robile in simulation. You will see a Gazebo window pop up with Robile in it and an **rviz** window. 
@@ -33,12 +33,13 @@ If you have not followed through _getting_started, please do so before continuin
     (Please do not use `Ctrl+Z` to stop the simulation. It will not kill the script but will continue running it in the background.)
 
     If the launch file stops by itself or even after pressing `Ctrl+C`, please verify if any process named `gzclient` is running. If it exists, then kill the process by using the PID associated with the process. In the below command, replace the `<PID>` with the PID of the process. The PID can be found by running `ps` command in the terminal:
+    
     ```bash
-    ps
+    ps  
     kill -9 <PID>
     ```
 
-  Great job! You have successfully launched the simulation. Now, let's move on to the exercises.
+  Great job! You have successfully launched the simulation.
   If you are facing any issues, please feel free to post any of your queries in the AMR forum (lea).     
 
 **Controlling Robile** 
