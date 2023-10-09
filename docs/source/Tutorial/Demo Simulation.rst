@@ -32,12 +32,7 @@ If you have not followed through _getting_started, please do so before continuin
     If the platform is not spawned, please stop the simulation by `Ctrl+C` and launch the simulation again. 
     (Please do not use `Ctrl+Z` to stop the simulation. It will not kill the script but will continue running it in the background.)
 
-    If the launch file stops by itself or even after pressing `Ctrl+C`, please verify if any process named `gzclient` is running. If it exists, then kill the process by using the PID associated with the process. In the below command, replace the `<PID>` with the PID of the process. The PID can be found by running `ps` command in the terminal:
-    
-    ```bash
-    ps  
-    kill -9 <PID>
-    ```
+    If the launch file stops by itself or even after pressing `Ctrl+C`, please verify if any process named `gzclient` is running. If it exists, then kill the process by using the PID associated with the process by using ```kill -9 <PID>``` command. In this command, replace the `<PID>` with the PID of the process. The PID can be found by running ```ps``` command in the terminal.
 
   Great job! You have successfully launched the simulation.
   If you are facing any issues, please feel free to post any of your queries in the AMR forum (lea).     
