@@ -110,7 +110,7 @@ Setup Colcon Workspace
 
     source /opt/ros/humble/setup.bash
     mkdir -p ~/ros2_ws/src
-    cd ~/colcon_ws_AMR
+    cd ~/ros2_ws
     colcon build
     
   .. note::
