@@ -26,7 +26,7 @@ If you have not followed through _getting_started, please do so before continuin
 
   .. code-block:: bash
 
-      ros2 launch robile_gazebo robile_gazebo gazebo_4_wheel.launch.py  
+      ros2 launch robile_gazebo gazebo_4_wheel.launch.py  
 
   .. note::
     If the platform is not spawned, please stop the simulation by `Ctrl+C` and launch the simulation again. 
