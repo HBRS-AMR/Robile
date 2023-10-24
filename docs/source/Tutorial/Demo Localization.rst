@@ -3,13 +3,13 @@
 Tutorial for localizing in a map 
 ================================
 
-This tutorial is a demonstration for localizing in a  map using "amcl" (adaptive Monte Carlo localization) algorithm. It uses a particle filter to track the pose of a robot in a known map
+This tutorial is a demonstration for localizing in a  map using "AMCL" (Adaptive Monte Carlo Localization) algorithm. It uses a particle filter to track the pose of a robot in a known map.
 
-* Launch the robot
+* Launch the robot, if using real-robot (after ssh-ing into the robot)
 
   .. code-block:: bash
 
-      roslaunch robile_bringup robot.launch
+      ros2 launch robile_bringup robot.launch
 
 Check which map will be loaded by the navigation stack:
 
@@ -21,21 +21,24 @@ Check which map will be loaded by the navigation stack:
 
   .. code-block:: bash
 
-      export ROBOT_ENV=[map_name/map_name_local] 
+      export ROBOT_ENV=map_name
 
-* Run amcl node
+* Run map_server node in new terminal of your PC. Make sure to set the environment variable **ROS_DOMAIN_ID** to respective robot id while using **your** terminal. Eg: while using Robile1, `export ROS_DOMAIN_ID=1`.
 
   .. code-block:: bash
 
-      roslaunch robile_navigation_demo amcl.launch 
+      ros2 launch robile_navigation robile_nav2_bringup.launch.py
+
+* Launch AMCL node
+
+  .. code-block:: bash
+
+      ros2 launch robile_navigation localization.launch.py
 
 * Localize the robot
 
-    1. Run rviz
-    2. Select "map" as fixed frame and add required views [TF, LaserScan(/scan_filtered), Map (/map), PoseArray (/particlecloud)]
-    3. Select "2D Pose Estimate" and click on the map where the robot is actually located
-    4. Use joystick to rotate and translate such that the PoseArray arrows align
-
-  .. note::
-      Link to the ROS wiki for amcl: 
-      http://wiki.ros.org/amcl
+  1. Run rviz2 in new terminal using the config file located in `robile_navigation/config/robile_ros2_nav.rviz`  
+  2. Select "2D Pose Estimate" and click drag the arrow on the map where the robot is actually located
+  3. Use joystick o teleop_twist_keyboard to rotate and translate such that the PoseArray arrows align
+  4. The particles will converge to the actual location of the robot and the robot will be localized
+  5. Before proceeding to navigation, you can close the localization.launch.py
