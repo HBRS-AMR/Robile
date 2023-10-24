@@ -41,8 +41,8 @@ In this tutorial we will localize the robot in a map using "AMCL" (Adaptive Mont
 
   Localize the robot
 
-  1. Run rviz2 in new terminal using the config file located in `robile_navigation/config/robile_ros2_nav.rviz`  
-  2. Select "2D Pose Estimate" and click drag the arrow on the map where the robot is actually located
+  1. Run rviz2 in new terminal and select this config file: `robile_navigation/config/robile_ros2_nav.rviz`  
+  2. Select "2D Pose Estimate" placed in the top bar of rviz visulizer and click drag the arrow on the map where the robot is actually located
   3. Use joystick o teleop_twist_keyboard to rotate and translate such that the PoseArray arrows align
   4. The particles will converge to the actual location of the robot and the robot will be localized
-  5. Before proceeding to navigation, you can close the localization.launch.py
+  5. Before proceeding to navigation, you can close the localization node

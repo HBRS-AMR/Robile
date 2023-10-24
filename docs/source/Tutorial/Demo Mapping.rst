@@ -92,5 +92,5 @@ In this tutorial we create a map of an environment using grid mapping from slam_
       Eg: export ROBOT_ENV=map_c069 
 
   .. note:: 
-    Environment variables are only set for the current terminal session. ROBOT_ENV needs to be set in the terminal where you are launching the map_server node, which is explained under localization.
+    Environment variables are only set for the current terminal session. ROBOT_ENV needs to be set in the terminal where you are launching the map_server node, which is discussed under localization
 

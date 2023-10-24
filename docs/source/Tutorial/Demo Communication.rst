@@ -3,7 +3,7 @@
 Tutorial for Establishing Communication 
 ========================================
 
-We will look into establishing communication between the robot and the computer. In ROS2, we need to configure the network settings for reliable communication. This allows the robot and the computer to communicate with each other. We will then proced to ssh into the robot and launch the drivers on the robot
+We will look into establishing communication between the robot and the computer. In ROS2, we need to configure the network settings for reliable communication. This allows the robot and the computer to communicate with each other. We will then proceed to ssh into the robot and launch the drivers on the robot
 
 **Network COnfiguration**
 
@@ -51,7 +51,7 @@ We will look into establishing communication between the robot and the computer.
     -  ssh -x studentkelo@192.168.0.103   [while connecting to Robile3]     
     -  ssh -x studentkelo@192.168.0.104   [while connecting to Robile4] 
 
-  - Password (for all robiles): **area5142**
+  Password (for all robiles): **area5142**
 
   For example, to add alias of the to connect to the terminal of Robile1, add the following line in your **.bashrc** file
   
