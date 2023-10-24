@@ -96,7 +96,7 @@ Setup Colcon Workspace
 ======================
 
   Colcon is the build system used by ROS2. The following instructions to install colcon and creating a workspace 
-  is derived from `this <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>_`` link.
+  is derived from `this <https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html>`_ link.
 
   **Installing Colcon**
 
@@ -148,7 +148,7 @@ Cloning Repositories from HBRS-AMR group
     cd ~/ros2_ws/src
     git clone -b rolling https://github.com/HBRS-AMR/robile_gazebo.git
     git clone -b rolling https://github.com/HBRS-AMR/kelo_tulip.git
-    git clone -b ros2_humble git@github.com:HBRS-AMR/robile_navigation.git
+    git clone -b ros2_humble https://github.com/HBRS-AMR/robile_navigation.git
     git clone -b devel https://github.com/splintered-reality/py_trees_ros.git
 
   Once cloning above repositories, we will build the packages and source the workspace after cloning the above repositories.
