@@ -1,7 +1,7 @@
 .. _architecture:
 
-Tutorial for navigating in a map 
-================================
+Tutorial for Navigating 
+=======================
 
 This tutorial is a demonstration for navigating in a map
 
@@ -12,7 +12,7 @@ This tutorial is a demonstration for navigating in a map
       ros2 launch robile_bringup robot.launch
 
 
-  Check which map will be loaded by the navigation stack:
+  Check which map will be loaded by the navigation stack.
 
   .. code-block:: bash
 
@@ -24,7 +24,7 @@ This tutorial is a demonstration for navigating in a map
 
       export ROBOT_ENV=map_name
 
-* If not already running, launch map_server node in new terminal of your PC. Make sure to set the environment variable **ROS_DOMAIN_ID** to respective robot id while using **your** terminal. Eg: while using Robile1, `export ROS_DOMAIN_ID=1`.
+* If not already running, launch map_server node in new terminal of your PC. If you are using real-robot, make sure to set the environment variable **ROS_DOMAIN_ID** to respective robot id while using **your** terminal. Eg: while using Robile1, `export ROS_DOMAIN_ID=1`.
 
   .. code-block:: bash
 

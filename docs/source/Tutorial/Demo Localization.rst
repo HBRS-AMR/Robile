@@ -1,7 +1,7 @@
 .. _architecture:
 
-Tutorial for localizing in a map 
-================================
+Tutorial for Localization
+=========================
 
 This tutorial is a demonstration for localizing in a  map using "AMCL" (Adaptive Monte Carlo Localization) algorithm. It uses a particle filter to track the pose of a robot in a known map.
 
@@ -23,7 +23,7 @@ Check which map will be loaded by the navigation stack:
 
       export ROBOT_ENV=map_name
 
-* Run map_server node in new terminal of your PC. Make sure to set the environment variable **ROS_DOMAIN_ID** to respective robot id while using **your** terminal. Eg: while using Robile1, `export ROS_DOMAIN_ID=1`.
+* Run map_server node in new terminal of your PC. If you are using real-robot, make sure to set the environment variable **ROS_DOMAIN_ID** to respective robot id while using **your** terminal. Eg: while using Robile1, `export ROS_DOMAIN_ID=1`.
 
   .. code-block:: bash
 

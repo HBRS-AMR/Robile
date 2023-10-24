@@ -1,11 +1,11 @@
 .. _architecture:
 
-Tutorial for creating a map 
-============================
+Tutorial for Mapping
+====================
 
 This tutorial is a demonstration for creating a  map of an environment using grid mapping from slam_toolbox. 
 
-* Connecting to the wifi network **Robile5G** and in terminal connect to the robot (please add these as aliases in ~/.bashrc for convenience)
+* Make sure you have connected to the wifi network **Robile5G** and in terminal ssh to the robot (please add these as aliases in ~/.bashrc for convenience)
 
   .. code-block:: bash
 
@@ -18,13 +18,13 @@ This tutorial is a demonstration for creating a  map of an environment using gri
   - It is recommended to ssh to robot only to launch the robot and to kill the robot. For all other purposes, it is recommended to use the terminal of **your** system.
   - Make sure to set the environment variable **ROS_DOMAIN_ID** to respective robot id while publishing/subscribing to any ros topics from **your** terminal. Eg: while using Robile1,  `export ROS_DOMAIN_ID=1`.
 
-* Launch the real-robot (from the terminal where you are accessing the terminal of robot)
+* To launch the real-robot, run following command from the terminal where you are accessing the terminal of robot.
 
   .. code-block:: bash
 
       ros2 launch robile_bringup robot.launch.py
 
-* If robot is being launched in simulation,
+* To launch the robot in simulation, run the following command in a new terminal.
 
   .. code-block:: bash
 
@@ -43,7 +43,7 @@ This tutorial is a demonstration for creating a  map of an environment using gri
 
         ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
-* To visualise the robot in rviz2 while using real robot, run the following command in a new terminal. Make sure that the **ROS_DOMAIN_ID** is set to the respective robile number. For example, for Robile4, it is set to the number **4**. Please don't leave space between the equal sign and the number.
+* To visualize the robot in rviz2 while using real robot, run the following command in a new terminal. Make sure that the **ROS_DOMAIN_ID** is set to the respective robile number. For example, for Robile4, it is set to the number **4**. Please don't leave space between the equal sign and the number.
 
   .. code-block:: bash
 
