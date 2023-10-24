@@ -1,6 +1,6 @@
 .. _architecture:
 
-Tutorial for Navigating 
+Tutorial for Navigation 
 =======================
 
 Once we have mapped and stored the environment as well as localized in it, we will navigate to a specific goal 
