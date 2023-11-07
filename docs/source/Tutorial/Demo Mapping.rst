@@ -1,113 +1,96 @@
 .. _architecture:
 
-Tutorial for creating a map 
-============================
+Tutorial for Mapping
+====================
 
-This tutorial is a demonstration for creating a  map of an environment using "gmapping" algorithm of ROS navigation stack. 
+In this tutorial we create a map of an environment using grid mapping from slam_toolbox
 
-* Connecting to the robot
-  .. code-block:: bash
+**Prerequisites**
 
-    -  ssh -x studentkelo@192.168.0.101   [Robile1]     
-    -  ssh -x studentkelo@192.168.0.102   [Robile2]     
-    -  ssh -x studentkelo@192.168.0.103   [Robile3]     
-    -  ssh -x studentkelo@192.168.0.104   [Robile4] 
-
-      Password for all three platforms: "area5142"  
-
-* In every terminal of the platform, assign 'ROS_IP' to ip address of the robot. Eg: on robile1,  `export ROS_IP=192.168.0.1`.[this is already included in robot's `.bashrc` file. It is not required to run this.]
+  If not already done, install following packages
 
   .. code-block:: bash
 
-        export ROS_IP=<robile_ip_address>
+    sudo apt-get install ros-humble-slam-toolbox ros-humble-navigation2 ros-humble-nav2-bringup ros-humble-teleop-twist-keyboard
 
-* Launch the robot (on real robot)
-
-  .. code-block:: bash
-
-      roslaunch robile_bringup robot.launch
-
-* Launch the robot (in simulation)
+  Make sure you have connected to the wifi network **Robile5G**. In one of terminals, ssh to the robot (please add these as aliases in ~/.bashrc for convenience)
 
   .. code-block:: bash
 
-      roslaunch robile_gazebo robile3_platform.launch
+    -  ssh -x studentkelo@192.168.0.101   [while connecting to Robile1]     
+    -  ssh -x studentkelo@192.168.0.102   [while connecting to Robile2]     
+    -  ssh -x studentkelo@192.168.0.103   [while connecting to Robile3]     
+    -  ssh -x studentkelo@192.168.0.104   [while connecting to Robile4] 
 
-* Run 2D SLAM
+  - Password (for all robiles): **area5142**
+  - It is recommended to ssh to robot only to launch the robot and to kill the robot. For all other purposes, it is recommended to use the terminal of **your** system
+  - Make sure to set the environment variable **ROS_DOMAIN_ID** to respective robot id while publishing/subscribing to any ros topics from **your** terminal. Eg: while using Robile1,  `export ROS_DOMAIN_ID=1`
+
+  To launch the real-robot, run following command from the terminal where you are accessing the terminal of robot
 
   .. code-block:: bash
 
-      roslaunch robile_navigation_demo gmapping.launch
+      ros2 launch robile_bringup robot.launch.py
 
-  .. note::
+  To launch the robot in simulation, run the following command in a new terminal
 
-      The map is built using the front laser's only
+  .. code-block:: bash
 
-* In simulation control the robot using teleop keys,
+      ros2 launch robile_gazebo gazebo_4_wheel.launch.py
+
+**Creating a Map**
+
+  Run mapping node, and move the robot around the environment
+
+  .. code-block:: bash
+
+      ros2 launch robile_navigation online_async.launch.py
+
+
+  If using the robot in simulation, control the robot using teleop keys
   
     .. code-block:: bash
 
-        rosrun teleop_twist_keyboard teleop_twist_keyboard.py
+        ros2 run teleop_twist_keyboard teleop_twist_keyboard
 
-* If `teleop_twist_keyboard` is not installed, 
-  
-    .. code-block:: bash
-
-        sudo apt-get install ros-noetic-teleop-twist-keyboard
-
-* Run the robot using joystick to map an environment
-  
-  - Export ROS_MASTER_URI to wifi ip-address and export ROS_IP to your system ip-address.  
+  To visualize the robot in rviz2 while using real robot, run the following command in a new terminal. Make sure that the **ROS_DOMAIN_ID** is set to the respective robile number. For example, for Robile4, it is set to the number **4**. Please don't leave space between the equal sign and the number
 
   .. code-block:: bash
 
-      export ROS_MASTER_URI=http://<robile_ip_address>:11311 && export ROS_IP=<your_system_ip_address>  
+      export ROS_DOMAIN_ID=4
+      rviz2    
 
-  - your_system_ip_address can be found by running 'ifconfig'. Please make sure you are connected to the same network as the robot(ROBILE5G).
-      
-  - Now run "rviz" in the same terminal. Add 'map' and 'laser_scan' displays and change the topics accordingly.
-
-* Run the map saver
-
-  After traversing the map, go to the map configuration directory
+  To load the rviz2 config file, click on the **Open Config** button in the top left corner of the rviz2 window and select the file **robile.rviz** from folowing path
 
   .. code-block:: bash
 
-      roscd robile_default_env_config/ros/
+      robile_navigation/config/robile_ros2_nav.rviz
 
-  By using `ls` you can see several folders corresponding to existing environments.
-  You can either use an existing map or create a new one:
+  - Now you should see the map being built in rviz2 while moving the robot around the environment
 
-  .. code-block:: bash
+**Saving the Map**
 
-      mkdir [map_name]
-      cd [map_name]
-
-  And then run:
+  Run the map saver: After traversing the map, go to the **maps** directory under **robile_navigation** package and run the following command to save the map
 
   .. code-block:: bash
 
-      rosrun map_server map_saver -f <map_name_local> --free <free_thresh> --occ <occupied_thresh>
+      ros2 run nav2_map_server map_saver_cli -f map_name --ros-args -p save_map_timeout:=20.0
 
-  This will create two files: a `map_name_local.pgm` and `map_name_local.yml`. (considering map as [map_name_local])
+  This will create two files: a `map_name.pgm` and `map_name.yml`. Please use desired name for the map inplace of `map_name`. Now you can kill the mapping node
 
-  Finally, to use the map that you just created you need to check which map will be loaded by the navigation stack:
+  Finally, to use the map that you just created you need to check which map will be loaded by the navigation stack
 
   .. code-block:: bash
 
       echo $ROBOT_ENV
 
-  If you need to change it:
+  If it is not same as *map_name* that you have set, then you need to set the environment variable *ROBOT_ENV* to the map name that you want to use
 
   .. code-block:: bash
 
-      export ROBOT_ENV=[map_name/map_name_local]  
-      Eg: export ROBOT_ENV=team_m/corridor_iter_n  
+      export ROBOT_ENV=map_name  
+      Eg: export ROBOT_ENV=map_c069 
 
-  .. note::
+  .. note:: 
+    Environment variables are only set for the current terminal session. ROBOT_ENV needs to be set in the terminal where you are launching the map_server node, which is discussed under localization
 
-      Usually the `.rosc` script is used to set the environment variable, among other variables
-
-  .. note::
-      Link to the ROS wiki for gmapping: 
-      http://wiki.ros.org/gmapping

@@ -1,6 +1,6 @@
 .. _robile_hardware:
-Manual for projects
-##########
+Navigation and Mapping
+#######################
 
 Learning Objectives
 ===================
