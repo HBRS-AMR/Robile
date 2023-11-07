@@ -89,7 +89,7 @@ Dependencies
   .. code-block:: bash
 
     pip install --upgrade sphinx docutils py_trees
-    sudo apt-get install ros-humble-gazebo-ros ros-humble-turtlebot3-gazebo ros-humble-xacro ros-humble-tf2-geometry-msgs ros-humble-turtle-tf2-py ros-humble-tf2-tools ros-humble-tf-transformations ros-humble-joint-state-publisher-gui ros-humble-joint-state-publisher ros-humble-joy-linux ros-humble-urg-node ros-humble-urg-node-msgs sudo apt-get install ros-humble-ros2bag ros-humble-rosbag2-storage-default-plugins
+    sudo apt-get install ros-humble-gazebo-ros ros-humble-turtlebot3-gazebo ros-humble-xacro ros-humble-tf2-geometry-msgs ros-humble-turtle-tf2-py ros-humble-tf2-tools ros-humble-tf-transformations ros-humble-joint-state-publisher-gui ros-humble-joint-state-publisher ros-humble-joy-linux ros-humble-urg-node ros-humble-urg-node-msgs ros-humble-ros2bag ros-humble-rosbag2-storage-default-plugins
 
 
 Setup Colcon Workspace
