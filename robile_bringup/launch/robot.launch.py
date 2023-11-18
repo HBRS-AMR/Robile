@@ -82,7 +82,7 @@ def generate_launch_description():
                                 executable="static_transform_publisher",
                                 output="screen",
                                 arguments=["0", "0", "0", "0", "0",
-                                           "0", "base_footprint", "base_link"]
+                                           "0", "base_link", "base_footprint"]
     )
 
     static_transform_cmd = Node(

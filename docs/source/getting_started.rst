@@ -151,8 +151,10 @@ Cloning Repositories from HBRS-AMR group
     git clone -b ros2_humble https://github.com/HBRS-AMR/robile_navigation.git
     git clone -b devel https://github.com/splintered-reality/py_trees_ros.git
 
-  Once cloning above repositories, we will build the packages and source the workspace after cloning the above repositories.
+  In the **robile_navigation/config/nav2_params.yaml**, update the complete path to `smacPlannerLattice` under `planner_server-> GridBased->lattice_filepath`.
 
+  Once cloning above repositories and editing the `nav2_params.yaml`, we will build the packages and source the workspace after cloning the above repositories.
+  
   .. code-block:: bash
 
     cd ~/ros2_ws
