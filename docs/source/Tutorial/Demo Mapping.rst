@@ -74,7 +74,7 @@ In this tutorial we create a map of an environment using grid mapping from slam_
 
   .. code-block:: bash
 
-      ros2 run nav2_map_server map_saver_cli -f map_name --ros-args -p save_map_timeout:=20.0
+      ros2 run nav2_map_server map_saver_cli --occ 0.65 --free 0.15 --ros-args -p save_map_timeout:=20.0
 
   This will create two files: a `map_name.pgm` and `map_name.yml`. Please use desired name for the map inplace of `map_name`. Now you can kill the mapping node
 
