@@ -70,9 +70,9 @@ In this tutorial we create a map of an environment using grid mapping from slam_
 
 **Saving the Map**
 
-  Run the map saver: After traversing the map, go to the **maps** directory under **robile_navigation** package and run the following command to save the map
-  In the following command, replace *map_name* with the name of the map that you want to save
-  
+  Run the map saver: After traversing the map, go to the **maps** directory under **robile_navigation** package and run the following command to save the map.
+  In the following command, replace **map_name** with the name of the map that you want to save
+
   .. code-block:: bash
 
       ros2 run nav2_map_server map_saver_cli -f map_name --occ 0.65 --free 0.15 --ros-args -p save_map_timeout:=20.0
