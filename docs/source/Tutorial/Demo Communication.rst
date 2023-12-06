@@ -95,18 +95,20 @@ We will look into establishing communication between the robot and the computer.
         ros2 daemon stop
         ros2 daemon start
 
-**Visualizing Robile in RViz2**
+**Visualizing Robile in Rviz2**
 
-  To visualize the robot in rviz2 while using real robot, run the following command in a new terminal. Make sure that the **ROS_DOMAIN_ID** is set to the respective robile number. For example, for Robile4, it is set to the number **4**. Please don't leave space between the equal sign and the number
+  To visualize the robot in Rviz2 while using real robot, run the following command in a new terminal. 
+  Make sure that the **ROS_DOMAIN_ID** is set to the respective robile number. For example, for Robile4, 
+  it is set to the number **4**. Please don't leave space between the equal sign and the number
 
   .. code-block:: bash
 
       export ROS_DOMAIN_ID=4
       rviz2    
 
-  To load the rviz2 config file, click on the **Open Config** button in the top left corner of the rviz2 window and select the file **robile.rviz** from folowing path
+  To load the rviz2 config file, click on the **Open Config** button in the top left corner of the rviz2 
+  window and select the file **robile.rviz** from folowing path
 
   .. code-block:: bash
 
       robile_gazebo/config/robile.rviz
-       
