@@ -1,6 +1,6 @@
 .. _architecture:
 
-Devices in use
+Devices in Use
 ==============
 +-------------+-------------+-------------+-------------+-------------+
 | Device      | Type        | Specificati | Label       | Comments    |

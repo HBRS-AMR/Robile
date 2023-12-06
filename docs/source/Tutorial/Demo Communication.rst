@@ -5,7 +5,7 @@ Tutorial for Establishing Communication
 
 We will look into establishing communication between the robot and the computer. In ROS2, we need to configure the network settings for reliable communication. This allows the robot and the computer to communicate with each other. We will then proceed to ssh into the robot and launch the drivers on the robot
 
-**Network COnfiguration**
+**Network Configuration**
 
   Copy the content below and save it in a file. For example, the file can be named as **ros2_network_config.xml** and save it in the home directory of the computer
   
@@ -33,7 +33,10 @@ We will look into establishing communication between the robot and the computer.
         </participant>
     </profiles>
 
-  In your **.bashrc** file, add the following lines at the end of the file. Please make sure that the path to the file is correct
+  Once connecting to **Robile5G** network, run `ip a` command from your terminal. Replace the network 
+  interface name **wlp3s0** in the above file with the network interface name from which your system is 
+  connected to **Robile5G** network. In your **.bashrc** file, add the following lines at the end of the 
+  file. Please make sure that the path to the ros2_network_config file is correct
 
   .. code-block:: bash
 
@@ -46,12 +49,12 @@ We will look into establishing communication between the robot and the computer.
 
   .. code-block:: bash
 
-    -  ssh -x studentkelo@192.168.0.101   [while connecting to Robile1]     
-    -  ssh -x studentkelo@192.168.0.102   [while connecting to Robile2]     
-    -  ssh -x studentkelo@192.168.0.103   [while connecting to Robile3]     
-    -  ssh -x studentkelo@192.168.0.104   [while connecting to Robile4] 
+      ssh -x studentkelo@192.168.0.101   [**while connecting to Robile1**]     
+      ssh -x studentkelo@192.168.0.102   [**while connecting to Robile2**]     
+      ssh -x studentkelo@192.168.0.103   [**while connecting to Robile3**]     
+      ssh -x studentkelo@192.168.0.104   [**while connecting to Robile4**] 
 
-  Password (for all robiles): **area5142**
+  Password while connecting to Robiles: **area5142**
 
   For example, to add alias of the to connect to the terminal of Robile1, add the following line in your **.bashrc** file
   

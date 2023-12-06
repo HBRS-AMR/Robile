@@ -8,7 +8,7 @@ Getting started
 Install Ubuntu
 ==============
 
-  The repositories that we will be using and its related components have been tested under the following Ubuntu distributions:
+  The repositories and their related components that we will be using are tested under the following Ubuntu distributions:
 
   **ROS2 Humble: Ubuntu 22.04**
 
@@ -36,7 +36,7 @@ Git - Version Control
     git config --global user.name
     git config --global user.email
 
-  If it returns empty string, then it's recommended to tell git your name, and email address,
+  If it returns an empty string, then it's recommended that you tell git your name and email address,
   so that it can properly label the commits you make. If it returns your name and email address,
   then you can skip this step.
 
@@ -53,10 +53,10 @@ Git - Version Control
 
   **Git Tutorial**
   
-  If you are not comfortable using git yet or would like to refresh th commands, we recommend to go through the
-  `basic git tutorial <http://excess.org/article/2008/07/ogre-git-tutorial/>`_ and 
-  also follow `practice_git <https://github.com/kvnptl/practice_git>`_ repository, 
-  which you might have used in your foundation course.
+  If you are new to git, or just want to brush up on the commands, we recommend that you go through 
+  the `basic git tutorial <http://excess.org/article/2008/07/ogre-git-tutorial/>`_ and also follow 
+  the `practice_git <https://github.com/kvnptl/practice_git>`_  repository, which you may have used 
+  in your foundation course.
 
 .. _robot_operating_system:
 
@@ -74,7 +74,7 @@ ROS - Robot Operating System
 
   **ROS Tutorials**
 
-  To refresh your ROS concepts, we recommend to go through
+  To refresh your ROS concepts, it is recommended to refer to
   `the beginner tutorials <https://docs.ros.org/en/humble/Tutorials.html>`_ provided by ROS2.
 
   It is recommended to revise the basic understanding of **nodes** and **topics**, and practicing **writing basic nodes and launch files**.
@@ -148,6 +148,7 @@ Cloning Repositories from HBRS-AMR group
     cd ~/ros2_ws/src
     git clone -b rolling https://github.com/HBRS-AMR/robile_gazebo.git
     git clone -b rolling https://github.com/HBRS-AMR/kelo_tulip.git
+    git clone https://github.com/HBRS-AMR/robile_interfaces.git
     git clone -b ros2_humble https://github.com/HBRS-AMR/robile_navigation.git
     git clone -b devel https://github.com/splintered-reality/py_trees_ros.git
 
