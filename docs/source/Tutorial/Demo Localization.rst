@@ -47,6 +47,13 @@ In this tutorial we will localize the robot in a map using "AMCL" (Adaptive Mont
 
       ros2 launch robile_navigation robile_nav2_bringup.launch.py
 
+
+  If your application requires to subscribe to the map topic, then the qos profile has to be set to *qos_profile_sensor_data*. An example of creating a subscriber is as follows:
+
+    .. code-block:: cpp
+    
+        self.map_subscriber = self.create_subscription(OccupancyGrid, "/map", self.map_callback, qos_profile=rclpy.qos.qos_profile_sensor_data);
+
 **Running AMCL**
 
   Launch AMCL node
