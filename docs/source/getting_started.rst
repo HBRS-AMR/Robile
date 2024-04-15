@@ -127,8 +127,8 @@ Cloning Repositories from HBRS-AMR group
   .. code-block:: bash
 
     cd ~/ros2_ws/src  
-    git clone -b humble https://github.com/HBRS-AMR/Robile.git
-    git clone -b rolling https://github.com/HBRS-AMR/robile_description.git
+    git clone -b ros2 https://github.com/HBRS-AMR/Robile.git
+    git clone -b ros2 https://github.com/HBRS-AMR/robile_description.git
 
   Build the packages and source the workspace before continuing (as robile_gazebo depends on robile_description).
 
@@ -146,11 +146,9 @@ Cloning Repositories from HBRS-AMR group
   .. code-block:: bash
 
     cd ~/ros2_ws/src
-    git clone -b rolling https://github.com/HBRS-AMR/robile_gazebo.git
-    git clone -b rolling https://github.com/HBRS-AMR/kelo_tulip.git
+    git clone -b ros2 https://github.com/HBRS-AMR/robile_gazebo.git
     git clone https://github.com/HBRS-AMR/robile_interfaces.git
-    git clone -b ros2_humble https://github.com/HBRS-AMR/robile_navigation.git
-    git clone -b devel https://github.com/splintered-reality/py_trees_ros.git
+    git clone -b ros2 https://github.com/HBRS-AMR/robile_navigation.git
 
   In the **robile_navigation/config/nav2_params.yaml**, update the complete path to `smacPlannerLattice` under `planner_server-> GridBased->lattice_filepath`.
 
@@ -161,8 +159,5 @@ Cloning Repositories from HBRS-AMR group
     cd ~/ros2_ws
     colcon build
     source ~/ros2_ws/install/setup.bash
-
-  .. note::
-    While kelo_tulip package is building (can be seen in terminal when *colcon build* is run) and if it looks stuck at around 80-95%, please type the password of your system and press enter, even if you are not prompted to type. Don't worry if you cannot see your system password being typed in thee terminal. After pressing *Enter*, the package will be built successfully. 
 
   If no errors appear everything is ready to use. Great job!
