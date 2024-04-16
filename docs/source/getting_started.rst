@@ -88,7 +88,7 @@ Dependencies
 
   .. code-block:: bash
 
-    pip install --upgrade sphinx docutils py_trees
+    pip install --upgrade sphinx docutils
     sudo apt-get install ros-humble-gazebo-ros ros-humble-turtlebot3-gazebo ros-humble-xacro ros-humble-tf2-geometry-msgs ros-humble-turtle-tf2-py ros-humble-tf2-tools ros-humble-tf-transformations ros-humble-joint-state-publisher-gui ros-humble-joint-state-publisher ros-humble-joy-linux ros-humble-urg-node ros-humble-urg-node-msgs ros-humble-ros2bag ros-humble-rosbag2-storage-default-plugins
 
 
@@ -138,17 +138,17 @@ Cloning Repositories from HBRS-AMR group
     colcon build
     source ~/ros2_ws/install/setup.bash
 
-  We will clone **robile_gazebo**, **kelo_tulip**, and **py_trees_ros** repositories. The `robile_gazebo <https://github.com/HBRS-AMR/robile_gazebo.git>`_ 
-  repository contains the gazebo simulation of the robot, the `kelo_tulip <https://github.com/HBRS-AMR/kelo_tulip.git>`_ repository 
-  contains the platform controller for the robot, and the `py_trees_ros <https://github.com/splintered-reality/py_trees_ros.git>`_ 
-  repository is a tool we use to structure and configure the behavior tree implementation for the robot.
+  We will clone **robile_gazebo**, **robile_navigation**, and **robile_interfaces** repositories. The `robile_gazebo <https://github.com/HBRS-AMR/robile_gazebo.git>`_ 
+  repository contains the simulation related components of the robot, the `robile_navigation <https://github.com/HBRS-AMR/robile_navigation.git>`_ repository 
+  contains the navigation related software for the robot, and the `robile_interfaces <https://github.com/HBRS-AMR/robile_interfaces.git>`_ 
+  repository is the repository used to store the custom messages used in other repositories.
 
   .. code-block:: bash
 
     cd ~/ros2_ws/src
     git clone -b ros2 https://github.com/HBRS-AMR/robile_gazebo.git
-    git clone https://github.com/HBRS-AMR/robile_interfaces.git
     git clone -b ros2 https://github.com/HBRS-AMR/robile_navigation.git
+    git clone https://github.com/HBRS-AMR/robile_interfaces.git
 
   In the **robile_navigation/config/nav2_params.yaml**, update the complete path to `smacPlannerLattice` under `planner_server-> GridBased->lattice_filepath`.
 
