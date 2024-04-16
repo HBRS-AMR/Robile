@@ -29,10 +29,12 @@ If you have not followed through _getting_started, please do so before continuin
       ros2 launch robile_gazebo gazebo_4_wheel.launch.py  
 
   .. note::
-    If the platform is not spawned, please stop the simulation by `Ctrl+C` and launch the simulation again. 
-    (Please do not use `Ctrl+Z` to stop the simulation. It will not kill the script but will continue running it in the background.)
+    1. If the platform is not spawned, please stop the simulation by `Ctrl+C` and launch the simulation again. 
+    (Please do not use `Ctrl+Z` to stop the simulation. It will not kill the script but will continue running it in the background)
 
-    If the launch file stops by itself or even after pressing `Ctrl+C`, please verify if any process named `gzclient` is running. If it exists, then kill the process by using the PID associated with the process by using ```kill -9 <PID>``` command. In this command, replace the `<PID>` with the PID of the process. The PID can be found by running ```ps``` command in the terminal.
+    2. If the launch file stops by itself or even after pressing `Ctrl+C`, please verify if any process named `gzclient` is running. If it exists, then kill the process by using the PID associated with the process by using ```kill -9 <PID>``` command. In this command, replace the `<PID>` with the PID of the process. The PID can be found by running ```ps``` command in the terminal.
+
+    3. If you see `[gzclient-3] gzclient: ....  Assertion px != 0 failed.` in the terminal, add the following line to your `.bashrc` file: `source /usr/share/gazebo/setup.sh`, and if you are using the same terminal source the .bashrc file. 
 
   Great job! You have successfully launched the simulation.
   If you are facing any issues, please feel free to post any of your queries in the AMR forum (lea).     
