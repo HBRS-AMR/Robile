@@ -1,6 +1,6 @@
 .. _getting_started:
 
-Getting started
+Getting Started
 ###############
 
 .. _install_ubuntu:
@@ -27,7 +27,7 @@ Git - Version Control
 
     sudo apt-get install git-core gitg gitk git
 
-  **Seting up Git**
+  **Setting up Git**
 
   To check if you have already configured user credentials, run the following commands. 
   
