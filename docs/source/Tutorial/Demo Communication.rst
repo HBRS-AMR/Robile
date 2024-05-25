@@ -3,11 +3,25 @@
 Tutorial for Establishing Communication 
 ========================================
 
-We will look into establishing communication between the robot and the computer. In ROS2, we need to configure the network settings for reliable communication. This allows the robot and the computer to communicate with each other. We will then proceed to ssh into the robot and launch the drivers on the robot
+We will look into establishing communication between the robot and the computer. In ROS2, we need to configure the network settings for reliable communication. 
+This allows the robot and the computer to communicate with each other. We will then proceed to ssh into the robot and launch the drivers on the robot
 
 **Network Configuration**
 
-  Copy the content below and save it in a file. For example, the file can be named as **ros2_network_config.xml** and save it in the home directory of the computer
+  Communication concepts of ROS to users by using existing middleware DDS. 
+  This DDS middleware has different implementations. 
+  To know more about this please refer to `information on DDS <https://design.ros2.org/articles/ros_on_dds.html>`_ 
+  and `information on different implementations <https://design.ros2.org/articles/ros_middleware_interface.html>`_.
+  Some of the common DDS implementations are **Fast DDS**, **Connext DDS**, **RTI DDS** etc.
+
+  Each of these implementations have different different logics to establish communication between the robot and the computer.
+  Sometimes the network interface of the computer is not able to communicate with the network interface of the robot. So it 
+  is a good practice to configure the network settings to establish communication between the robot and the computer.
+  Here we specify on which network interface the communication should happen. For example, in the below configuration, we
+  specify `wlp3s0` as the network interface name which is connected to the same network as the robot
+
+
+  Copy the content below and save it in a file. For example, the file can be named as **ros2_network_config.xml** and can be saved in the home directory or the ros2 workspace
   
   .. code-block:: xml
 
@@ -36,7 +50,8 @@ We will look into establishing communication between the robot and the computer.
   Once connecting to **Robile5G** network, run `ip a` command from your terminal. Replace the network 
   interface name **wlp3s0** in the above file with the network interface name from which your system is 
   connected to **Robile5G** network. In your **.bashrc** file, add the following lines at the end of the 
-  file. Please make sure that the path to the ros2_network_config file is correct
+  file. Please make sure that the path to the `ros2_network_config`` file is correct. By setting `RMW_IMPLEMENTATION` as `rmw_fastrtps_cpp`, 
+  we are setting the DDS implementation to use as the **Fast DDS**
 
   .. code-block:: bash
 
