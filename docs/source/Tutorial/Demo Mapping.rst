@@ -26,17 +26,32 @@ In this tutorial we create a map of an environment using grid mapping from slam_
   - It is recommended to ssh to robot only to launch the robot and to kill the robot. For all other purposes, it is recommended to use the terminal of **your** system
   - Make sure to set the environment variable **ROS_DOMAIN_ID** to respective robot id while publishing/subscribing to any ros topics from **your** terminal. Eg: while using Robile1,  `export ROS_DOMAIN_ID=1`
 
-  To launch the real-robot, run following command from the terminal where you are accessing the terminal of robot
-
-  .. code-block:: bash
-
-      ros2 launch robile_bringup robot.launch.py
-
   To launch the robot in simulation, run the following command in a new terminal
 
   .. code-block:: bash
 
       ros2 launch robile_gazebo gazebo_4_wheel.launch.py
+
+  To launch the real-robot, run the bringup launch file in a tmux session (refer to Demo Communication for more details on tmux). Main steps are as follows,
+  
+  Create a new session by running the following command in the terminal where the robot's terminal is ssh-ed (replace **session_name** with any name of your choice)
+    
+        .. code-block:: bash
+    
+            tmux new -s session_name
+
+  Now run the following command to launch the robot drivers
+
+    .. code-block:: bash
+
+        ros2 launch robile_bringup robot.launch.py
+
+  To detach the tmux session, press **Ctrl+b** and then press **d**. To attach the tmux session, run the following command (replace **session_name** with the name of the session you created)
+
+    .. code-block:: bash
+
+        tmux attach -t session_name [or] tmux a -t session_name
+
 
 **Creating a Map**
 

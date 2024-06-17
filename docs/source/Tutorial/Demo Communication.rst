@@ -83,17 +83,42 @@ This allows the robot and the computer to communicate with each other. We will t
 
     In the bashrc of all robiles, the environmnet variable **ROS_DOMAIN_ID** is set to the respective robile number. For example, for Robile4, it is set to the number **4**
     
-  To launch the real-robot, run following command from the terminal where you are accessing the terminal of robot
 
-  .. code-block:: bash
-
-      ros2 launch robile_bringup robot.launch.py
-
-  To launch the robot in simulation, run the following command in a new terminal
+  To launch the robot in simulation, run the following command in a new terminal on your system (not the ssh-ed terminal of the robot)
 
   .. code-block:: bash
 
       ros2 launch robile_gazebo gazebo_4_wheel.launch.py
+
+**Launching the drivers (bringup) on the robot in a tmux session**
+
+  One of the best practices to run the drivers on the robot is to use **tmux**. If the bringup launch file is directly run in the ssh-ed terminal, 
+  then the drivers will stop running when the communication is lost or the terminal is closed. To avoid this, we use **tmux** to run the bringup launch file in a new session.
+  It allows you to run multiple terminals in a single terminal. Few important commands are listed in this `github link <https://gist.github.com/kennyng/816c29eb75e8eb022108>`_ 
+
+  If not installed, install tmux by running the following command
+
+    .. code-block:: bash
+    
+        sudo apt install tmux
+
+  Create a new session by running the following command in the terminal where the robot's terminal is ssh-ed (replace **session_name** with any name of your choice)
+    
+        .. code-block:: bash
+    
+            tmux new -s session_name
+
+  Now run the following command to launch the robot drivers
+
+    .. code-block:: bash
+
+        ros2 launch robile_bringup robot.launch.py
+
+    To detach the tmux session, press **Ctrl+b** and then press **d**. To attach the tmux session, run the following command (replace **session_name** with the name of the session you created)
+
+    .. code-block:: bash
+
+        tmux attach -t session_name [or] tmux a -t session_name
 
   .. note:: 
 
