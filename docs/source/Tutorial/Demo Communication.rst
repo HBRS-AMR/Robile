@@ -98,27 +98,27 @@ This allows the robot and the computer to communicate with each other. We will t
 
   If not installed, install tmux by running the following command
 
-    .. code-block:: bash
+  .. code-block:: bash
     
-        sudo apt install tmux
+    sudo apt install tmux
 
   Create a new session by running the following command in the terminal where the robot's terminal is ssh-ed (replace **session_name** with any name of your choice)
     
-        .. code-block:: bash
-    
-            tmux new -s session_name
+  .. code-block:: bash
+
+    tmux new -s session_name
 
   Now run the following command to launch the robot drivers
 
-    .. code-block:: bash
+  .. code-block:: bash
 
-        ros2 launch robile_bringup robot.launch.py
+    ros2 launch robile_bringup robot.launch.py
 
-    To detach the tmux session, press **Ctrl+b** and then press **d**. To attach the tmux session, run the following command (replace **session_name** with the name of the session you created)
+  To detach the tmux session, press **Ctrl+b** and then press **d**. To attach the tmux session, run the following command (replace **session_name** with the name of the session you created)
 
-    .. code-block:: bash
+  .. code-block:: bash
 
-        tmux attach -t session_name [or] tmux a -t session_name
+    tmux attach -t session_name [or] tmux a -t session_name
 
   .. note:: 
 
