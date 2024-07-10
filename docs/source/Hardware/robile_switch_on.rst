@@ -13,11 +13,10 @@ The robot is now ready to be used.
     :align: center
     :alt: Robile robot switched on
 
-
-
-
+|
+|
 To switch off the robot, select the **SWITCH OFF OUTPUTs** option. 
 To completely switch off the power supply to the robot, long press the power button on the robot.
 
 .. note::
-    The battery percentage can be checked by selecting the **monitor** option.
+    The battery percentage can be checked by selecting the **MONITOR** option.
