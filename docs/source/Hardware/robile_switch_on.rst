@@ -14,7 +14,6 @@ The robot is now ready to be used.
     :alt: Robile robot switched on
 
 |
-|
 To switch off the robot, select the **SWITCH OFF OUTPUTs** option. 
 To completely switch off the power supply to the robot, long press the power button on the robot.
 
