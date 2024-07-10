@@ -108,7 +108,7 @@ This allows the robot and the computer to communicate with each other. We will t
 
     tmux new -s session_name
 
-  Now run the following command to launch the robot drivers
+  Now run the desired commands in the session. For example, you can run the launch file to run the robot drivers
 
   .. code-block:: bash
 
@@ -120,11 +120,6 @@ This allows the robot and the computer to communicate with each other. We will t
 
     tmux attach -t session_name [or] tmux a -t session_name
 
-  To close the tmux session, run the following command
-
-  .. code-block:: bash
-
-    tmux kill-session -t session_name
 
   To list all the tmux sessions, run the following command
 
@@ -132,6 +127,12 @@ This allows the robot and the computer to communicate with each other. We will t
 
     tmux list-sessions
 
+  To close the tmux session, run the following command
+
+  .. code-block:: bash
+
+    tmux kill-session -t session_name
+    
   .. note:: 
 
     To verify the communication between the robot and the computer, run the following command in a new terminal. If you are using real-robot, make sure that the **ROS_DOMAIN_ID** is set to the respective robile number
