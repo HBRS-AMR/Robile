@@ -69,4 +69,3 @@ In this tutorial we will localize the robot in a map using "AMCL" (Adaptive Mont
   3. Use joystick o teleop_twist_keyboard to rotate and translate such that the PoseArray arrows align
   4. The particles will converge to the actual location of the robot and the robot will be localized
   5. Keeping the terminal where localization node is running open, use a new terminal to run the navigation node, which is discussed in the next section
-  6. New Line 
