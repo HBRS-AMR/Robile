@@ -68,4 +68,4 @@ In this tutorial we will localize the robot in a map using "AMCL" (Adaptive Mont
   2. Select "2D Pose Estimate" placed in the top bar of rviz visulizer and click drag the arrow on the map where the robot is actually located
   3. Use joystick o teleop_twist_keyboard to rotate and translate such that the PoseArray arrows align
   4. The particles will converge to the actual location of the robot and the robot will be localized
-  5. Keeping the terminal where localization node is running open, use a new terminal to run the navigation node, which is discussed in the next section
+  5. Keeping the terminal where localization node is running open, use a new terminal to run the navigation node, which is discussed in the next section.
