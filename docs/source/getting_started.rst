@@ -65,7 +65,7 @@ ROS - Robot Operating System
 
   **Install ROS**
 
-  Please follow `ROS2 Humble installation <http://wiki.ros.org/noetic/Installation/Ubuntu>`_ instructions, if you have not already installed ROS2.
+  Please follow `ROS2 Humble installation <http://docs.ros.org/en/humble/Installation.html>`_ instructions, if you have not already installed ROS2.
 
   .. note::
     For convenience, adding the following line in the .bashrc file (located in home location) is recommended: 
